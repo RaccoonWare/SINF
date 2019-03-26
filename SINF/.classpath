@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/bcmail-jdk14-136.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/commons-beanutils-1.8.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/groovy-2.4.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/itext-2.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/itextpdf-5.5.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/jasperreports-6.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/jcommon-1.0.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/jdtcore-3.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/jfreechart-1.0.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/mysql-connector-java-5.1.24-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/SINF/librerias/xml-apis-1.3.02.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/jcalendar-1.4/lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/jcalendar-1.4/lib/jgoodies-common-1.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/jcalendar-1.4/lib/jgoodies-looks-2.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/Nubes/Google Drive/ITZ/Calidad de Software V2/Racoon Ware/Proyecti SINF/Eclipse/jcalendar-1.4/lib/junit-4.6.jar"/>
+	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
+	<classpathentry kind="lib" path="jgoodies-common-1.8.0.jar" sourcepath="jgoodies-common-1.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
