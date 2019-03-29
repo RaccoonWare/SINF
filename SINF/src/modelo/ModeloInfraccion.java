@@ -1,18 +1,18 @@
 package modelo;
 import org.apache.poi.ss.usermodel.*;
-
-import static org.junit.Assert.fail;
-
+import exepciones.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.*;
-import org.omg.CORBA.PRIVATE_MEMBER;
 
 
 public class ModeloInfraccion{
@@ -58,8 +58,14 @@ public class ModeloInfraccion{
 		return Nboleta;
 	}
 
-	public void setNboleta(String nboleta) {
-		Nboleta = nboleta;
+	public void setNboleta(String nboleta) throws Exception , ErroresCaptura{
+			Pattern pattern = Pattern.compile("^[0-9]+$");
+			Matcher mather = pattern.matcher(nboleta);
+			if (mather.find() == true) {
+				Nboleta = nboleta;
+			} else {
+				throw new ErroresCaptura(1);
+			}	
 	}
 
 	public String getHora() {
