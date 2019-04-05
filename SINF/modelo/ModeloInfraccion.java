@@ -44,7 +44,7 @@ public class ModeloInfraccion{
 	private String Nboleta;
 	//PATTERN SON EXPRECIONES REGULARES
 	Pattern numeros = Pattern.compile("^[0-9]+$");
-	Pattern placas = Pattern.compile("^[[0-9]|\\-|[A-Za-z]]+\\-[0-9]+\\-[[0-9]|[A-Za-z]]+");
+	Pattern placas = Pattern.compile("^[[0-9]|\\-|[A-Za-z]]+\\-[0-9]+\\-[[0-9]|[A-Za-z]]+");//Se Modifico la nomenclatura 02/04/2019
 	Pattern numserie = Pattern.compile("^[[A-Za-z]|[0-9]]+$");
 	Pattern articulos = Pattern.compile("^[[A-Za-z]|[0-9]]+");
 	//MATCHER BUSCA COINCIDENCIAS EN LA EXPRECION REGULAR
@@ -274,7 +274,7 @@ public class ModeloInfraccion{
 		return Retencion;
 	}
 
-	public void setRetencion(String retencion) throws ErroresCaptura{
+	public void setRetencion(String retencion) throws ErroresCaptura{ //Se debe acpetar campo NULL
 		if (retencion.equals("")) {
 			throw new ErroresCaptura("retencion");
 		}else {
@@ -406,14 +406,14 @@ public class ModeloInfraccion{
 							if (!nb.equals(Nboleta)) {
 								wb.write(new FileOutputStream(archivo));
 							}else {
-								respuesta="Este n˙mero de boleta ya esta registrado\n intenta con otro n˙mero de boleta";
+								respuesta="Este n√∫mero de boleta ya esta registrado\n intenta con otro n√∫mero de boleta";
 							}
 						}
 					}	
 				}
 			}
 			fila = hoja.createRow(i+1);
-			//N∞ BOLETA
+			//N¬∞ BOLETA
 			Cell celda = fila.createCell(0);
 			celda.setCellValue(Nboleta);
 			//DIA
@@ -422,7 +422,7 @@ public class ModeloInfraccion{
 			//MES	
 			celda = fila.createCell(2);
 			celda.setCellValue(Fecha.substring(3,5));
-			//A—O	
+			//A√ëO	
 			celda = fila.createCell(3);
 			celda.setCellValue(Fecha.substring(6,10));
 			//HORA	
@@ -434,10 +434,10 @@ public class ModeloInfraccion{
 			//EN LA CALLE	
 			celda = fila.createCell(6);
 			celda.setCellValue(Referencias);
-			//INFRACCI”N AL	
+			//INFRACCI√ìN AL	
 			celda = fila.createCell(7);
 			celda.setCellValue(Infraccion);
-			//N∞ PLACAS	
+			//N¬∞ PLACAS	
 			celda = fila.createCell(8);
 			celda.setCellValue(Nplacas);
 			//PLACAS DEL ESTADO DE	
@@ -449,10 +449,10 @@ public class ModeloInfraccion{
 			//MODELO	
 			celda = fila.createCell(11);
 			celda.setCellValue(Modelo);
-			//N∞ DE SERIE	
+			//N¬∞ DE SERIE	
 			celda = fila.createCell(12);
 			celda.setCellValue(Nserie);
-			//N∞ ECON”MICO	
+			//N¬∞ ECON√ìMICO	
 			celda = fila.createCell(13);
 			celda.setCellValue(Neconomico);
 			//RUTA O SITIO	
@@ -467,7 +467,7 @@ public class ModeloInfraccion{
 			//DOMICILIO DEL CONDUCTOR	
 			celda = fila.createCell(17);
 			celda.setCellValue(DomicilioConductor);
-			//N∞ LICENCIA DEL CONDUCTOR	
+			//N¬∞ LICENCIA DEL CONDUCTOR	
 			celda = fila.createCell(18);
 			celda.setCellValue(NlicenciaConductor);
 			//NOMBRE DEL PROPIETARIO	
@@ -482,16 +482,16 @@ public class ModeloInfraccion{
 			//RETENCION DE	
 			celda = fila.createCell(22);
 			celda.setCellValue(Retencion);
-			//MARCA Y MODELO DEL DISPOSITIVO DE ALCOHOLÕMETRO	
+			//MARCA Y MODELO DEL DISPOSITIVO DE ALCOHOL√çMETRO	
 			celda = fila.createCell(23);
 			celda.setCellValue(MarcaModelo);
 			//MOTIVO
 			celda = fila.createCell(24);
 			celda.setCellValue(Motivo);
-			//N∞ DE POLICIA DE SEGURIDAD VIAL
+			//N¬∞ DE POLICIA DE SEGURIDAD VIAL
 			celda = fila.createCell(25);
 			celda.setCellValue(Npolicia);
-			//N∞ DE POLICIA DE SEGURIDAD VIAL
+			//N¬∞ DE POLICIA DE SEGURIDAD VIAL
 			celda = fila.createCell(26);
 			celda.setCellValue(estatus);
 
