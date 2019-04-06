@@ -1,21 +1,17 @@
 package modelo;
 import org.apache.poi.ss.usermodel.*;
 import exepciones.*;
-
-import java.awt.Color;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.*;
-
 
 public class ModeloInfraccion{
 	Workbook wb;
@@ -27,7 +23,7 @@ public class ModeloInfraccion{
 	private String PlacasEstado;
 	private String ArticulosViolados;
 	private String Npolicia;
-	private String Marca;
+	private String MarcaSubmarca;
 	private String Neconomico;
 	private String RutaSitio;
 	private String Color;
@@ -45,18 +41,18 @@ public class ModeloInfraccion{
 	private JTable tabla;
 	private String hora;
 	private String Nboleta;
+	private String nb;
+	private Boolean bandera=false;
 	//PATTERN SON EXPRECIONES REGULARES
 	Pattern numeros = Pattern.compile("^[0-9]+$");
-	Pattern palabras = Pattern.compile("^[A-Za-z]+[\\.|\\,|\\-|\\_]*$");
-	Pattern fecha = Pattern.compile("^[0-9]{1,2}\\/[0-9]{2,2}\\/[0-9]{2,2}");
-	Pattern placas = Pattern.compile("^[A-Za-z]+\\-[0-9]+\\-[0-9]+$");
+	Pattern placas = Pattern.compile("^[[0-9]|\\-|[A-Za-z]]+\\-[0-9]+\\\\-[[0-9]|[A-Za-z]]+$");
 	Pattern numserie = Pattern.compile("^[[A-Za-z]|[0-9]]+$");
 	Pattern articulos = Pattern.compile("^[[A-Za-z]|[0-9]]+");
 	//MATCHER BUSCA COINCIDENCIAS EN LA EXPRECION REGULAR
 	Matcher conicidencia;
 	private String estatus="AC";
 	//AC = activo AN = anulado
-	
+
 	public String getEstatus() {
 		return estatus;
 	}
@@ -71,11 +67,11 @@ public class ModeloInfraccion{
 
 	public void setNboleta(String nboleta) throws ErroresCaptura{
 		conicidencia= numeros.matcher(nboleta);
-			if (conicidencia.find() == true) {
-				Nboleta = nboleta;
-			} else {
-				throw new ErroresCaptura("nBoleta");
-			}	
+		if (conicidencia.find() == true) {
+			Nboleta = nboleta;
+		} else {
+			throw new ErroresCaptura("nBoleta");
+		}	
 	}
 
 	public String getHora() {
@@ -83,10 +79,10 @@ public class ModeloInfraccion{
 	}
 
 	public void setHora(String hora) throws ErroresCaptura{
-		if (hora!="") {
-			this.hora = hora;
-		}else {
+		if (hora.equals("")) {
 			throw new ErroresCaptura("hora");
+		}else {
+			this.hora = hora;
 		}
 	}
 
@@ -95,10 +91,10 @@ public class ModeloInfraccion{
 	}
 
 	public void setEstado(String estado) throws ErroresCaptura{
-		if (estado!="") {
-			this.Estado = estado;
-		}else {
+		if (estado.equals("")) {
 			throw new ErroresCaptura("estado");
+		}else {
+			this.Estado = estado;
 		}
 	}
 
@@ -141,12 +137,11 @@ public class ModeloInfraccion{
 	}
 
 	public void setReferencias(String referencias) throws ErroresCaptura {
-		if (referencias !=null) {
-			Referencias = referencias;
-		} else {
+		if (referencias.equals("")) {
 			throw new ErroresCaptura("referencias");
+		} else {
+			Referencias = referencias;
 		}	
-		
 	}
 
 	public String getPlacasEstado() {
@@ -154,11 +149,10 @@ public class ModeloInfraccion{
 	}
 
 	public void setPlacasEstado(String placasEstado) throws ErroresCaptura{
-		conicidencia= placas.matcher(placasEstado);
-		if (conicidencia.find() == true) {
-			PlacasEstado = placasEstado;
-		} else {
+		if (placasEstado.equals("")) {
 			throw new ErroresCaptura("placasEstado");
+		} else {
+			PlacasEstado = placasEstado;
 		}	
 	}
 
@@ -188,12 +182,17 @@ public class ModeloInfraccion{
 		}	
 	}
 
-	public String getMarca() {
-		return Marca;
+	public String getMarcaSubmarca() {
+		return MarcaSubmarca;
 	}
 
-	public void setMarca(String marca){
-			Marca = marca;
+	public void setMarcaSubmarca(String marca)throws ErroresCaptura{
+		if (marca.equals("")) {
+			throw new ErroresCaptura("marcaSubmarca");
+		}else {
+			MarcaSubmarca = marca;
+		}
+
 	}
 
 	public String getNeconomico() {
@@ -217,11 +216,10 @@ public class ModeloInfraccion{
 	}
 
 	public void setColor(String color) throws ErroresCaptura {
-		conicidencia= palabras.matcher(color);
-		if (conicidencia.find() == true) {
-			Color = color;
-		} else {
+		if (color.equals("")) {
 			throw new ErroresCaptura("color");
+		} else {
+			Color = color;
 		}
 	}
 
@@ -269,13 +267,8 @@ public class ModeloInfraccion{
 		return MarcaModelo;
 	}
 
-	public void setMarcaModelo(String marcaModelo) throws ErroresCaptura{
-		conicidencia= palabras.matcher(marcaModelo);
-		if (conicidencia.find() == true) {
-			MarcaModelo = marcaModelo;
-		} else {
-			throw new ErroresCaptura("marcaModelo");
-		}	
+	public void setMarcaModelo(String marcaModelo){
+		MarcaModelo = marcaModelo;
 	}
 
 	public String getRetencion() {
@@ -283,11 +276,7 @@ public class ModeloInfraccion{
 	}
 
 	public void setRetencion(String retencion) throws ErroresCaptura{
-		if (Retencion != "") {
 			Retencion = retencion;
-		}else {
-			throw new ErroresCaptura("retencion");
-		}
 	}
 
 	public String getMotivo() {
@@ -295,11 +284,10 @@ public class ModeloInfraccion{
 	}
 
 	public void setMotivo(String motivo) throws ErroresCaptura{
-
-		if (Retencion != "") {
-			Motivo = motivo;
-		}else {
+		if (motivo.equals("")) {
 			throw new ErroresCaptura("motivo");
+		}else {
+			Motivo = motivo;
 		}
 	}
 
@@ -398,7 +386,7 @@ public class ModeloInfraccion{
 		}else{
 			wb = new XSSFWorkbook();
 		}
-		Sheet hoja = wb.createSheet("Pruebita");
+		Sheet hoja = wb.createSheet("Datos");
 		try {
 			for (i = -1; i < numFila; i++) {
 				fila = hoja.createRow(i+1);
@@ -410,18 +398,24 @@ public class ModeloInfraccion{
 					}else{
 						celda.setCellValue(String.valueOf(tabla.getValueAt(i, j)));
 						String dato = (String) tabla.getValueAt(i, j);
-						String nb = (String) tabla.getValueAt(i, 0);
-						if (!dato.equals("")) {
-							if (!nb.equals(Nboleta)) {
-								wb.write(new FileOutputStream(archivo));
-							}else {
-								respuesta="Este número de boleta ya esta registrado\n intenta con otro número de boleta";
+						nb = (String) tabla.getValueAt(i, 0);
+						if (dato != "" && dato != null) {
+							if (Nboleta.equals(nb)) {
+								bandera=true;
 							}
+								wb.write(new FileOutputStream(archivo));
+						}else {
+							celda.setCellValue("");
+							wb.write(new FileOutputStream(archivo));
 						}
 					}	
 				}
 			}
 			fila = hoja.createRow(i+1);
+			if (bandera==true) {
+				respuesta="Este número de boleta ya esta registrado";
+				throw new ErroresCaptura("repetido");
+			}
 			//N° BOLETA
 			Cell celda = fila.createCell(0);
 			celda.setCellValue(Nboleta);
@@ -454,7 +448,7 @@ public class ModeloInfraccion{
 			celda.setCellValue(PlacasEstado);
 			//MARCA Y SUBMARCA	
 			celda = fila.createCell(10);
-			celda.setCellValue(Marca);
+			celda.setCellValue(MarcaSubmarca);
 			//MODELO	
 			celda = fila.createCell(11);
 			celda.setCellValue(Modelo);
@@ -507,7 +501,7 @@ public class ModeloInfraccion{
 			wb.write(new FileOutputStream(archivo));
 			respuesta="Se guardaron los datos con exito";
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			//EXEPCIONES PARA LOS WORCKBOOK
 		}
 		return respuesta;
 	}
