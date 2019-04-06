@@ -19,6 +19,7 @@ public class ControladorConsultaInfracciones implements ActionListener{
 		this.vistaConsultas= vistaConsultas;
 		this.modeloConsultas=modeloConsultas;
 		this.vistaConsultas.btnConsultar.addActionListener(this);
+		//this.vistaConsultas.btnAgregar.addActionListener(this);
 	}
 	public void iniciar() {
 		VistaPrincipal.dpEscritorio.add(vistaConsultas);
@@ -32,6 +33,11 @@ public class ControladorConsultaInfracciones implements ActionListener{
 		if(e.getSource() == vistaConsultas.btnConsultar){
 			archivo=new File(MVC.getConfig().getProperty("infracciones"));
 			modeloConsultas.Importar(archivo, vistaConsultas.tabla);
+		}
+
+		if(e.getSource() == vistaConsultas.btnAgregar){
+			archivo=new File(MVC.getConfig().getProperty("infracciones"));
+			modeloConsultas.Exportar(archivo, vistaConsultas.tabla);
 		}
 	}
 }

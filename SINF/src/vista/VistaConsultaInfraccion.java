@@ -32,9 +32,10 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 	public JTable tabla;
 	public static String nomTabla;
 	public static String dato, titulo;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	public JButton btnEliminar, btnAnular, btnConsultar;
+	public JTextField txtFolio;
+	public JTextField txtPlaca;
+	public JButton btnEliminar, btnAnular;
+	public JButton btnConsultar;
 	public VistaConsultaInfraccion() {
 		setBorder(new LineBorder(new Color(58, 63, 64), 5, true));
 		getContentPane().setBackground(Color.WHITE);
@@ -76,17 +77,17 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		lblFolio.setForeground(new Color(234, 254, 255));
 		panel.add(lblFolio, "flowx,cell 2 0");
 		
-		textField_2 = new JTextField();
-		textField_2.setBorder(null);
-		textField_2.setFont(new Font("Arial", Font.BOLD, 14));
-		textField_2.setBackground(new Color(187,202,204));
-		textField_2.setColumns(10);
-		panel.add(textField_2, "cell 2 0,growx");
+		txtFolio = new JTextField();
+		txtFolio.setBorder(null);
+		txtFolio.setFont(new Font("Arial", Font.BOLD, 14));
+		txtFolio.setBackground(new Color(187,202,204));
+		txtFolio.setColumns(10);
+		panel.add(txtFolio, "cell 2 0,growx");
 		
-		JButton button = new JButton("");
-		button.setIcon(new ImageIcon(VistaConsultaInfraccion.class.getResource("/iconos/icons8-b\u00FAsqueda-14(1).png")));
-		button.setBackground(new Color(234, 254, 255));
-		panel.add(button, "cell 0 1,alignx trailing");
+		JButton btnBusqueda = new JButton("");
+		btnBusqueda.setIcon(new ImageIcon(VistaConsultaInfraccion.class.getResource("/iconos/icons8-b\u00FAsqueda-14(1).png")));
+		btnBusqueda.setBackground(new Color(234, 254, 255));
+		panel.add(btnBusqueda, "cell 0 1,alignx trailing");
 		
 		JDateChooser dateChooser_1 = new JDateChooser();
 		dateChooser_1.setBorder(null);
@@ -100,13 +101,13 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		lblPlaca.setForeground(new Color(234, 254, 255));
 		panel.add(lblPlaca, "flowx,cell 2 1,alignx left");
 		
-		textField_3 = new JTextField();
-		textField_3.setBorder(null);
-		textField_3.setFont(new Font("Arial", Font.BOLD, 14));
-		textField_3.setBackground(new Color(187,202,204));
-		textField_3.setColumns(10);
+		txtPlaca = new JTextField();
+		txtPlaca.setBorder(null);
+		txtPlaca.setFont(new Font("Arial", Font.BOLD, 14));
+		txtPlaca.setBackground(new Color(187,202,204));
+		txtPlaca.setColumns(10);
 		
-		panel.add(textField_3, "cell 2 1,growx");
+		panel.add(txtPlaca, "cell 2 1,growx");
 		
 		JLabel lblRegistros = new JLabel("Registros");
 		lblRegistros.setFont(new Font("Arial", Font.BOLD, 14));

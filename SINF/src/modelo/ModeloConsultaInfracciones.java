@@ -91,4 +91,6 @@ public class ModeloConsultaInfracciones {
 		}
 		return respuesta;
 	}
+	
+
 }

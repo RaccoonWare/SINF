@@ -37,20 +37,20 @@ public class VistaConsultaArticulo extends JInternalFrame {
 	private static final long serialVersionUID = 1L;
 	public static String nomTabla;
 	public static String dato, titulo;
-	private JTextField txtBuscar;
-	private JTextField textField_3;
-	public JButton btnConsultar;
-	private JTextField textField;
-	private JTextField textField_1;
+	public JTextField txtBuscar;
+	public JTextField txtArt;
+	public JButton btnAccion;
+	public JTextField txtDesc;
+	public JTextField txtSanc;
 	public JTable tabla;
-	private JPanel panel_1;
+	public JPanel panel_1;
 	public VistaConsultaArticulo() {
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Articulos");
 		setMaximizable(true);
 		setIconifiable(true);
 		setClosable(true);
-		setBounds(10, 10, 577, 488);
+		setBounds(10, 10, 745, 488);
 		getContentPane().setLayout(new MigLayout("", "[106.00,grow]", "[][grow][grow][grow]"));
 
 		JButton btnModficar = new JButton("Modficar");
@@ -79,30 +79,34 @@ public class VistaConsultaArticulo extends JInternalFrame {
 		JLabel lblPlaca = new JLabel("Articulo");
 		panel.add(lblPlaca, "flowx,cell 0 0,alignx left");
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		panel.add(textField_3, "cell 0 0,alignx left");
+		txtArt = new JTextField();
+		txtArt.setColumns(10);
+		panel.add(txtArt, "cell 0 0,alignx left");
 		
 		JLabel lblDescripcin = new JLabel("Descripci\u00F3n");
 		panel.add(lblDescripcin, "cell 0 0");
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		panel.add(textField, "cell 0 0,growx");
+		txtDesc = new JTextField();
+		txtDesc.setColumns(10);
+		panel.add(txtDesc, "cell 0 0,growx");
 		
 		JLabel lblRegistros = new JLabel("Sanci\u00F3n");
 		panel.add(lblRegistros, "cell 0 0");
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		panel.add(textField_1, "cell 0 0,growx");
+		txtSanc = new JTextField();
+		txtSanc.setColumns(10);
+		panel.add(txtSanc, "cell 0 0,growx");
 		
-		btnConsultar = new JButton("Consultar");
-		panel.add(btnConsultar, "cell 0 0,alignx right");
-		btnConsultar.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnConsultar.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnConsultar.setFont(new Font("Arial", Font.BOLD, 14));
-		btnConsultar.setBackground(Color.WHITE);
+		btnAccion = new JButton("Agregar");
+		btnAccion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		panel.add(btnAccion, "cell 0 0,alignx right");
+		btnAccion.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnAccion.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnAccion.setFont(new Font("Arial", Font.BOLD, 14));
+		btnAccion.setBackground(Color.WHITE);
 		JScrollPane scrollPane = new JScrollPane();
 		getContentPane().add(scrollPane, "cell 0 2,grow");
 		
