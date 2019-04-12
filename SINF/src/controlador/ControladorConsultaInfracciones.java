@@ -9,10 +9,10 @@ import vista.VistaPrincipal;
 import javax.swing.*;
 
 public class ControladorConsultaInfracciones implements ActionListener{
-	ModeloConsultaInfracciones modeloConsultas = new ModeloConsultaInfracciones();
-	VistaConsultaInfraccion vistaConsultas= new VistaConsultaInfraccion();
-	JFileChooser selecArchivo = new JFileChooser();
-	File archivo;
+	private ModeloConsultaInfracciones modeloConsultas = new ModeloConsultaInfracciones();
+	private VistaConsultaInfraccion vistaConsultas= new VistaConsultaInfraccion();
+	private JFileChooser selecArchivo = new JFileChooser();
+	private File archivo;
 	int contAccion=0;
 
 	public ControladorConsultaInfracciones(VistaConsultaInfraccion vistaConsultas, ModeloConsultaInfracciones modeloConsultas){
@@ -35,7 +35,7 @@ public class ControladorConsultaInfracciones implements ActionListener{
 			modeloConsultas.Importar(archivo, vistaConsultas.tabla);
 		}
 
-		if(e.getSource() == vistaConsultas.btnAgregar){
+		if(e.getSource() == vistaConsultas.btnAnular){
 			archivo=new File(MVC.getConfig().getProperty("infracciones"));
 			modeloConsultas.Exportar(archivo, vistaConsultas.tabla);
 		}

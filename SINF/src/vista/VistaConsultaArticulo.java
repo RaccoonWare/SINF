@@ -23,6 +23,9 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
+
+import controlador.MVC;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.TitledBorder;
@@ -30,6 +33,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.border.BevelBorder;
+import java.awt.Button;
 public class VistaConsultaArticulo extends JInternalFrame {
 	/**
 	 * 
@@ -45,7 +49,7 @@ public class VistaConsultaArticulo extends JInternalFrame {
 	public JTable tabla;
 	public JPanel panel_1;
 	public VistaConsultaArticulo() {
-		getContentPane().setBackground(Color.WHITE);
+		getContentPane().setBackground(Color.GRAY);
 		setTitle("Articulos");
 		setMaximizable(true);
 		setIconifiable(true);
@@ -58,7 +62,7 @@ public class VistaConsultaArticulo extends JInternalFrame {
 		btnModficar.setBackground(Color.WHITE);
 		btnModficar.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnModficar.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnModficar.setFont(new Font("Arial", Font.BOLD, 14));
+		btnModficar.setFont(MVC.FUENTE);
 		
 		txtBuscar = new JERoundTextField();
 		txtBuscar.setHorizontalAlignment(SwingConstants.LEFT);
@@ -70,38 +74,52 @@ public class VistaConsultaArticulo extends JInternalFrame {
 		panel_1 = new JPanel();
 		getContentPane().add(panel_1, "cell 0 1,grow");
 		panel_1.setLayout(new MigLayout("", "[]", "[]"));
+		panel_1.setBackground(Color.DARK_GRAY);
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Agregar/Modificar Articulo", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Agregar/Modificar Articulo", TitledBorder.LEADING, TitledBorder.TOP, null, MVC.COLOR_LETRA));
+		((javax.swing.border.TitledBorder)panel.getBorder()).setTitleFont(MVC.FUENTE);
 		getContentPane().add(panel, "cell 0 3,grow");
-		panel.setLayout(new MigLayout("", "[grow]", "[grow][]"));
+		panel.setLayout(new MigLayout("", "[grow]", "[grow][][]"));
+		panel.setBackground(Color.DARK_GRAY);
 		
 		JLabel lblPlaca = new JLabel("Articulo");
+		lblPlaca.setFont(MVC.FUENTE);
+		lblPlaca.setForeground(MVC.COLOR_LETRA);
 		panel.add(lblPlaca, "flowx,cell 0 0,alignx left");
 		
 		txtArt = new JTextField();
 		txtArt.setColumns(10);
+		txtArt.setBackground(MVC.COLOR_VALID);
+		txtArt.setFont(MVC.FUENTE);
 		panel.add(txtArt, "cell 0 0,alignx left");
 		
 		JLabel lblDescripcin = new JLabel("Descripci\u00F3n");
+		lblDescripcin.setFont(MVC.FUENTE);
+		lblDescripcin.setForeground(MVC.COLOR_LETRA);
 		panel.add(lblDescripcin, "cell 0 0");
 		
 		txtDesc = new JTextField();
 		txtDesc.setColumns(10);
+		txtDesc.setBackground(MVC.COLOR_VALID);
+		txtDesc.setFont(MVC.FUENTE);
 		panel.add(txtDesc, "cell 0 0,growx");
 		
 		JLabel lblRegistros = new JLabel("Sanci\u00F3n");
+		lblRegistros.setFont(MVC.FUENTE);
+		lblRegistros.setForeground(MVC.COLOR_LETRA);
 		panel.add(lblRegistros, "cell 0 0");
+		
 		
 		txtSanc = new JTextField();
 		txtSanc.setColumns(10);
+		txtSanc.setFont(MVC.FUENTE);
+		txtSanc.setBackground(MVC.COLOR_VALID);
 		panel.add(txtSanc, "cell 0 0,growx");
 		
-		btnAccion = new JButton("Agregar");
-		btnAccion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		btnAccion = new JButton("Agregar");		
+		btnAccion.setFont(MVC.FUENTE);
+		
 		panel.add(btnAccion, "cell 0 0,alignx right");
 		btnAccion.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnAccion.setHorizontalTextPosition(SwingConstants.CENTER);

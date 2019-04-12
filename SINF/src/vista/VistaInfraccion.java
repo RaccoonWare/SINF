@@ -11,11 +11,15 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.Color;
 import javax.swing.JButton;
 import com.toedter.calendar.JDateChooser;
+
+import controlador.MVC;
+
 import javax.swing.JTextPane;
 import java.awt.Cursor;
 import javax.swing.border.LineBorder;
 import time.*;
 import java.awt.SystemColor;
+import javax.swing.JScrollPane;
 
 public class VistaInfraccion extends JInternalFrame {
 	/**
@@ -68,15 +72,17 @@ public class VistaInfraccion extends JInternalFrame {
 	public JTextField txtEstado;
 	private JLabel lblNoBoleta;
 	public JTextField txtNboleta;
+	private JScrollPane scrollPane;
+	private JScrollPane scrollPane_1;
 
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public VistaInfraccion() {
-		setBorder(new LineBorder(new Color(58, 63, 64), 5, true));
-		getContentPane().setBackground(Color.WHITE);
+		setBorder(new LineBorder(MVC.COLOR_BG, 5, true));
+		getContentPane().setBackground(Color.GRAY);
 		setForeground(new Color(0, 0, 0));
 		setOpaque(true);
-		setBackground(new Color(58, 63, 64));
+		setBackground(MVC.COLOR_BG);
 		setTitle("Boleta de infracci\u00F3n");
 		setMaximizable(true);
 		setIconifiable(true);
@@ -86,153 +92,159 @@ public class VistaInfraccion extends JInternalFrame {
 		
 
 		JLabel lblNombreCompleto = new JLabel("Estado:");
-		lblNombreCompleto.setFont(new Font("Arial", Font.BOLD, 14));
+		lblNombreCompleto.setFont(MVC.FUENTE);
 		getContentPane().add(lblNombreCompleto, "flowx,cell 0 1,alignx left");
 
 		JLabel lblEscolaridad = new JLabel("DESCRIPCI\u00D3N DEL VEH\u00CDCULO");
-		lblEscolaridad.setFont(new Font("Arial", Font.BOLD, 14));
+		lblEscolaridad.setFont(MVC.FUENTE);
 		getContentPane().add(lblEscolaridad, "cell 0 3");
 
 		lblRutaOSitio = new JLabel("Ruta o sitio:");
-		lblRutaOSitio.setFont(new Font("Arial", Font.BOLD, 14));
+		lblRutaOSitio.setFont(MVC.FUENTE);
 		getContentPane().add(lblRutaOSitio, "flowx,cell 0 7");
 
 		JLabel lblDatosDelPrograma = new JLabel("DATOS PERSONALES");
-		lblDatosDelPrograma.setFont(new Font("Arial", Font.BOLD, 14));
+		lblDatosDelPrograma.setFont(MVC.FUENTE);
 		getContentPane().add(lblDatosDelPrograma, "cell 0 8,alignx left");
 
 		JLabel lblDependenciaOficial = new JLabel("Modelo:");
-		lblDependenciaOficial.setFont(new Font("Arial", Font.BOLD, 14));
+		lblDependenciaOficial.setFont(MVC.FUENTE);
 		getContentPane().add(lblDependenciaOficial, "flowx,cell 0 6,alignx center");
 
 		lblActividadesADesarrollar = new JLabel("Nombre del conductor:");
-		lblActividadesADesarrollar.setFont(new Font("Arial", Font.BOLD, 14));
+		lblActividadesADesarrollar.setFont(MVC.FUENTE);
 		getContentPane().add(lblActividadesADesarrollar, "flowx,cell 0 9");
 
 		JLabel lblCarrera = new JLabel("Marca y submarca:");
-		lblCarrera.setFont(new Font("Arial", Font.BOLD, 14));
+		lblCarrera.setFont(MVC.FUENTE);
 		getContentPane().add(lblCarrera, "flowx,cell 0 5");
 
 		txtModelo = new JTextField();
 		txtModelo.setBorder(null);
-		txtModelo.setForeground(new Color(58, 63, 64));
-		txtModelo.setFont(new Font("Arial", Font.BOLD, 14));
-		txtModelo.setBackground(new Color(187,202,204));
+		txtModelo.setForeground(MVC.COLOR_BG);
+		txtModelo.setFont(MVC.FUENTE);
+		txtModelo.setBackground(MVC.COLOR_VALID);
 		txtModelo.setToolTipText("");
 		txtModelo.setColumns(10);
 		getContentPane().add(txtModelo, "cell 0 6,growx");
 
-		txtArticulosViolados = new JTextPane();
-		txtArticulosViolados.setForeground(new Color(58, 63, 64));
-		txtArticulosViolados.setFont(new Font("Arial", Font.BOLD, 14));
-		txtArticulosViolados.setBackground(new Color(187,202,204));
-		txtArticulosViolados.setToolTipText("");
-
 		lblDonde = new JLabel("Domicilio del conductor:");
-		lblDonde.setFont(new Font("Arial", Font.BOLD, 14));
+		lblDonde.setFont(MVC.FUENTE);
 		getContentPane().add(lblDonde, "flowx,cell 0 10");
 
 		lblNoLicensiaDel = new JLabel("N\u00B0 licensia del conductor:");
-		lblNoLicensiaDel.setFont(new Font("Arial", Font.BOLD, 14));
+		lblNoLicensiaDel.setFont(MVC.FUENTE);
 		getContentPane().add(lblNoLicensiaDel, "flowx,cell 0 11");
-		getContentPane().add(txtArticulosViolados, "cell 0 13,grow");
+		
+		scrollPane = new JScrollPane();
+		getContentPane().add(scrollPane, "cell 0 13,grow");
+		
+				txtArticulosViolados = new JTextPane();
+				scrollPane.setViewportView(txtArticulosViolados);
+				txtArticulosViolados.setForeground(MVC.COLOR_BG);
+				txtArticulosViolados.setFont(MVC.FUENTE);
+				txtArticulosViolados.setBackground(MVC.COLOR_VALID);
+				txtArticulosViolados.setToolTipText("");
 
 		lblElServicio = new JLabel("Marca y modelo del dispositivo de alcohol\u00EDmetro");
-		lblElServicio.setFont(new Font("Arial", Font.BOLD, 14));
+		lblElServicio.setFont(MVC.FUENTE);
 		getContentPane().add(lblElServicio, "flowx,cell 0 16");
-
+		
+		scrollPane_1 = new JScrollPane();
+		getContentPane().add(scrollPane_1, "cell 0 18,grow");
+		
 		txtMotivo = new JTextPane();
-		txtMotivo.setForeground(new Color(58, 63, 64));
+		scrollPane_1.setViewportView(txtMotivo);
+		txtMotivo.setForeground(MVC.COLOR_BG);
 		txtMotivo.setToolTipText("");
-		txtMotivo.setFont(new Font("Arial", Font.BOLD, 14));
-		txtMotivo.setBackground(new Color(187,202,204));
-		getContentPane().add(txtMotivo, "cell 0 18,grow");
+		txtMotivo.setFont(MVC.FUENTE);
+		txtMotivo.setBackground(MVC.COLOR_VALID);
 
 		lblResponsableDelPrograma = new JLabel("No. de polic\u00EDa de suguridad vial:");
-		lblResponsableDelPrograma.setFont(new Font("Arial", Font.BOLD, 14));
+		lblResponsableDelPrograma.setFont(MVC.FUENTE);
 		getContentPane().add(lblResponsableDelPrograma, "flowx,cell 0 19");
 
 		btnInsertar = new JButton("Insertar");
-		btnInsertar.setBorder(new LineBorder(SystemColor.textHighlight, 2, true));
-		btnInsertar.setFont(new Font("Arial", Font.BOLD, 14));
+		btnInsertar.setBorder(new LineBorder(MVC.COLOR_VALID, 2, true));
+		btnInsertar.setFont(MVC.FUENTE);
 		btnInsertar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnInsertar.setForeground(new Color(234, 254, 255));
-		btnInsertar.setBackground(new Color(58, 63, 64));
+		btnInsertar.setForeground(MVC.COLOR_LETRA);
+		btnInsertar.setBackground(MVC.COLOR_BG);
 		getContentPane().add(btnInsertar, "flowx,cell 0 21,growx,aligny baseline");
 
 		JLabel lblNoDeControl = new JLabel("N\u00B0 de placas:");
-		lblNoDeControl.setFont(new Font("Arial", Font.BOLD, 14));
+		lblNoDeControl.setFont(MVC.FUENTE);
 		getContentPane().add(lblNoDeControl, "flowx,cell 0 4,alignx left");
 
 		txtNplacas = new JTextField();
 		txtNplacas.setBorder(null);
-		txtNplacas.setForeground(new Color(58, 63, 64));
-		txtNplacas.setFont(new Font("Arial", Font.BOLD, 14));
-		txtNplacas.setBackground(new Color(187,202,204));
+		txtNplacas.setForeground(MVC.COLOR_BG);
+		txtNplacas.setFont(MVC.FUENTE);
+		txtNplacas.setBackground(MVC.COLOR_VALID);
 		txtNplacas.setToolTipText("");
 		txtNplacas.setColumns(10);
 		getContentPane().add(txtNplacas, "cell 0 4,growx");
 
 		JLabel lblCreditosAprobados = new JLabel("Placas del estado de:");
-		lblCreditosAprobados.setFont(new Font("Arial", Font.BOLD, 14));
+		lblCreditosAprobados.setFont(MVC.FUENTE);
 		getContentPane().add(lblCreditosAprobados, "cell 0 4");
 
 		txtPlacasEstado = new JTextField();
 		txtPlacasEstado.setBorder(null);
-		txtPlacasEstado.setForeground(new Color(58, 63, 64));
-		txtPlacasEstado.setFont(new Font("Arial", Font.BOLD, 14));
-		txtPlacasEstado.setBackground(new Color(187,202,204));
+		txtPlacasEstado.setForeground(MVC.COLOR_BG);
+		txtPlacasEstado.setFont(MVC.FUENTE);
+		txtPlacasEstado.setBackground(MVC.COLOR_VALID);
 		txtPlacasEstado.setToolTipText("");
 		txtPlacasEstado.setColumns(10);
 		getContentPane().add(txtPlacasEstado, "cell 0 4,growx");
 		
 		lblNoBoleta = new JLabel("N\u00B0 boleta");
-		lblNoBoleta.setFont(new Font("Arial", Font.BOLD, 14));
+		lblNoBoleta.setFont(MVC.FUENTE);
 		getContentPane().add(lblNoBoleta, "flowx,cell 0 0");
 		
 		txtNboleta = new JTextField();
 		txtNboleta.setBorder(null);
 		txtNboleta.setToolTipText("");
-		txtNboleta.setForeground(new Color(58, 63, 64));
-		txtNboleta.setFont(new Font("Arial", Font.BOLD, 14));
+		txtNboleta.setForeground(MVC.COLOR_BG);
+		txtNboleta.setFont(MVC.FUENTE);
 		txtNboleta.setColumns(10);
-		txtNboleta.setBackground(new Color(187,202,204));
+		txtNboleta.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtNboleta, "cell 0 0,growx");
 
 		JLabel lblFechaDeInicio = new JLabel("Fecha");
-		lblFechaDeInicio.setFont(new Font("Arial", Font.BOLD, 14));
+		lblFechaDeInicio.setFont(MVC.FUENTE);
 		getContentPane().add(lblFechaDeInicio, "cell 0 0");
 		
 		
 		dcFecha = new JDateChooser();
-		dcFecha.setFont(new Font("Arial", Font.BOLD, 12));
-		dcFecha.setBackground(new Color(187,202,204));
+		dcFecha.setFont(MVC.FUENTE);
+		dcFecha.setBackground(MVC.COLOR_VALID);
 		dcFecha.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		dcFecha.setToolTipText("Indicar la fecha.");
 		getContentPane().add(dcFecha, "cell 0 0,growx");
 
 		JLabel lblEdad = new JLabel("En la calle (referencias):");
-		lblEdad.setFont(new Font("Arial", Font.BOLD, 14));
+		lblEdad.setFont(MVC.FUENTE);
 		getContentPane().add(lblEdad, "flowx,cell 0 2");
 
 		txtReferencias = new JTextField();
 		txtReferencias.setBorder(null);
-		txtReferencias.setForeground(new Color(58, 63, 64));
-		txtReferencias.setFont(new Font("Arial", Font.BOLD, 14));
-		txtReferencias.setBackground(new Color(187,202,204));
+		txtReferencias.setForeground(MVC.COLOR_BG);
+		txtReferencias.setFont(MVC.FUENTE);
+		txtReferencias.setBackground(MVC.COLOR_VALID);
 		txtReferencias.setToolTipText("");
 		txtReferencias.setColumns(10);
 		getContentPane().add(txtReferencias, "cell 0 2,growx");
 
 		JLabel lblSexo = new JLabel("Infracci\u00F3n al:");
-		lblSexo.setFont(new Font("Arial", Font.BOLD, 14));
+		lblSexo.setFont(MVC.FUENTE);
 		getContentPane().add(lblSexo, "cell 0 2,alignx left");
 
 		cbInfraccion = new JComboBox();
 		cbInfraccion.setBorder(null);
-		cbInfraccion.setForeground(new Color(58, 63, 64));
-		cbInfraccion.setFont(new Font("Arial", Font.BOLD, 14));
-		cbInfraccion.setBackground(new Color(187,202,204));
+		cbInfraccion.setForeground(MVC.COLOR_BG);
+		cbInfraccion.setFont(MVC.FUENTE);
+		cbInfraccion.setBackground(MVC.COLOR_VALID);		
 		cbInfraccion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		cbInfraccion.setModel(new DefaultComboBoxModel(new String[] {"Conductor", "Propietario", "Concesionario", "Permisionario"}));
 		cbInfraccion.setToolTipText("");
@@ -240,199 +252,201 @@ public class VistaInfraccion extends JInternalFrame {
 
 		txtMarca = new JTextField();
 		txtMarca.setBorder(null);
-		txtMarca.setForeground(new Color(58, 63, 64));
+		txtMarca.setForeground(MVC.COLOR_BG);
 		txtMarca.setToolTipText("");
-		txtMarca.setFont(new Font("Arial", Font.BOLD, 14));
+		txtMarca.setFont(MVC.FUENTE);
 		txtMarca.setColumns(10);
-		txtMarca.setBackground(new Color(187,202,204));
+		txtMarca.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtMarca, "cell 0 5,growx");
 
 		JLabel lblTitularDeLa = new JLabel("N\u00B0 serie:");
-		lblTitularDeLa.setFont(new Font("Arial", Font.BOLD, 14));
+		lblTitularDeLa.setFont(MVC.FUENTE);
 		getContentPane().add(lblTitularDeLa, "cell 0 6");
 
 		txtNserie = new JTextField();
 		txtNserie.setBorder(null);
-		txtNserie.setForeground(new Color(58, 63, 64));
-		txtNserie.setFont(new Font("Arial", Font.BOLD, 14));
-		txtNserie.setBackground(new Color(187,202,204));
+		txtNserie.setForeground(MVC.COLOR_BG);
+		txtNserie.setFont(MVC.FUENTE);
+		txtNserie.setBackground(MVC.COLOR_VALID);
 		txtNserie.setToolTipText("");
 		txtNserie.setColumns(10);
 		getContentPane().add(txtNserie, "cell 0 6,growx");
 
 		lblMotivocircunstanciaDe = new JLabel("Motivo (circunstancia de los echos):");
-		lblMotivocircunstanciaDe.setFont(new Font("Arial", Font.BOLD, 14));
+		lblMotivocircunstanciaDe.setFont(MVC.FUENTE);
 		getContentPane().add(lblMotivocircunstanciaDe, "flowx,cell 0 17");
 
 		txtNpolicia = new JTextField();
-		txtNpolicia.setForeground(new Color(58, 63, 64));
-		txtNpolicia.setFont(new Font("Arial", Font.BOLD, 14));
-		txtNpolicia.setBackground(new Color(187,202,204));
+		txtNpolicia.setForeground(MVC.COLOR_BG);
+		txtNpolicia.setFont(MVC.FUENTE);
+		txtNpolicia.setBackground(MVC.COLOR_VALID);
 		txtNpolicia.setToolTipText("");
 		txtNpolicia.setColumns(10);
 		getContentPane().add(txtNpolicia, "cell 0 19,growx");
 		
 		lblHora = new JLabel("Hora");
-		lblHora.setFont(new Font("Arial", Font.BOLD, 14));
+		lblHora.setFont(MVC.FUENTE);
 		getContentPane().add(lblHora, "cell 0 0,alignx right");
 		
 		timeChooser = new TimeChooser();
 		timeChooser.setBorder(null);
 		timeChooser.setText("");
-		timeChooser.setBackground(new Color(187,202,204));
-		timeChooser.setForeground(new Color(58, 63, 64));
+		timeChooser.setHorizontalAlignment(JTextField.CENTER);
+		timeChooser.setBackground(MVC.COLOR_VALID);
+		timeChooser.setForeground(MVC.COLOR_BG);
 		getContentPane().add(timeChooser, "cell 0 0,alignx left");
 
 		lblNoEconomico = new JLabel("N\u00B0 econ\u00F3mico:");
-		lblNoEconomico.setFont(new Font("Arial", Font.BOLD, 14));
+		lblNoEconomico.setFont(MVC.FUENTE);
 		getContentPane().add(lblNoEconomico, "cell 0 6");
 
 		txtNeconomico = new JTextField();
 		txtNeconomico.setBorder(null);
-		txtNeconomico.setForeground(new Color(58, 63, 64));
+		txtNeconomico.setForeground(MVC.COLOR_BG);
 		txtNeconomico.setToolTipText("");
-		txtNeconomico.setFont(new Font("Arial", Font.BOLD, 14));
+		txtNeconomico.setFont(MVC.FUENTE);
 		txtNeconomico.setColumns(10);
-		txtNeconomico.setBackground(new Color(187,202,204));
+		txtNeconomico.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtNeconomico, "cell 0 6");
 
 		txtRutaSitio = new JTextField();
-		txtRutaSitio.setForeground(new Color(58, 63, 64));
+		txtRutaSitio.setForeground(MVC.COLOR_BG);
 		txtRutaSitio.setToolTipText("");
-		txtRutaSitio.setFont(new Font("Arial", Font.BOLD, 14));
+		txtRutaSitio.setFont(MVC.FUENTE);
 		txtRutaSitio.setColumns(10);
-		txtRutaSitio.setBackground(new Color(187,202,204));
+		txtRutaSitio.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtRutaSitio, "cell 0 7,grow");
 
 		lblColor = new JLabel("Color:");
-		lblColor.setFont(new Font("Arial", Font.BOLD, 14));
+		lblColor.setFont(MVC.FUENTE);
 		getContentPane().add(lblColor, "cell 0 7");
 
 		txtColor = new JTextField();
-		txtColor.setForeground(new Color(58, 63, 64));
+		txtColor.setForeground(MVC.COLOR_BG);
 		txtColor.setToolTipText("");
-		txtColor.setFont(new Font("Arial", Font.BOLD, 14));
+		txtColor.setFont(MVC.FUENTE);
 		txtColor.setColumns(10);
-		txtColor.setBackground(new Color(187,202,204));
+		txtColor.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtColor, "cell 0 7,grow");
 
 		txtNombreConductor = new JTextField();
-		txtNombreConductor.setForeground(new Color(58, 63, 64));
+		txtNombreConductor.setForeground(MVC.COLOR_BG);
 		txtNombreConductor.setToolTipText("");
-		txtNombreConductor.setFont(new Font("Arial", Font.BOLD, 14));
+		txtNombreConductor.setFont(MVC.FUENTE);
 		txtNombreConductor.setColumns(10);
-		txtNombreConductor.setBackground(new Color(187,202,204));
+		txtNombreConductor.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtNombreConductor, "cell 0 9,grow");
 
 		txtNlicenciaConductor = new JTextField();
-		txtNlicenciaConductor.setForeground(new Color(58, 63, 64));
+		txtNlicenciaConductor.setForeground(MVC.COLOR_BG);
 		txtNlicenciaConductor.setToolTipText("");
-		txtNlicenciaConductor.setFont(new Font("Arial", Font.BOLD, 14));
+		txtNlicenciaConductor.setFont(MVC.FUENTE);
 		txtNlicenciaConductor.setColumns(10);
-		txtNlicenciaConductor.setBackground(new Color(187,202,204));
+		txtNlicenciaConductor.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtNlicenciaConductor, "cell 0 11,growx");
 
 		lblArticulosViolados = new JLabel("Art\u00EDculos violados:");
-		lblArticulosViolados.setFont(new Font("Arial", Font.BOLD, 14));
+		lblArticulosViolados.setFont(MVC.FUENTE);
 		getContentPane().add(lblArticulosViolados, "cell 0 12");
 
 		lblRetencionDe = new JLabel("Retenci\u00F3n de:");
-		lblRetencionDe.setFont(new Font("Arial", Font.BOLD, 14));
+		lblRetencionDe.setFont(MVC.FUENTE);
 		getContentPane().add(lblRetencionDe, "flowx,cell 0 15");
 
 		txtRetencion = new JTextField();
-		txtRetencion.setForeground(new Color(58, 63, 64));
+		txtRetencion.setForeground(MVC.COLOR_BG);
 		txtRetencion.setToolTipText("");
-		txtRetencion.setFont(new Font("Arial", Font.BOLD, 14));
+		txtRetencion.setFont(MVC.FUENTE);
 		txtRetencion.setColumns(10);
-		txtRetencion.setBackground(new Color(187,202,204));
+		txtRetencion.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtRetencion, "cell 0 15,growx");
 
 		txtMarcaModelo = new JTextField();
-		txtMarcaModelo.setForeground(new Color(58, 63, 64));
+		txtMarcaModelo.setForeground(MVC.COLOR_BG);
 		txtMarcaModelo.setToolTipText("");
-		txtMarcaModelo.setFont(new Font("Arial", Font.BOLD, 14));
+		txtMarcaModelo.setFont(MVC.FUENTE);
 		txtMarcaModelo.setColumns(10);
-		txtMarcaModelo.setBackground(new Color(187,202,204));
+		txtMarcaModelo.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtMarcaModelo, "cell 0 16,growx");
 
 		txtDomicilioConductor = new JTextField();
-		txtDomicilioConductor.setForeground(new Color(58, 63, 64));
+		txtDomicilioConductor.setForeground(MVC.COLOR_BG);
 		txtDomicilioConductor.setToolTipText("");
-		txtDomicilioConductor.setFont(new Font("Arial", Font.BOLD, 14));
+		txtDomicilioConductor.setFont(MVC.FUENTE);
 		txtDomicilioConductor.setColumns(10);
-		txtDomicilioConductor.setBackground(new Color(187,202,204));
+		txtDomicilioConductor.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtDomicilioConductor, "cell 0 10,grow");
 
 		lblNombreDelPropietario = new JLabel("Nombre del propietario:");
-		lblNombreDelPropietario.setFont(new Font("Arial", Font.BOLD, 14));
+		lblNombreDelPropietario.setFont(MVC.FUENTE);
 		getContentPane().add(lblNombreDelPropietario, "cell 0 9");
 
 		txtNombrePropietario = new JTextField();
-		txtNombrePropietario.setForeground(new Color(58, 63, 64));
+		txtNombrePropietario.setForeground(MVC.COLOR_BG);
 		txtNombrePropietario.setToolTipText("");
 		txtNombrePropietario.setFont(new Font("Arial", Font.BOLD, 12));
 		txtNombrePropietario.setColumns(10);
-		txtNombrePropietario.setBackground(new Color(187,202,204));
+		txtNombrePropietario.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtNombrePropietario, "cell 0 9,growx");
 
 		lblDomicilioDelPropietario = new JLabel("Domicilio del propietario:");
-		lblDomicilioDelPropietario.setFont(new Font("Arial", Font.BOLD, 14));
+		lblDomicilioDelPropietario.setFont(MVC.FUENTE);
 		getContentPane().add(lblDomicilioDelPropietario, "cell 0 10");
 
 		txtDomicilioPropietario = new JTextField();
-		txtDomicilioPropietario.setForeground(new Color(58, 63, 64));
+		txtDomicilioPropietario.setForeground(MVC.COLOR_BG);
 		txtDomicilioPropietario.setToolTipText("");
-		txtDomicilioPropietario.setFont(new Font("Arial", Font.BOLD, 14));
+		txtDomicilioPropietario.setFont(MVC.FUENTE);
 		txtDomicilioPropietario.setColumns(10);
-		txtDomicilioPropietario.setBackground(new Color(187,202,204));
+		txtDomicilioPropietario.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtDomicilioPropietario, "cell 0 10,growx");
 
 		btnLimpiar = new JButton("Limpiar");
-		btnLimpiar.setBorder(new LineBorder(SystemColor.textHighlight, 2, true));
+		btnLimpiar.setBorder(new LineBorder(MVC.COLOR_VALID, 2, true));
 		btnLimpiar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnLimpiar.setForeground(new Color(234, 254, 255));
-		btnLimpiar.setFont(new Font("Arial", Font.BOLD, 14));
-		btnLimpiar.setBackground(new Color(58, 63, 64));
+		btnLimpiar.setForeground(MVC.COLOR_LETRA);
+		btnLimpiar.setFont(MVC.FUENTE);
+		btnLimpiar.setBackground(MVC.COLOR_BG);
 		getContentPane().add(btnLimpiar, "cell 0 21,growx");
 
 		btnAnular = new JButton("Anular");
-		btnAnular.setBorder(new LineBorder(SystemColor.textHighlight, 2, true));
+		btnAnular.setBorder(new LineBorder(MVC.COLOR_VALID, 2, true));
 		btnAnular.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnAnular.setForeground(new Color(234, 254, 255));
-		btnAnular.setFont(new Font("Arial", Font.BOLD, 14));
-		btnAnular.setBackground(new Color(58, 63, 64));
+		btnAnular.setForeground(MVC.COLOR_LETRA);
+		btnAnular.setFont(MVC.FUENTE);
+		btnAnular.setBackground(MVC.COLOR_BG);
 		getContentPane().add(btnAnular, "cell 0 21,growx");
 
 		btnImprimir = new JButton("Imprimir");
-		btnImprimir.setBorder(new LineBorder(SystemColor.textHighlight, 2, true));
+		btnImprimir.setBorder(new LineBorder(MVC.COLOR_VALID, 2, true));
 		btnImprimir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnImprimir.setForeground(new Color(234, 254, 255));
-		btnImprimir.setFont(new Font("Arial", Font.BOLD, 14));
-		btnImprimir.setBackground(new Color(58, 63, 64));
+		btnImprimir.setForeground(MVC.COLOR_LETRA);
+		btnImprimir.setFont(MVC.FUENTE);
+		btnImprimir.setBackground(MVC.COLOR_BG);
 		getContentPane().add(btnImprimir, "cell 0 21,growx");
 		
 		txtEstado = new JTextField();
 		txtEstado.setBorder(null);
 		txtEstado.setText("Zacatecas");
 		txtEstado.setToolTipText("");
-		txtEstado.setForeground(new Color(58, 63, 64));
-		txtEstado.setFont(new Font("Arial", Font.BOLD, 14));
+		txtEstado.setForeground(MVC.COLOR_BG);
+		txtEstado.setFont(MVC.FUENTE);
 		txtEstado.setColumns(10);
-		txtEstado.setBackground(new Color(187,202,204));
+		txtEstado.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtEstado, "cell 0 1,growx");
 		
 		lblMunicipio = new JLabel("Municipio:");
-		lblMunicipio.setFont(new Font("Arial", Font.BOLD, 14));
+		lblMunicipio.setFont(MVC.FUENTE);
 		getContentPane().add(lblMunicipio, "cell 0 1");
 		
 		cbMunicipio = new JComboBox();
 		cbMunicipio.setBorder(null);
-		cbMunicipio.setModel(new DefaultComboBoxModel(new String[] {"Zacatecas", "Apozol", "Apulco", "Atolinga ", "Benito Ju\u00E1rez", "Calera", "Ca\u00F1itas de Felipe Pescador", "Chalchihuites", "Concepci\u00F3n del Oro", "Cuauht\u00E9moc ", "El Plateado de J. Amaro", "El Salvador", "Fresnillo", "Genaro Codina", "General Enrique Estrada", "Gral. Francisco R. Murgu\u00EDa", "General P\u00E1nfilo Natera", "Guadalupe ", "Huanusco", "Jalpa", "Jerez", "Jim\u00E9nez del Teul", "Juan Aldama ", "Juchipila", "Loreto", "Luis Moya", "Mazapil", "Melchor Ocampo", "Mezquital del Oro", "Miguel Auza ", "Momax", "Monte Escobedo", "Morelos", "Moyahua de Estrada ", "Nochistl\u00E1n de Mej\u00EDa", "Noria de \u00C1ngeles", "Ojocaliente", "P\u00E1nuco", "Pinos ", "R\u00EDo Grande ", "Sa\u00EDn Alto ", "Santa Mar\u00EDa de la Paz", "Sombrerete", "Susticac\u00E1n", "Tabasco", "Tepechitl\u00E1n", "Tepetongo", "Te\u00FAl de Gonz\u00E1lez Ortega ", "Tlaltenango de S\u00E1nchez Rom\u00E1n", "Trancoso ", "Trinidad Garc\u00EDa de la Cadena", "Valpara\u00EDso", "Vetagrande", "Villa de Cos", "Villa Garc\u00EDa", "Villa Gonz\u00E1lez Ortega", "Villa Hidalgo", "Villanueva"}));
+		cbMunicipio.setModel(new DefaultComboBoxModel(new String[] {"Apozol", "Apulco", "Atolinga ", "Benito Ju\u00E1rez", "Calera", "Ca\u00F1itas de Felipe Pescador", "Chalchihuites", "Concepci\u00F3n del Oro", "Cuauht\u00E9moc ", "El Plateado de J. Amaro", "El Salvador", "Fresnillo", "Genaro Codina", "General Enrique Estrada", "Gral. Francisco R. Murgu\u00EDa", "General P\u00E1nfilo Natera", "Guadalupe ", "Huanusco", "Jalpa", "Jerez", "Jim\u00E9nez del Teul", "Juan Aldama ", "Juchipila", "Loreto", "Luis Moya", "Mazapil", "Melchor Ocampo", "Mezquital del Oro", "Miguel Auza ", "Momax", "Monte Escobedo", "Morelos", "Moyahua de Estrada ", "Nochistl\u00E1n de Mej\u00EDa", "Noria de \u00C1ngeles", "Ojocaliente", "P\u00E1nuco", "Pinos ", "R\u00EDo Grande ", "Sa\u00EDn Alto ", "Santa Mar\u00EDa de la Paz", "Sombrerete", "Susticac\u00E1n", "Tabasco", "Tepechitl\u00E1n", "Tepetongo", "Te\u00FAl de Gonz\u00E1lez Ortega ", "Tlaltenango de S\u00E1nchez Rom\u00E1n", "Trancoso ", "Trinidad Garc\u00EDa de la Cadena", "Valpara\u00EDso", "Vetagrande", "Villa de Cos", "Villa Garc\u00EDa", "Villa Gonz\u00E1lez Ortega", "Villa Hidalgo", "Villanueva","Zacatecas"}));
+		cbMunicipio.setSelectedIndex(cbMunicipio.getItemCount()-1);
 		cbMunicipio.setToolTipText("");
-		cbMunicipio.setForeground(new Color(58, 63, 64));
-		cbMunicipio.setFont(new Font("Arial", Font.BOLD, 14));
-		cbMunicipio.setBackground(new Color(187,202,204));
+		cbMunicipio.setForeground(MVC.COLOR_BG);
+		cbMunicipio.setFont(MVC.FUENTE);
+		cbMunicipio.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(cbMunicipio, "cell 0 1,growx");
 
 	}

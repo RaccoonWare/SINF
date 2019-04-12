@@ -1,6 +1,8 @@
 package modelo;
 import org.apache.poi.ss.usermodel.*;
 import exepciones.*;
+import vista.VistaInfraccion;
+
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -443,5 +445,36 @@ public class ModeloInfraccion{
 			System.err.println(e.getMessage());
 		}
 		return respuesta;
+	}
+	
+	public void limpiarDatos(VistaInfraccion vistaInfraccion) {
+		// TODO Auto-generated method stub
+		vistaInfraccion.txtNboleta.setText("");
+		vistaInfraccion.cbInfraccion.setSelectedIndex(vistaInfraccion.cbMunicipio.getComponentCount()-1);
+		vistaInfraccion.txtEstado.setText("");
+		vistaInfraccion.txtNplacas.setText("");
+		vistaInfraccion.txtNserie.setText("");
+		vistaInfraccion.txtModelo.setText("");
+		vistaInfraccion.txtReferencias.setText("");
+		vistaInfraccion.txtPlacasEstado.setText("");
+		vistaInfraccion.txtArticulosViolados.setText("");
+		vistaInfraccion.txtNpolicia.setText("");
+		vistaInfraccion.txtMarca.setText("");
+		vistaInfraccion.txtNeconomico.setText("");
+		vistaInfraccion.txtRutaSitio.setText("");
+		vistaInfraccion.txtColor.setText("");
+		vistaInfraccion.txtNombreConductor.setText("");
+		vistaInfraccion.txtDomicilioConductor.setText("");
+		vistaInfraccion.txtNlicenciaConductor.setText("");
+		vistaInfraccion.txtNombrePropietario.setText("");
+		vistaInfraccion.txtDomicilioPropietario.setText("");
+		vistaInfraccion.txtMarcaModelo.setText("");
+		vistaInfraccion.txtRetencion.setText("");
+		vistaInfraccion.txtMotivo.setText("");
+		vistaInfraccion.cbInfraccion.setSelectedItem(0);
+		vistaInfraccion.cbMunicipio.setSelectedItem(0);
+		vistaInfraccion.dcFecha.setDate(null);
+		vistaInfraccion.timeChooser.setText("");
+		//ModeloBoleta.setNboleta(VistaInfraccion.txtNboleta.getText());
 	}
 }

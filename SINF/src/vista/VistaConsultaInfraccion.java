@@ -24,6 +24,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 public class VistaConsultaInfraccion extends JInternalFrame {
 	/**
 	 * 
@@ -147,6 +149,10 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		getContentPane().add(btnEliminar, "flowx,cell 0 2,growx");
 		
 		btnAnular = new JButton("Anular");
+		btnAnular.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		btnAnular.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnAnular.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnAnular.setFont(new Font("Arial", Font.BOLD, 14));
