@@ -2,15 +2,20 @@ package controlador;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
+import javax.swing.table.AbstractTableModel;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import modelo.ModeloConsultaArticulos;
@@ -27,7 +32,7 @@ import javax.swing.text.JTextComponent;
 
 import exepciones.EmptyFieldExcepton;
 
-public class ControladorConsultaArticulos implements ActionListener,FocusListener,KeyListener,MouseListener,TableModelListener{
+public class ControladorConsultaArticulos implements ActionListener,FocusListener,KeyListener,MouseListener,TableModelListener, ListSelectionListener{
 	ModeloConsultaArticulos modeloConsultas = new ModeloConsultaArticulos();
 	VistaConsultaArticulo vistaConsultas= new VistaConsultaArticulo();
 	JFileChooser selecArchivo = new JFileChooser();
@@ -43,42 +48,82 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	public void iniciar() {
 		VistaPrincipal.dpEscritorio.add(vistaConsultas);
 		vistaConsultas.show();
+		vistaConsultas.getContentPane().setFocusable(true);
+		vistaConsultas.setFocusable(true);
+		vistaConsultas.panel.setFocusable(true);
+		vistaConsultas.panel_1.setFocusable(true);
 		vistaConsultas.tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		archivo=new File(MVC.getConfig().getProperty("articulos"));
 		modeloConsultas.importar(archivo, vistaConsultas.tabla);
 		
 	}
 
-	protected void AddListeners() {
-		/*buscar manera de que los demas componentes(no solo los swing) obtengan un focus listener para poder hacer click en ellos y perdier foco
-		 * for(Component o: this.vistaConsultas.getComponents() ) {
-			//if(o.equals(vistaConsultas.tabla) {
-				((Component) o).addFocusListener(this);
-				//((Component) o).addMouseListener(this);
-			//}
+	private void subComponentAddListener(Component[] contenedo,ArrayList<Component> visitado, int n) {
+		for(Component o: this.vistaConsultas.getContentPane().getComponents()) {
+			System.out.println("Componente #"+ n +" - "+" Nombre: "+o.hashCode()+" \tclase: "+ o.getClass());
+			if(o instanceof  JPanel) {
+				((JPanel)o).setFocusable(true);
+				((JPanel)o).addFocusListener(this);
+				((JPanel)o).addMouseListener(this);
+				((JPanel)o).addKeyListener(this);
+				if(!visitado.contains(o)) {
+					System.out.println("\nSubcomponente "+ visitado.size()+"_"+visitado.indexOf(o));				
+					visitado.add(o);
+					subComponentAddListener(((JPanel) o).getComponents(),visitado,++n);					
+				}
+			}else if(o instanceof  JTextField) {
+				((JTextComponent)o).addFocusListener(this);
+				((JTextComponent)o).addMouseListener(this);
+				((JTextComponent)o).addKeyListener(this);
 			}
-		*/
+			if (!visitado.contains(o)) {
+				if(o instanceof Container) {
+					System.out.println("\nSubcomponente "+ visitado.size()+"_"+visitado.indexOf(o));				
+					visitado.add(o);
+					subComponentAddListener(((Container) o).getComponents(),visitado,++n);					
+				}
+			}
+			
+		}
+	}
+	protected void AddListeners() {
+		//buscar manera de que los demas componentes(no solo los swing) obtengan un focus listener para poder hacer click en ellos y perdier foco
+		//subComponentAddListener(vistaConsultas.getContentPane().getComponents(),new ArrayList<Component>(),0 );
+		
+		this.vistaConsultas.addFocusListener(this);
+		
+		this.vistaConsultas.getContentPane().addMouseListener(this);
+		this.vistaConsultas.getContentPane().addFocusListener(this);
+		this.vistaConsultas.getContentPane().addKeyListener(this);		
+		
+		this.vistaConsultas.panel.addMouseListener(this);
+		this.vistaConsultas.panel.addFocusListener(this);
+		this.vistaConsultas.panel.addKeyListener(this);
+		
+		this.vistaConsultas.panel_1.addMouseListener(this);
+		this.vistaConsultas.panel_1.addFocusListener(this);
+		this.vistaConsultas.panel_1.addKeyListener(this);
 		
 		this.vistaConsultas.btnAccion.addActionListener(this);
-		//this.vistaConsultas.addFocusListener(this);
-		//this.vistaConsultas.addMouseListener(this);
 		
 		this.vistaConsultas.txtArt.addKeyListener(this);
-		this.vistaConsultas.txtDesc.addKeyListener(this);
-		this.vistaConsultas.txtSanc.addKeyListener(this);
-		this.vistaConsultas.tabla.addKeyListener(this);
-		
 		this.vistaConsultas.txtArt.addMouseListener(this);
-		this.vistaConsultas.txtDesc.addMouseListener(this);
-		this.vistaConsultas.txtSanc.addMouseListener(this);
-		
 		this.vistaConsultas.txtArt.addFocusListener(this);
+		
+		this.vistaConsultas.txtDesc.addKeyListener(this);
+		this.vistaConsultas.txtDesc.addMouseListener(this);
 		this.vistaConsultas.txtDesc.addFocusListener(this);
+		
+		this.vistaConsultas.txtSanc.addKeyListener(this);
+		this.vistaConsultas.txtSanc.addMouseListener(this);
 		this.vistaConsultas.txtSanc.addFocusListener(this);
+		
+		this.vistaConsultas.tabla.addKeyListener(this);
 		this.vistaConsultas.tabla.addFocusListener((FocusListener) this);
+		this.vistaConsultas.tabla.getSelectionModel().addListSelectionListener(this);
 		
 		
-		this.vistaConsultas.tabla.getModel().addTableModelListener((TableModelListener) this);
+		//this.vistaConsultas.tabla.getModel().addTableModelListener((TableModelListener) this);
 		//SelectionListener tableListener = new S
 		//ListSelectionModel sm=this.vistaConsultas.tabla.getSelectionModel();
 		//sm.addListSelectionListener((ListSelectionModel)this);
@@ -210,6 +255,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		}else if (f.getSource().equals(vistaConsultas.txtArt)||f.getSource().equals(vistaConsultas.txtDesc)||f.getSource().equals(vistaConsultas.txtSanc)){			
 			((JTextComponent)f.getSource()).setBackground(Color.WHITE);
 		}
+		
 		/*	try{
 				((JComponent)f.getSource()).setBackground(Color.WHITE);
 				modeloConsultas.validaCampos(vistaConsultas);
@@ -227,6 +273,8 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		// TODO Auto-generated method stub
 		if(f.getSource().equals(vistaConsultas.txtArt)||f.getSource().equals(vistaConsultas.txtDesc)||f.getSource().equals(vistaConsultas.txtSanc)) {
 				((JTextComponent)f.getSource()).setBackground(MVC.COLOR_VALID);
+		}else if (f.getSource().equals(vistaConsultas.txtArt)||f.getSource().equals(vistaConsultas.txtDesc)||f.getSource().equals(vistaConsultas.txtSanc)){			
+			((JTextComponent)f.getSource()).setBackground(Color.WHITE);
 		}
 		/*if(e.getSource().equals(vistaConsultas.tabla)) {
 			//limpiaCampos();
@@ -236,11 +284,8 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	@Override
 	public void keyPressed(KeyEvent k) {
 		// TODO Auto-generated method stub
-		if(k.getSource().equals(vistaConsultas.tabla)||k.getSource().equals(vistaConsultas.txtArt)||k.getSource().equals(vistaConsultas.txtDesc)||k.getSource().equals(vistaConsultas.txtSanc)) {
-			if(k.getKeyCode() == KeyEvent.VK_ESCAPE) {
-				modeloConsultas.limpiaCampos(vistaConsultas);
-			}			
-		}
+		if(k.getKeyCode() == KeyEvent.VK_ESCAPE)
+			modeloConsultas.limpiaCampos(vistaConsultas);
 		if(k.getSource().equals(vistaConsultas.txtArt)||k.getSource().equals(vistaConsultas.txtDesc)||k.getSource().equals(vistaConsultas.txtSanc)) {
 			Object camposTexto[]= {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
 			if(k.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -394,8 +439,13 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		}
 	}
 	@Override
-	public void mousePressed(MouseEvent arg0) {
+	public void mousePressed(MouseEvent m) {
 		// TODO Auto-generated method stub
+		if (m.getSource() instanceof JPanel){			
+			((JPanel)m.getSource()).requestFocus();
+		}else if (m.getSource() == vistaConsultas.getContentPane()){			
+			vistaConsultas.getContentPane().requestFocus();
+		}
 		
 	}
 	@Override

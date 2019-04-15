@@ -11,6 +11,7 @@ public class Test {
 		modeloInfraccion.setColor("");
 		assertNotNull(modeloInfraccion.getColor());
 	}
+	
 		
 }
 

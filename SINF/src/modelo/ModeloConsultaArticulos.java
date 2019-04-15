@@ -24,7 +24,7 @@ import vista.VistaInfraccion;
 public class ModeloConsultaArticulos {
 	Workbook wb;    
     private static DefaultTableModel modeloT;
-    
+    private File archivo=new File(MVC.getConfig().getProperty("articulos"));
     
 
 	////////////////Manejo de Archivos
@@ -150,8 +150,7 @@ public class ModeloConsultaArticulos {
 	}
 	
 	public void campoQuitable(VistaConsultaArticulo vistaConsultas) {
-		vistaConsultas.btnAccion.setText("Quitar");
-		//vistaConsultas.tabla.clearSelection();
+		vistaConsultas.btnAccion.setText("Quitar");		
 	}
 	
 	/**
@@ -160,10 +159,12 @@ public class ModeloConsultaArticulos {
 	 */
 
 	public void agregaArticulo(VistaConsultaArticulo vistaConsultas) {
-		modeloT.addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});
-		//exportar(archivo, vistaConsultas.tabla);
+		modeloT.addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});		
 		modeloT.fireTableDataChanged();
-//		vistaConsultas.tabla.up
+		vistaConsultas.txtArt.setText("");
+		vistaConsultas.txtDesc.setText("");
+		vistaConsultas.txtSanc.setText("");
+		exportar(archivo,vistaConsultas.tabla);
 	}
 	
 	/**
@@ -225,6 +226,8 @@ public class ModeloConsultaArticulos {
 		if(vistaConsultas.tabla.getModel().equals(modeloT))
 			modeloT.removeRow(vistaConsultas.tabla.getSelectedRow());			
 		modeloT.fireTableDataChanged();
+		limpiaCampos(vistaConsultas);
+		exportar(archivo,vistaConsultas.tabla);
 		vistaConsultas.txtBuscar.requestFocus();
 	}
 
@@ -236,7 +239,8 @@ public class ModeloConsultaArticulos {
 				modeloT.setValueAt(vistaConsultas.txtArt.getText(),vistaConsultas.tabla.getSelectedRow(),0);
 				modeloT.setValueAt(vistaConsultas.txtDesc.getText(),vistaConsultas.tabla.getSelectedRow(),1);
 				modeloT.setValueAt(vistaConsultas.txtSanc.getText(),vistaConsultas.tabla.getSelectedRow(),2);
-				modeloT.fireTableDataChanged();
+				modeloT.fireTableDataChanged();				
+				exportar(archivo,vistaConsultas.tabla);
 			}
 		//}
 	}

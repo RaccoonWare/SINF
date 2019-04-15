@@ -47,7 +47,7 @@ public class VistaConsultaArticulo extends JInternalFrame {
 	public JTextField txtDesc;
 	public JTextField txtSanc;
 	public JTable tabla;
-	public JPanel panel_1;
+	public JPanel panel, panel_1;
 	public VistaConsultaArticulo() {
 		getContentPane().setBackground(Color.GRAY);
 		setTitle("Articulos");
@@ -76,7 +76,7 @@ public class VistaConsultaArticulo extends JInternalFrame {
 		panel_1.setLayout(new MigLayout("", "[]", "[]"));
 		panel_1.setBackground(Color.DARK_GRAY);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Agregar/Modificar Articulo", TitledBorder.LEADING, TitledBorder.TOP, null, MVC.COLOR_LETRA));
 		((javax.swing.border.TitledBorder)panel.getBorder()).setTitleFont(MVC.FUENTE);
 		getContentPane().add(panel, "cell 0 3,grow");
