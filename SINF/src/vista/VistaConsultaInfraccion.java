@@ -17,6 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
+
+import controlador.MVC;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
@@ -39,7 +42,7 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 	public JButton btnEliminar, btnAnular;
 	public JButton btnConsultar;
 	public VistaConsultaInfraccion() {
-		setBorder(new LineBorder(new Color(58, 63, 64), 5, true));
+		setBorder(new LineBorder(MVC.COLOR_BG, 5, true));
 		getContentPane().setBackground(Color.WHITE);
 		setTitle(titulo);
 		setMaximizable(true);
@@ -53,74 +56,74 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		btnModficar.setBackground(Color.WHITE);
 		btnModficar.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnModficar.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnModficar.setFont(new Font("Arial", Font.BOLD, 14));
+		btnModficar.setFont(MVC.FUENTE);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(58, 63, 64));
+		panel.setBackground(MVC.COLOR_BG);
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Consultas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(245, 255, 250)));
 		getContentPane().add(panel, "cell 0 0,growx,aligny top");
 		panel.setLayout(new MigLayout("", "[][grow,fill][grow]", "[grow][grow][]"));
 		
 		JLabel lblFecha = new JLabel("Fecha");
-		lblFecha.setFont(new Font("Arial", Font.BOLD, 14));
-		lblFecha.setForeground(new Color(234, 254, 255));
+		lblFecha.setFont(MVC.FUENTE);
+		lblFecha.setForeground(MVC.COLOR_HIGHLIGHT);
 		lblFecha.setBackground(Color.RED);
 		panel.add(lblFecha, "cell 0 0");
 		
 		JDateChooser dateChooser = new JDateChooser();
 		dateChooser.setBorder(null);
 		dateChooser.setToolTipText("Indicar la fecha.");
-		dateChooser.setFont(new Font("Arial", Font.BOLD, 14));
-		dateChooser.setBackground(new Color(187,202,204));
+		dateChooser.setFont(MVC.FUENTE);
+		dateChooser.setBackground(MVC.COLOR_VALID);
 		panel.add(dateChooser, "cell 1 0,alignx trailing");
 		
 		JLabel lblFolio = new JLabel("Folio");
-		lblFolio.setFont(new Font("Arial", Font.BOLD, 14));
-		lblFolio.setForeground(new Color(234, 254, 255));
+		lblFolio.setFont(MVC.FUENTE);
+		lblFolio.setForeground(MVC.COLOR_HIGHLIGHT);
 		panel.add(lblFolio, "flowx,cell 2 0");
 		
 		txtFolio = new JTextField();
 		txtFolio.setBorder(null);
-		txtFolio.setFont(new Font("Arial", Font.BOLD, 14));
-		txtFolio.setBackground(new Color(187,202,204));
+		txtFolio.setFont(MVC.FUENTE);
+		txtFolio.setBackground(MVC.COLOR_VALID);
 		txtFolio.setColumns(10);
 		panel.add(txtFolio, "cell 2 0,growx");
 		
 		JButton btnBusqueda = new JButton("");
 		btnBusqueda.setIcon(new ImageIcon(VistaConsultaInfraccion.class.getResource("/iconos/icons8-b\u00FAsqueda-14(1).png")));
-		btnBusqueda.setBackground(new Color(234, 254, 255));
+		btnBusqueda.setBackground(MVC.COLOR_HIGHLIGHT);
 		panel.add(btnBusqueda, "cell 0 1,alignx trailing");
 		
 		JDateChooser dateChooser_1 = new JDateChooser();
 		dateChooser_1.setBorder(null);
 		dateChooser_1.setToolTipText("Indicar la fecha.");
-		dateChooser_1.setFont(new Font("Arial", Font.BOLD, 14));
-		dateChooser_1.setBackground(new Color(187,202,204));
+		dateChooser_1.setFont(MVC.FUENTE);
+		dateChooser_1.setBackground(MVC.COLOR_VALID);
 		panel.add(dateChooser_1, "cell 1 1,alignx trailing");
 		
 		JLabel lblPlaca = new JLabel("Placa");
-		lblPlaca.setFont(new Font("Arial", Font.BOLD, 14));
-		lblPlaca.setForeground(new Color(234, 254, 255));
+		lblPlaca.setFont(MVC.FUENTE);
+		lblPlaca.setForeground(MVC.COLOR_HIGHLIGHT);
 		panel.add(lblPlaca, "flowx,cell 2 1,alignx left");
 		
 		txtPlaca = new JTextField();
 		txtPlaca.setBorder(null);
-		txtPlaca.setFont(new Font("Arial", Font.BOLD, 14));
-		txtPlaca.setBackground(new Color(187,202,204));
+		txtPlaca.setFont(MVC.FUENTE);
+		txtPlaca.setBackground(MVC.COLOR_VALID);
 		txtPlaca.setColumns(10);
 		
 		panel.add(txtPlaca, "cell 2 1,growx");
 		
 		JLabel lblRegistros = new JLabel("Registros");
-		lblRegistros.setFont(new Font("Arial", Font.BOLD, 14));
-		lblRegistros.setForeground(new Color(234, 254, 255));
+		lblRegistros.setFont(MVC.FUENTE);
+		lblRegistros.setForeground(MVC.COLOR_HIGHLIGHT);
 		panel.add(lblRegistros, "cell 2 1");
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBorder(null);
-		comboBox.setFont(new Font("Arial", Font.BOLD, 14));
-		comboBox.setForeground(new Color(58, 63, 64));
-		comboBox.setBackground(new Color(187,202,204));
+		comboBox.setFont(MVC.FUENTE);
+		comboBox.setForeground(MVC.COLOR_BG);
+		comboBox.setBackground(MVC.COLOR_VALID);
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Ambos", "Activos", "Anulados"}));
 		panel.add(comboBox, "cell 2 1");
 		JScrollPane scrollPane = new JScrollPane();
@@ -137,15 +140,15 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		));
 		tabla.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tabla.setBackground(Color.WHITE);
-		tabla.setFont(new Font("Arial", Font.BOLD, 14));
+		tabla.setFont(MVC.FUENTE);
 		scrollPane.setViewportView(tabla);
 		
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnEliminar.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnEliminar.setFont(new Font("Arial", Font.BOLD, 14));
-		btnEliminar.setBackground(new Color(58, 63, 64));
-		btnEliminar.setForeground(new Color(234, 254, 255));
+		btnEliminar.setFont(MVC.FUENTE);
+		btnEliminar.setBackground(MVC.COLOR_BG);
+		btnEliminar.setForeground(MVC.COLOR_HIGHLIGHT);
 		getContentPane().add(btnEliminar, "flowx,cell 0 2,growx");
 		
 		btnAnular = new JButton("Anular");
@@ -155,17 +158,17 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		});
 		btnAnular.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnAnular.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnAnular.setFont(new Font("Arial", Font.BOLD, 14));
-		btnAnular.setBackground(new Color(58, 63, 64));
-		btnAnular.setForeground(new Color(234, 254, 255));
+		btnAnular.setFont(MVC.FUENTE);
+		btnAnular.setBackground(MVC.COLOR_BG);
+		btnAnular.setForeground(MVC.COLOR_HIGHLIGHT);
 		getContentPane().add(btnAnular, "cell 0 2,growx");
 		
 		btnConsultar = new JButton("Consultar");
 		btnConsultar.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnConsultar.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnConsultar.setFont(new Font("Arial", Font.BOLD, 14));
-		btnConsultar.setBackground(new Color(58, 63, 64));
-		btnConsultar.setForeground(new Color(234, 254, 255));
+		btnConsultar.setFont(MVC.FUENTE);
+		btnConsultar.setBackground(MVC.COLOR_BG);
+		btnConsultar.setForeground(MVC.COLOR_HIGHLIGHT);
 		getContentPane().add(btnConsultar, "cell 0 2,growx");
 	}
 	

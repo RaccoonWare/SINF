@@ -7,14 +7,16 @@ import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.text.JTextComponent;
 
+import modelo.ModeloLogin;
 import modelo.ModeloPrincipal;
+import vista.VistaLogin;
 import vista.VistaPrincipal;
 
 public class MVC {
 	static Properties config = new Properties();
 	static FileInputStream configInput = null;
 	public static final Color COLOR_BG; 
-    public static final Color COLOR_LETRA;
+    public static final Color COLOR_HIGHLIGHT;
 	public static final Color COLOR_VALID;
     public static final Color COLOR_INVALID;
     public static final Font FUENTE;
@@ -24,7 +26,7 @@ public class MVC {
     		COLOR_BG		= iniciarColor(MVC.getConfig().getProperty("color_fondo"));            
             COLOR_VALID	=iniciarColor(MVC.getConfig().getProperty("color_campoNormal"));
             COLOR_INVALID= iniciarColor(MVC.getConfig().getProperty("color_campoError"));
-            COLOR_LETRA	= iniciarColor(MVC.getConfig().getProperty("color_letraClara"));
+            COLOR_HIGHLIGHT	= iniciarColor(MVC.getConfig().getProperty("color_letraClara"));
             FUENTE= new Font("Arial", Font.BOLD, 14);//implementaión del estilo mediante archivo sigue incompleta, por ahora solo la declaro aquí
             
     	}
@@ -32,12 +34,21 @@ public class MVC {
     
 	public static void main(String[] args) {
 		//new MVC();
-		
-		VistaPrincipal vista = new VistaPrincipal();
+		try {
+			VistaLogin vista = new VistaLogin();
+			ModeloLogin modelo= new ModeloLogin(vista);
+			ControladorLogin controlador= new ControladorLogin(vista,modelo);
+			
+			//dialog.setDefaultCloseOperation(JDialog.);
+			vista.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		/*VistaPrincipal vista = new VistaPrincipal();
 		ModeloPrincipal modelo= new ModeloPrincipal(vista);
 		ControladorPrincipal controlador= new ControladorPrincipal(vista,modelo);
 		controlador.iniciar();
-		vista.setVisible(true);
+		vista.setVisible(true);*/
 		 
 	}
 	//private MVC()
@@ -93,13 +104,14 @@ public class MVC {
 		return c;
 	}*/
 	
-	public static void coloreaCampo(Object[] o, Color c) {
+	public static void coloreaCampos(Object[] o, Color c) {
 		for(Object comp: o) {
 			if(comp instanceof JTextComponent)
 				((JTextComponent)comp).setBackground(c);
 		}
 	}
-	public static void coloreaCampos(Object comp, Color c) {
+	
+	public static void coloreaCampo(Object comp, Color c) {
 		if(comp instanceof JTextComponent) {
 			((JTextComponent)comp).setBackground(c);
 		}

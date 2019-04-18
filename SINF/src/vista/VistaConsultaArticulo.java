@@ -77,7 +77,7 @@ public class VistaConsultaArticulo extends JInternalFrame {
 		panel_1.setBackground(Color.DARK_GRAY);
 		
 		panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Agregar/Modificar Articulo", TitledBorder.LEADING, TitledBorder.TOP, null, MVC.COLOR_LETRA));
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Agregar/Modificar Articulo", TitledBorder.LEADING, TitledBorder.TOP, null, MVC.COLOR_HIGHLIGHT));
 		((javax.swing.border.TitledBorder)panel.getBorder()).setTitleFont(MVC.FUENTE);
 		getContentPane().add(panel, "cell 0 3,grow");
 		panel.setLayout(new MigLayout("", "[grow]", "[grow][][]"));
@@ -85,7 +85,7 @@ public class VistaConsultaArticulo extends JInternalFrame {
 		
 		JLabel lblPlaca = new JLabel("Articulo");
 		lblPlaca.setFont(MVC.FUENTE);
-		lblPlaca.setForeground(MVC.COLOR_LETRA);
+		lblPlaca.setForeground(MVC.COLOR_HIGHLIGHT);
 		panel.add(lblPlaca, "flowx,cell 0 0,alignx left");
 		
 		txtArt = new JTextField();
@@ -96,7 +96,7 @@ public class VistaConsultaArticulo extends JInternalFrame {
 		
 		JLabel lblDescripcin = new JLabel("Descripci\u00F3n");
 		lblDescripcin.setFont(MVC.FUENTE);
-		lblDescripcin.setForeground(MVC.COLOR_LETRA);
+		lblDescripcin.setForeground(MVC.COLOR_HIGHLIGHT);
 		panel.add(lblDescripcin, "cell 0 0");
 		
 		txtDesc = new JTextField();
@@ -107,7 +107,7 @@ public class VistaConsultaArticulo extends JInternalFrame {
 		
 		JLabel lblRegistros = new JLabel("Sanci\u00F3n");
 		lblRegistros.setFont(MVC.FUENTE);
-		lblRegistros.setForeground(MVC.COLOR_LETRA);
+		lblRegistros.setForeground(MVC.COLOR_HIGHLIGHT);
 		panel.add(lblRegistros, "cell 0 0");
 		
 		
@@ -123,7 +123,7 @@ public class VistaConsultaArticulo extends JInternalFrame {
 		panel.add(btnAccion, "cell 0 0,alignx right");
 		btnAccion.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnAccion.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnAccion.setFont(new Font("Arial", Font.BOLD, 14));
+		btnAccion.setFont(MVC.FUENTE);
 		btnAccion.setBackground(Color.WHITE);
 		JScrollPane scrollPane = new JScrollPane();
 		getContentPane().add(scrollPane, "cell 0 2,grow");

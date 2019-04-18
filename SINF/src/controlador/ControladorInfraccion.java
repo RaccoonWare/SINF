@@ -124,23 +124,23 @@ public class ControladorInfraccion implements ActionListener, MouseListener, Key
 	public void mouseEntered(MouseEvent arg0) {
 		if(arg0.getSource() instanceof JTextComponent) {
 			if(!((JComponent)arg0.getSource()).hasFocus())
-			((JTextComponent)arg0.getSource()).setBackground(MVC.COLOR_LETRA);
+			((JTextComponent)arg0.getSource()).setBackground(MVC.COLOR_HIGHLIGHT);
 		}if(arg0.getSource() instanceof AbstractButton) {
 			((AbstractButton)arg0.getSource()).setBorder(new LineBorder(Color.WHITE,2,true));
 		}
 		
 		
 		else if (arg0.getSource() == vistaInfraccion.cbInfraccion) {
-			vistaInfraccion.cbInfraccion.setBackground(MVC.COLOR_LETRA);
+			vistaInfraccion.cbInfraccion.setBackground(MVC.COLOR_HIGHLIGHT);
 		}else if (arg0.getSource() == vistaInfraccion.cbMunicipio) {
-			vistaInfraccion.cbMunicipio.setBackground(MVC.COLOR_LETRA);
+			vistaInfraccion.cbMunicipio.setBackground(MVC.COLOR_HIGHLIGHT);
 		}else if (arg0.getSource() == vistaInfraccion.dcFecha) {
-			vistaInfraccion.dcFecha.setBackground(Color.BLUE);
+			vistaInfraccion.dcFecha.setBackground(Color.white);
 		}else if (arg0.getSource() == vistaInfraccion.cbInfraccion) {
 			vistaInfraccion.cbInfraccion.setBorder(new LineBorder(Color.WHITE, 2, true));
 		}else if (arg0.getSource() == vistaInfraccion.timeChooser) {
 			if(vistaInfraccion.timeChooser.hasFocus())
-				vistaInfraccion.timeChooser.setBackground(MVC.COLOR_LETRA);
+				vistaInfraccion.timeChooser.setBackground(MVC.COLOR_HIGHLIGHT);
 		}
 	}
 	

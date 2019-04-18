@@ -66,7 +66,7 @@ public class VistaPrincipal extends JFrame {
 		dpEscritorio.add(lblNewLabel);
 		btnInfracciones = new JButton("Infracciones");
 		btnInfracciones.setBorder(null);
-		btnInfracciones.setForeground(MVC.COLOR_LETRA);
+		btnInfracciones.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnInfracciones.setContentAreaFilled(false);
 		contentPane.add(btnInfracciones, "cell 0 1,grow");
 		btnInfracciones.setHorizontalAlignment(SwingConstants.LEADING);
@@ -75,7 +75,7 @@ public class VistaPrincipal extends JFrame {
 		btnInfracciones.setBackground(Color.GRAY);
 
 		btnArticulos = new JButton("Art\u00EDculos");
-		btnArticulos.setForeground(MVC.COLOR_LETRA);
+		btnArticulos.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnArticulos.setContentAreaFilled(false);
 		contentPane.add(btnArticulos, "cell 0 2,grow");
 		btnArticulos.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/icons8-lista-de-verificaci\u00F3n-42.png")));
@@ -85,7 +85,7 @@ public class VistaPrincipal extends JFrame {
 		btnArticulos.setBackground(Color.GRAY);
 
 		btnConsultar = new JButton("Consultar");
-		btnConsultar.setForeground(MVC.COLOR_LETRA);
+		btnConsultar.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnConsultar.setContentAreaFilled(false);
 		contentPane.add(btnConsultar, "cell 0 3,grow");
 		btnConsultar.setBorder(null);
@@ -95,7 +95,7 @@ public class VistaPrincipal extends JFrame {
 		btnConsultar.setBackground(Color.GRAY);
 
 		btnEstadisticas = new JButton("Estad\u00EDsticas");
-		btnEstadisticas.setForeground(MVC.COLOR_LETRA);
+		btnEstadisticas.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnEstadisticas.setContentAreaFilled(false);
 		contentPane.add(btnEstadisticas, "cell 0 4,grow");
 		btnEstadisticas.setBorder(null);
@@ -105,7 +105,7 @@ public class VistaPrincipal extends JFrame {
 		btnEstadisticas.setBackground(Color.GRAY);
 
 		btnRespaldar = new JButton("Respaldar");
-		btnRespaldar.setForeground(MVC.COLOR_LETRA);
+		btnRespaldar.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnRespaldar.setContentAreaFilled(false);
 		contentPane.add(btnRespaldar, "cell 0 5,grow");
 		btnRespaldar.setBorder(null);
@@ -115,7 +115,7 @@ public class VistaPrincipal extends JFrame {
 		btnRespaldar.setBackground(Color.GRAY);
 
 		btnRestaurar = new JButton("Restaurar");
-		btnRestaurar.setForeground(MVC.COLOR_LETRA);
+		btnRestaurar.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnRestaurar.setContentAreaFilled(false);
 		contentPane.add(btnRestaurar, "cell 0 6,grow");
 		btnRestaurar.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/icons8-base-de-datos-filled-42.png")));
@@ -125,7 +125,7 @@ public class VistaPrincipal extends JFrame {
 		btnRestaurar.setBackground(Color.GRAY);
 
 		btnConfiguracin = new JButton("Configuraci\u00F3n  ");
-		btnConfiguracin.setForeground(MVC.COLOR_LETRA);
+		btnConfiguracin.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnConfiguracin.setContentAreaFilled(false);
 		contentPane.add(btnConfiguracin, "cell 0 7,grow");
 		btnConfiguracin.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/icons8-ajustes-42.png")));

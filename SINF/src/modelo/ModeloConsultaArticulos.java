@@ -4,7 +4,10 @@ import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
+import javax.swing.RowFilter;
 import java.awt.Color;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.*;
@@ -24,9 +27,12 @@ import vista.VistaInfraccion;
 public class ModeloConsultaArticulos {
 	Workbook wb;    
     private static DefaultTableModel modeloT;
+    public TableRowSorter<TableModel> filtro;
     private File archivo=new File(MVC.getConfig().getProperty("articulos"));
     
 
+        
+    
 	////////////////Manejo de Archivos
 	/**
 	 * Carga contenido de tabla
@@ -37,7 +43,13 @@ public class ModeloConsultaArticulos {
 	public String importar(File archivo, JTable tablaD){
 		
 		String respuesta="No se pudo realizar la importación.";
-        modeloT = new DefaultTableModel();
+        modeloT = new DefaultTableModel() {
+        	@Override
+            public boolean isCellEditable(int row, int column) {
+               //all cells false
+               return false;
+            }
+        };
         tablaD.setModel(modeloT);
         try {
             wb = WorkbookFactory.create(new FileInputStream(archivo));
@@ -91,7 +103,8 @@ public class ModeloConsultaArticulos {
 	 */
     public String exportar(File archivo, JTable tablaD){
         String respuesta="No se realizo con exito la exportación.";
-        int numFila=tablaD.getRowCount(), numColumna=tablaD.getColumnCount();
+        //System.out.println("Filas: "+tablaD.getRowCount()+" \t Columnas: "+tablaD.getColumnCount());
+        int numFila=tablaD.getModel().getRowCount(), numColumna=tablaD.getModel().getColumnCount();
         if(archivo.getName().endsWith("xls")){
             wb = new HSSFWorkbook();
         }else{
@@ -107,7 +120,7 @@ public class ModeloConsultaArticulos {
                     if(i==-1){
                         celda.setCellValue(String.valueOf(tablaD.getColumnName(j)));
                     }else{
-                        celda.setCellValue(String.valueOf(tablaD.getValueAt(i, j)));
+                        celda.setCellValue(String.valueOf(tablaD.getModel().getValueAt(i, j)));
                     }
                     wb.write(new FileOutputStream(archivo));
                 }
@@ -127,12 +140,14 @@ public class ModeloConsultaArticulos {
 	public void llenaCampos(VistaConsultaArticulo vistaConsultas) {
 		int row= vistaConsultas.tabla.getSelectedRow();
 		vistaConsultas.btnAccion.setText("Modificar");		
-		vistaConsultas.txtArt.setText((String) vistaConsultas.tabla.getValueAt(row,0));
-		vistaConsultas.txtArt.setBackground(MVC.COLOR_VALID);
-		vistaConsultas.txtDesc.setText((String) vistaConsultas.tabla.getValueAt(row,1));
-		vistaConsultas.txtDesc.setBackground(MVC.COLOR_VALID);
-		vistaConsultas.txtSanc.setText((String) vistaConsultas.tabla.getValueAt(row,2));
-		vistaConsultas.txtSanc.setBackground(MVC.COLOR_VALID);
+		if(row>=0){
+			vistaConsultas.txtArt.setText((String) vistaConsultas.tabla.getValueAt(row,0));
+			vistaConsultas.txtArt.setBackground(MVC.COLOR_VALID);
+			vistaConsultas.txtDesc.setText((String) vistaConsultas.tabla.getValueAt(row,1));
+			vistaConsultas.txtDesc.setBackground(MVC.COLOR_VALID);
+			vistaConsultas.txtSanc.setText((String) vistaConsultas.tabla.getValueAt(row,2));
+			vistaConsultas.txtSanc.setBackground(MVC.COLOR_VALID);
+		}
 	}
     
 	/**
@@ -145,11 +160,16 @@ public class ModeloConsultaArticulos {
 		vistaConsultas.txtArt.setText("");
 		vistaConsultas.txtDesc.setText("");
 		vistaConsultas.txtSanc.setText("");
+		vistaConsultas.txtBuscar.setText("");
+		filtrar(vistaConsultas.tabla, "");
 		vistaConsultas.tabla.clearSelection();
 		
 	}
 	
 	public void campoQuitable(VistaConsultaArticulo vistaConsultas) {
+		vistaConsultas.txtArt.setBackground(Color.WHITE);
+		vistaConsultas.txtDesc.setBackground(Color.WHITE);
+		vistaConsultas.txtSanc.setBackground(Color.WHITE);
 		vistaConsultas.btnAccion.setText("Quitar");		
 	}
 	
@@ -160,10 +180,11 @@ public class ModeloConsultaArticulos {
 
 	public void agregaArticulo(VistaConsultaArticulo vistaConsultas) {
 		modeloT.addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});		
-		modeloT.fireTableDataChanged();
+		modeloT.fireTableRowsInserted(modeloT.getRowCount()-1, modeloT.getRowCount()-1);
 		vistaConsultas.txtArt.setText("");
 		vistaConsultas.txtDesc.setText("");
 		vistaConsultas.txtSanc.setText("");
+		
 		exportar(archivo,vistaConsultas.tabla);
 	}
 	
@@ -172,9 +193,7 @@ public class ModeloConsultaArticulos {
 	 * @param vistaConsultas
 	 * @throws EmptyFieldExcepton 
 	 */
-	public Object[] validaCampos(Object[] campos) throws EmptyFieldExcepton {
-		System.out.println("\nCampos "+ campos.length);
-		printArray(campos);
+	public void validaCampos(Object[] campos) throws EmptyFieldExcepton {
 		Object aux[]= new Object[campos.length];
 		int vacios=0;
 		for(Object o: campos){
@@ -185,12 +204,8 @@ public class ModeloConsultaArticulos {
 		}
 		System.out.println();
 		System.out.println("\nAux "+aux.length);
-		printArray(aux);
 		Object res[]= arrayTrim(aux,vacios);
-		System.out.println("\nResultado "+res.length);
-		printArray(res);
-		if (res.length==0) return res;
-		else throw new EmptyFieldExcepton(res);
+		if (res.length!=0) throw new EmptyFieldExcepton(res);
 	}
 	private Object[] arrayTrim(Object[] original,int size) {
 		Object[] res= new Object[size];
@@ -199,12 +214,7 @@ public class ModeloConsultaArticulos {
 		return res;
 	}
 	
-	public void printArray(Object[] campos) {
-		for(Object t: campos) {
-			if (t instanceof JTextComponent)
-			System.out.println("["+((JTextComponent)t).getText()+"]");
-		}
-	}
+
 	
 	public Object[] validaCampos(VistaConsultaArticulo vistaConsultas) throws EmptyFieldExcepton {
 		Object campos[] = new Object[] {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
@@ -223,8 +233,8 @@ public class ModeloConsultaArticulos {
 
 	public void quitarCampo(VistaConsultaArticulo vistaConsultas) {
 		// TODO Auto-generated method stub
-		if(vistaConsultas.tabla.getModel().equals(modeloT))
-			modeloT.removeRow(vistaConsultas.tabla.getSelectedRow());			
+		//if(vistaConsultas.tabla.getModel().equals(modeloT))
+		modeloT.removeRow(vistaConsultas.tabla.getSelectedRow());			
 		modeloT.fireTableDataChanged();
 		limpiaCampos(vistaConsultas);
 		exportar(archivo,vistaConsultas.tabla);
@@ -239,11 +249,27 @@ public class ModeloConsultaArticulos {
 				modeloT.setValueAt(vistaConsultas.txtArt.getText(),vistaConsultas.tabla.getSelectedRow(),0);
 				modeloT.setValueAt(vistaConsultas.txtDesc.getText(),vistaConsultas.tabla.getSelectedRow(),1);
 				modeloT.setValueAt(vistaConsultas.txtSanc.getText(),vistaConsultas.tabla.getSelectedRow(),2);
-				modeloT.fireTableDataChanged();				
+				modeloT.fireTableRowsUpdated(vistaConsultas.tabla.convertColumnIndexToView(vistaConsultas.tabla.getSelectedRow()),vistaConsultas.tabla.convertColumnIndexToView(vistaConsultas.tabla.getSelectedRow()) );			
 				exportar(archivo,vistaConsultas.tabla);
 			}
 		//}
 	}
 	
+	public void filtrar(JTable tabla, String texto) {
+		filtro= new TableRowSorter<TableModel>(modeloT);
+		tabla.setRowSorter(filtro);
+		if(texto.length()==0) {
+			filtro.setRowFilter(null);
+		}else {
+			filtro.setRowFilter(RowFilter.regexFilter(texto));
+		}
+		modeloT.fireTableDataChanged();
+		
+	}
+	/*public void newFilter(){
+		RowFilter<modeloT,Object> filtro{
+			
+		}
+	}*/
 	
 }

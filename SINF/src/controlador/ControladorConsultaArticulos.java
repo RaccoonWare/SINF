@@ -23,6 +23,7 @@ import vista.VistaConsultaArticulo;
 import vista.VistaPrincipal;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -55,19 +56,20 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		vistaConsultas.tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		archivo=new File(MVC.getConfig().getProperty("articulos"));
 		modeloConsultas.importar(archivo, vistaConsultas.tabla);
-		
+		/*Object[] campos= {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
+		MVC.coloreaCampos(campos,MVC.COLOR_INVALID);*/
 	}
 
 	private void subComponentAddListener(Component[] contenedo,ArrayList<Component> visitado, int n) {
 		for(Component o: this.vistaConsultas.getContentPane().getComponents()) {
-			System.out.println("Componente #"+ n +" - "+" Nombre: "+o.hashCode()+" \tclase: "+ o.getClass());
+			//System.out.println("Componente #"+ n +" - "+" Nombre: "+o.hashCode()+" \tclase: "+ o.getClass());
 			if(o instanceof  JPanel) {
 				((JPanel)o).setFocusable(true);
 				((JPanel)o).addFocusListener(this);
 				((JPanel)o).addMouseListener(this);
 				((JPanel)o).addKeyListener(this);
 				if(!visitado.contains(o)) {
-					System.out.println("\nSubcomponente "+ visitado.size()+"_"+visitado.indexOf(o));				
+					//System.out.println("\nSubcomponente "+ visitado.size()+"_"+visitado.indexOf(o));				
 					visitado.add(o);
 					subComponentAddListener(((JPanel) o).getComponents(),visitado,++n);					
 				}
@@ -78,7 +80,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 			}
 			if (!visitado.contains(o)) {
 				if(o instanceof Container) {
-					System.out.println("\nSubcomponente "+ visitado.size()+"_"+visitado.indexOf(o));				
+					//System.out.println("\nSubcomponente "+ visitado.size()+"_"+visitado.indexOf(o));				
 					visitado.add(o);
 					subComponentAddListener(((Container) o).getComponents(),visitado,++n);					
 				}
@@ -105,6 +107,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		this.vistaConsultas.panel_1.addKeyListener(this);
 		
 		this.vistaConsultas.btnAccion.addActionListener(this);
+		this.vistaConsultas.btnAccion.addMouseListener(this);
 		
 		this.vistaConsultas.txtArt.addKeyListener(this);
 		this.vistaConsultas.txtArt.addMouseListener(this);
@@ -117,6 +120,9 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		this.vistaConsultas.txtSanc.addKeyListener(this);
 		this.vistaConsultas.txtSanc.addMouseListener(this);
 		this.vistaConsultas.txtSanc.addFocusListener(this);
+		
+		this.vistaConsultas.txtBuscar.addKeyListener(this);
+		this.vistaConsultas.txtBuscar.addFocusListener(this);
 		
 		this.vistaConsultas.tabla.addKeyListener(this);
 		this.vistaConsultas.tabla.addFocusListener((FocusListener) this);
@@ -144,7 +150,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	public void actionPerformed(ActionEvent a) {
 		contAccion++;
 		Object[] camposTexto;
-		if(a.getSource() == vistaConsultas.btnAccion){
+		if(a.getSource() == vistaConsultas.btnAccion||a.getSource() == vistaConsultas.txtArt||a.getSource() == vistaConsultas.txtDesc||a.getSource() == vistaConsultas.txtSanc){
 			//int fila= vistaConsultas.tabla.getSelectedRow();
 			//System.
 			camposTexto= new Object[] {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
@@ -165,9 +171,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 						modeloConsultas.modificaArticulo(vistaConsultas);
 					}catch (EmptyFieldExcepton e) {
 						// TODO Auto-generated catch block
-						System.out.println("vacios");
-						modeloConsultas.printArray(e.camposVacios);
-						if(e.camposVacios.equals(camposTexto))
+						if(e.camposVacios.length==3)
 							modeloConsultas.campoQuitable(vistaConsultas);
 						else
 							MVC.coloreaCampos(e.camposVacios, MVC.COLOR_INVALID);
@@ -181,13 +185,12 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 						vistaConsultas.btnAccion.setText("Modificar");
 					} catch (EmptyFieldExcepton e) {
 						// TODO Auto-generated catch block
-						if(e.camposVacios.equals(camposTexto)) {
+						if(e.camposVacios.length==3) {
 							if(vistaConsultas.tabla.getSelectedRow()>=0)
 								modeloConsultas.quitarCampo(vistaConsultas);
 							else 
 								System.out.println("Error, codigo de Indice negativo");
 						}else {
-							MVC.coloreaCampos(e.camposVacios, MVC.COLOR_VALID);
 							MVC.coloreaCampos(e.camposVacios, MVC.COLOR_INVALID);
 						}
 					}
@@ -252,7 +255,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		Object campos[]= {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
 		if(f.getSource().equals(vistaConsultas.tabla)||f.getSource().equals(vistaConsultas.tabla.getComponents())) {
 			modeloConsultas.llenaCampos(vistaConsultas);		
-		}else if (f.getSource().equals(vistaConsultas.txtArt)||f.getSource().equals(vistaConsultas.txtDesc)||f.getSource().equals(vistaConsultas.txtSanc)){			
+		}else if (f.getSource() instanceof JTextComponent){			
 			((JTextComponent)f.getSource()).setBackground(Color.WHITE);
 		}
 		
@@ -271,10 +274,12 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	@Override
 	public void focusLost(FocusEvent f) {		
 		// TODO Auto-generated method stub
-		if(f.getSource().equals(vistaConsultas.txtArt)||f.getSource().equals(vistaConsultas.txtDesc)||f.getSource().equals(vistaConsultas.txtSanc)) {
+		if (!f.getComponent().getBackground().equals(MVC.COLOR_INVALID)){
+			if(f.getSource().equals(vistaConsultas.txtArt)||f.getSource().equals(vistaConsultas.txtDesc)||f.getSource().equals(vistaConsultas.txtSanc)) {
 				((JTextComponent)f.getSource()).setBackground(MVC.COLOR_VALID);
-		}else if (f.getSource().equals(vistaConsultas.txtArt)||f.getSource().equals(vistaConsultas.txtDesc)||f.getSource().equals(vistaConsultas.txtSanc)){			
-			((JTextComponent)f.getSource()).setBackground(Color.WHITE);
+			}else if (f.getSource().equals(vistaConsultas.txtBuscar)){			
+				((JTextComponent)f.getSource()).setBackground(Color.WHITE);
+			}
 		}
 		/*if(e.getSource().equals(vistaConsultas.tabla)) {
 			//limpiaCampos();
@@ -284,71 +289,23 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	@Override
 	public void keyPressed(KeyEvent k) {
 		// TODO Auto-generated method stub
-		if(k.getKeyCode() == KeyEvent.VK_ESCAPE)
-			modeloConsultas.limpiaCampos(vistaConsultas);
-		if(k.getSource().equals(vistaConsultas.txtArt)||k.getSource().equals(vistaConsultas.txtDesc)||k.getSource().equals(vistaConsultas.txtSanc)) {
-			Object camposTexto[]= {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
-			if(k.getKeyCode() == KeyEvent.VK_ENTER) {
-				switch(vistaConsultas.btnAccion.getText()) {
-					case("Agregar"):{
-						try {
-							modeloConsultas.validaCampos(camposTexto);
-							modeloConsultas.agregaArticulo(vistaConsultas);
-						} catch (EmptyFieldExcepton e) {
-							// TODO Auto-generated catch block
-							MVC.coloreaCampos(e.camposVacios, MVC.COLOR_INVALID);
-						}
-						break;
-					}
-					case("Modificar"):{
-						try {
-							modeloConsultas.validaCampos(camposTexto);
-							modeloConsultas.modificaArticulo(vistaConsultas);
-						} catch (EmptyFieldExcepton e) {
-							// TODO Auto-generated catch block
-							if(e.camposVacios.equals(camposTexto))
-								modeloConsultas.campoQuitable(vistaConsultas);
-							else
-								MVC.coloreaCampos(e.camposVacios, MVC.COLOR_INVALID);
-						}
-						break;
-					}
-					case("Quitar"):{
-						try {
-							modeloConsultas.validaCampos(camposTexto);
-							MVC.coloreaCampos(camposTexto, MVC.COLOR_VALID);
-							vistaConsultas.btnAccion.setText("Modificar");
-						} catch (EmptyFieldExcepton e) {
-							// TODO Auto-generated catch block
-							if(e.camposVacios.equals(camposTexto)) {
-								if(vistaConsultas.tabla.getSelectedRow()>=0)
-									modeloConsultas.quitarCampo(vistaConsultas);
-								else 
-									System.out.println("Error, codigo de Indice negativo");
-							}else {
-								MVC.coloreaCampos(e.camposVacios, MVC.COLOR_VALID);
-								MVC.coloreaCampos(e.camposVacios, MVC.COLOR_INVALID);
-							}
-						}
-						break;
-					}
-					
-					default:{System.out.println("Error Ener");}
-				
-				}
-				
-			}
-		}
-		
 	}
 	@Override
 	public void keyReleased(KeyEvent k) {
 		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void keyTyped(KeyEvent k) {
-		// TODO Auto-generated method stub
+		//if(k.getSource() instanceof JTextComponent)
+		//	((JTextComponent)k.getSource()).setBackground(Color.RED);
+		if(k.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			modeloConsultas.limpiaCampos(vistaConsultas);
+			//vistaConsultas.btnAccion.setText("Agregar");
+		}
+		if(k.getSource().equals(vistaConsultas.txtBuscar)) {
+			modeloConsultas.filtrar(vistaConsultas.tabla,""+vistaConsultas.txtBuscar.getText());
+			if(modeloConsultas.filtro.getViewRowCount()>0)
+				vistaConsultas.txtBuscar.setBackground(MVC.COLOR_VALID);
+			else
+				vistaConsultas.txtBuscar.setBackground(MVC.COLOR_INVALID);
+		}
 		if((k.getSource().equals(vistaConsultas.txtArt))||(k.getSource().equals(vistaConsultas.txtDesc))||(k.getSource().equals(vistaConsultas.txtArt))){
 			Object camposTexto[] ={vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
 			//Object camp[]= {k.getSource()};
@@ -389,14 +346,16 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 							else 
 								System.out.println("Error, codigo de Indice negativo");
 						}else {
-							MVC.coloreaCampos(e.camposVacios, MVC.COLOR_VALID);
 							MVC.coloreaCampos(e.camposVacios, MVC.COLOR_INVALID);
 						}
 					}
 					break;
 				}
 				
-				default:{System.out.println("Error tecla");}
+				default:{
+					System.out.println("Error tecla");
+				}
+				}
 			
 			}
 		/*	try{
@@ -410,7 +369,14 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 					MVC.coloreaCampo(campo, MVC.COLOR_INVALID);
 					
 			}			
-		*/}
+		}*/
+	}
+	@Override
+	public void keyTyped(KeyEvent k) {
+		// TODO Auto-generated method stub
+		/*if(k.getSource() instanceof JTextComponent)
+			((JTextComponent)k.getSource()).setBackground(Color.BLUE);*/
+		
 		
 	}
 	
@@ -423,16 +389,14 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	@Override
 	public void mouseEntered(MouseEvent m) {
 		// TODO Auto-generated method stub
-		if(m.getSource().equals(vistaConsultas.txtArt)||m.getSource().equals(vistaConsultas.txtDesc)||m.getSource().equals(vistaConsultas.txtSanc)) {
-			if( !(((JComponent)m.getSource()).hasFocus()) && !(((JTextComponent)m.getSource()).getBackground().equals(MVC.COLOR_INVALID))){
-				((JTextComponent)m.getSource()).setBackground(MVC.COLOR_LETRA);
-			}
+		if((m.getSource().equals(vistaConsultas.txtArt)||m.getSource().equals(vistaConsultas.txtDesc)||m.getSource().equals(vistaConsultas.txtSanc)) && !(((JComponent)m.getSource()).hasFocus()) && !(((JTextComponent)m.getSource()).getBackground().equals(MVC.COLOR_INVALID))) {
+				((JTextComponent)m.getSource()).setBackground(MVC.COLOR_HIGHLIGHT);
 		}
 	}
 	@Override
 	public void mouseExited(MouseEvent m) {
 		// TODO Auto-generated method stub		
-		if(m.getSource().equals(vistaConsultas.txtArt)||m.getSource().equals(vistaConsultas.txtDesc)||m.getSource().equals(vistaConsultas.txtSanc)) {
+		if((m.getSource().equals(vistaConsultas.txtArt)||m.getSource().equals(vistaConsultas.txtDesc)||m.getSource().equals(vistaConsultas.txtSanc))&& !(((JComponent)m.getSource()).hasFocus()) && !(((JTextComponent)m.getSource()).getBackground().equals(MVC.COLOR_INVALID))) {
 			if(!((JComponent)m.getSource()).hasFocus()&&!((JTextComponent)m.getSource()).getBackground().equals(MVC.COLOR_INVALID)){
 				((JTextComponent)m.getSource()).setBackground(MVC.COLOR_VALID);
 			}
@@ -459,7 +423,8 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	}
 	
 	public void tableChanged(TableModelEvent t) {
-		modeloConsultas.limpiaCampos(vistaConsultas);
+		//((Component)t.getSource()).setBackground(Color.LIGHT_GRAY);
+		//modeloConsultas.limpiaCampos(vistaConsultas);
 	}
 	
 	

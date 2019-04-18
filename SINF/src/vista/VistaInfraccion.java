@@ -168,7 +168,7 @@ public class VistaInfraccion extends JInternalFrame {
 		btnInsertar.setBorder(new LineBorder(MVC.COLOR_VALID, 2, true));
 		btnInsertar.setFont(MVC.FUENTE);
 		btnInsertar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnInsertar.setForeground(MVC.COLOR_LETRA);
+		btnInsertar.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnInsertar.setBackground(MVC.COLOR_BG);
 		getContentPane().add(btnInsertar, "flowx,cell 0 21,growx,aligny baseline");
 
@@ -204,7 +204,7 @@ public class VistaInfraccion extends JInternalFrame {
 		
 		txtNboleta = new JTextField();
 		txtNboleta.setBorder(null);
-		txtNboleta.setToolTipText("");
+		txtNboleta.setToolTipText("");		
 		txtNboleta.setForeground(MVC.COLOR_BG);
 		txtNboleta.setFont(MVC.FUENTE);
 		txtNboleta.setColumns(10);
@@ -404,7 +404,7 @@ public class VistaInfraccion extends JInternalFrame {
 		btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.setBorder(new LineBorder(MVC.COLOR_VALID, 2, true));
 		btnLimpiar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnLimpiar.setForeground(MVC.COLOR_LETRA);
+		btnLimpiar.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnLimpiar.setFont(MVC.FUENTE);
 		btnLimpiar.setBackground(MVC.COLOR_BG);
 		getContentPane().add(btnLimpiar, "cell 0 21,growx");
@@ -412,7 +412,7 @@ public class VistaInfraccion extends JInternalFrame {
 		btnAnular = new JButton("Anular");
 		btnAnular.setBorder(new LineBorder(MVC.COLOR_VALID, 2, true));
 		btnAnular.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnAnular.setForeground(MVC.COLOR_LETRA);
+		btnAnular.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnAnular.setFont(MVC.FUENTE);
 		btnAnular.setBackground(MVC.COLOR_BG);
 		getContentPane().add(btnAnular, "cell 0 21,growx");
@@ -420,7 +420,7 @@ public class VistaInfraccion extends JInternalFrame {
 		btnImprimir = new JButton("Imprimir");
 		btnImprimir.setBorder(new LineBorder(MVC.COLOR_VALID, 2, true));
 		btnImprimir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnImprimir.setForeground(MVC.COLOR_LETRA);
+		btnImprimir.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnImprimir.setFont(MVC.FUENTE);
 		btnImprimir.setBackground(MVC.COLOR_BG);
 		getContentPane().add(btnImprimir, "cell 0 21,growx");

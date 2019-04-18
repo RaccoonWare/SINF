@@ -186,7 +186,7 @@ public class VentanPrueba {
 				//for(Component c:frame.getComponents())
 				if (findFocus(frame)!=null)btnNewButton.setText(findFocus(frame).toString());
 					else btnNewButton.setText("null");
-				btnNewButton.setText(frame.getMostRecentFocusOwner().toString());
+				//btnNewButton.setText(frame.getMostRecentFocusOwner().toString());
 			}
 		});
 		textField.addKeyListener(new KeyAdapter() {
