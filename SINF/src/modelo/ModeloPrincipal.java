@@ -1,6 +1,9 @@
 package modelo;
 
+import java.awt.Frame;
 import java.io.File;
+
+import javax.swing.JFrame;
 
 import controlador.ControladorConsultaArticulos;
 import controlador.ControladorConsultaInfracciones;
@@ -20,6 +23,11 @@ public class ModeloPrincipal {
 	public void iniciar(VistaPrincipal vistaPrincipal) {
 		// TODO Apéndice de método generado automáticamente
 		vistaPrincipal.setVisible(true);
+		//vistaPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		vistaPrincipal.setExtendedState(JFrame.NORMAL);
+		vistaPrincipal.setState(JFrame.NORMAL);
+		vistaPrincipal.setState(JFrame.MAXIMIZED_BOTH);
+		vistaPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		vistaPrincipal.setLocationRelativeTo(null);
 
 	}

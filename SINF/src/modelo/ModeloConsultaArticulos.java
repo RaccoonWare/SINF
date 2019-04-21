@@ -49,7 +49,7 @@ public class ModeloConsultaArticulos {
                //all cells false
                return false;
             }
-        };
+        };        
         tablaD.setModel(modeloT);
         try {
             wb = WorkbookFactory.create(new FileInputStream(archivo));
@@ -88,7 +88,10 @@ public class ModeloConsultaArticulos {
                 }
                 if(indiceFila!=0)modeloT.addRow(listaColumna);
             }
-            respuesta="Importación exitosa";
+            tablaD.getColumnModel().getColumn(0).setPreferredWidth(250);
+            tablaD.getColumnModel().getColumn(1).setPreferredWidth(1000);
+            tablaD.getColumnModel().getColumn(2).setPreferredWidth(250);
+            respuesta="Importación exitosa";            
         } catch (IOException | InvalidFormatException | EncryptedDocumentException e) {
             System.err.println(e.getMessage());
         }
@@ -201,9 +204,7 @@ public class ModeloConsultaArticulos {
 				if(((JTextComponent)o).getText().equals(""))
 					aux[vacios++]=o;
 			}
-		}
-		System.out.println();
-		System.out.println("\nAux "+aux.length);
+		}		
 		Object res[]= arrayTrim(aux,vacios);
 		if (res.length!=0) throw new EmptyFieldExcepton(res);
 	}

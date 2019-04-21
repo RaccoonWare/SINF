@@ -135,7 +135,9 @@ public class ControladorLogin implements ActionListener, FocusListener, KeyListe
 			else {
 				MVC.coloreaCampo(k.getComponent(), MVC.COLOR_INVALID);
 			}	
-		}else if(k.getKeyCode() != KeyEvent.VK_SHIFT) {
+		}else if (k.getKeyCode() == KeyEvent.VK_ESCAPE){
+			vistaLogin.dispose();
+		}else if(k.getKeyCode() != KeyEvent.VK_SHIFT &&k.getKeyCode() != KeyEvent.VK_UP&&k.getKeyCode() != KeyEvent.VK_DOWN&&k.getKeyCode() != KeyEvent.VK_LEFT&&k.getKeyCode() != KeyEvent.VK_RIGHT) {
 			MVC.coloreaCampo(k.getComponent(), MVC.COLOR_INVALID);
 		}
 	}

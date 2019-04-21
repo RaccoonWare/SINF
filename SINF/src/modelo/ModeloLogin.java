@@ -23,7 +23,7 @@ import vista.VistaLogin;
 public class ModeloLogin {
 	private VistaLogin vistaLogin;
 	private Workbook wb;  
-	private File archivo=new File(MVC.getConfig().getProperty("usuarios"));	
+	//private File archivo=new File(MVC.getConfig().getProperty("usuarios"));	
 	public ModeloLogin(VistaLogin vista) {
 		vistaLogin=vista;
 	}
@@ -48,12 +48,13 @@ public class ModeloLogin {
 	}
 	public boolean validaLogin(VistaLogin vistaLogin) {
 		// TODO Auto-generated method stub
-		boolean res= false;
+		//boolean res= false;
 		String usuario= vistaLogin.txtUsuario.getText();
         char[] pass= vistaLogin.txtPass.getPassword();
         //System.out.println("usuario ingresado:"+usuario+" \t contrseña ingresada: "+pass.toString());
-        
-		try {
+        String auxUser= MVC.getConfig().getProperty("usuario");
+        String auxPass= MVC.getConfig().getProperty("contraseña");
+		/*try {
             wb = WorkbookFactory.create(new FileInputStream(archivo));
             Sheet hoja = wb.getSheetAt(0);
             int i=-1;
@@ -67,9 +68,9 @@ public class ModeloLogin {
             
         } catch (IOException | InvalidFormatException | EncryptedDocumentException e) {
             System.err.println(e.getMessage());
-        }
-		pass=null;
-		return res;
+        }*/
+				
+		return usuario.equals(auxUser) && (new String(pass).equals(auxPass));
 	}
 	
 	private boolean compara(String cadena, char[]arreglo) {
