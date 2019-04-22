@@ -24,10 +24,7 @@ public class ModeloPrincipal {
 		// TODO Apéndice de método generado automáticamente
 		vistaPrincipal.setVisible(true);
 		//vistaPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		vistaPrincipal.setExtendedState(JFrame.NORMAL);
-		vistaPrincipal.setState(JFrame.NORMAL);
-		vistaPrincipal.setState(JFrame.MAXIMIZED_BOTH);
-		vistaPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		vistaPrincipal.setExtendedState(vistaPrincipal.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		vistaPrincipal.setLocationRelativeTo(null);
 
 	}

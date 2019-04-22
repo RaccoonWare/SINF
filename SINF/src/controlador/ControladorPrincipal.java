@@ -1,13 +1,19 @@
 package controlador;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.AbstractButton;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
 import modelo.*;
@@ -24,6 +30,8 @@ public class ControladorPrincipal implements ActionListener, MouseListener{
 	
 	/////////////Inicializacion de elementos
 	
+
+
 	public void iniciar() {
 		modeloPrincipal.iniciar(vistaPrincipal);
 	}
@@ -66,9 +74,37 @@ public class ControladorPrincipal implements ActionListener, MouseListener{
 		}else if (arg0.getSource()==vistaPrincipal.btnArticulos) {
 			modeloPrincipal.iniciarConsultaArticulos(vistaPrincipal);
 		}else if (arg0.getSource()==vistaPrincipal.btnRestaurar) {
+			UIManager.put("OptionPane.background", MVC.COLOR_BG);
+		    UIManager.put("Panel.background", MVC.COLOR_BG);
+		    UIManager.put("Button.background",Color.WHITE);
+		    UIManager.put("OptionPane.messageFont", MVC.FUENTE);
+		    UIManager.put("OptionPane.messageForeground", MVC.COLOR_HIGHLIGHT);
+		    UIManager.put("OptionPane.buttonFont", MVC.FUENTE);
+		    UIManager.put("Label.foreground", MVC.COLOR_HIGHLIGHT);		    
+		    UIManager.put("TextField.Background", MVC.COLOR_VALID);		    
+			MVC.restaurar((Container)vistaPrincipal);
 
 		}else if (arg0.getSource()==vistaPrincipal.btnRespaldar) {
-
+			try{
+				MVC.respaldar();
+				UIManager.put("OptionPane.background", MVC.COLOR_BG);
+			    UIManager.put("Panel.background", MVC.COLOR_BG);
+			    UIManager.put("Button.background",Color.WHITE);
+			    UIManager.put("OptionPane.messageFont", MVC.FUENTE);
+			    UIManager.put("OptionPane.messageForeground", MVC.COLOR_HIGHLIGHT);
+			    UIManager.put("OptionPane.buttonFont", MVC.FUENTE);
+				JOptionPane.showMessageDialog(vistaPrincipal, "Archivos repaldados correctamente ");
+			
+			}catch(IOException e) {
+				e.printStackTrace();
+				UIManager.put("OptionPane.background", MVC.COLOR_BG);
+			    UIManager.put("Panel.background", MVC.COLOR_BG);
+			    UIManager.put("Button.background",Color.WHITE);
+			    UIManager.put("OptionPane.messageFont", MVC.FUENTE);
+			    UIManager.put("OptionPane.messageForeground", MVC.COLOR_HIGHLIGHT);
+			    UIManager.put("OptionPane.buttonFont", MVC.FUENTE);
+				JOptionPane.showMessageDialog(vistaPrincipal, "Error, no se pudo exportar los archivos");
+			}
 		}else if (arg0.getSource()==vistaPrincipal.btnConfiguracin){
 
 		}

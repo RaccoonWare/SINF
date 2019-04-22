@@ -1,12 +1,27 @@
 package controlador;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Font;
+import java.awt.TrayIcon.MessageType;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Properties;
+
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.JTextComponent;
 
+import org.apache.commons.io.FileUtils;
+import org.jfree.io.FileUtilities;
 import modelo.ModeloLogin;
 import modelo.ModeloPrincipal;
 import vista.VistaLogin;
@@ -115,6 +130,58 @@ public class MVC {
 		if(comp instanceof JTextComponent) {
 			((JTextComponent)comp).setBackground(c);
 		}
+	}
+
+	public static void respaldar() throws IOException{
+		// TODO Auto-generated method stub
+		File articulos= new File(config.getProperty("articulos"));
+		File infracciones= new File(config.getProperty("infracciones"));
+		LocalDateTime now= LocalDateTime.now(); 
+		DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+		File respArticulos= new File(config.getProperty("respaldos")+"Articulos-"+now.format(formatoFecha)+".xlsx");		
+		File respInfracciones = new File(config.getProperty("respaldos")+"Infracciones-"+now.format(formatoFecha)+".xlsx");
+		try {		    
+		    FileUtils.copyFile(articulos,respArticulos);
+		    FileUtils.copyFile(infracciones,respInfracciones);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		    throw e;
+		}
+	}
+
+	public static void restaurar(Container c) {
+		// TODO Auto-generated method stub
+		File directorio= new File(MVC.getConfig().getProperty("respaldos"));	    
+	    JFileChooser seleccionador= new JFileChooser(directorio);
+	    FileNameExtensionFilter filtroExcel= new FileNameExtensionFilter("Archivos Excel", "xlsx");
+	    FileNameExtensionFilter filltroNada= new FileNameExtensionFilter("Todos los archivos", "*.*");	    
+	    seleccionador.addChoosableFileFilter(filtroExcel);
+	    seleccionador.addChoosableFileFilter(filtroExcel);
+	    if(seleccionador.showOpenDialog(c) == JFileChooser.APPROVE_OPTION) {
+	    	File seleccionado= seleccionador.getSelectedFile();
+	    	if(seleccionado.getName().endsWith(".xlsx")){
+	    		File articulos= new File(config.getProperty("articulos"));
+	    		File infracciones= new File(config.getProperty("infracciones"));
+	    		try {
+		    		if(seleccionado.getName().startsWith(articulos.getName().substring(0, articulos.getName().length()-5))) {
+						FileUtils.copyFile(seleccionado,articulos);
+						JOptionPane.showMessageDialog(c, "Archivo articulos restaurado exitosamente");
+		    		}else if(seleccionado.getName().startsWith(infracciones.getName().substring(0, infracciones.getName().length()-5))) {
+		    			FileUtils.copyFile(seleccionado,infracciones);
+		    			JOptionPane.showMessageDialog(c, "Archivo infracciones restaurado exitosamente");
+		    		}else  
+		    			JOptionPane.showMessageDialog((Component)c, (Object)"Error, Archivo no reconocido", "Error de archivo", JOptionPane.ERROR_MESSAGE);
+	    		} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					JOptionPane.showMessageDialog((Component)c, (Object)"Error, No se pudo copiar el archivo", "Error de apertura", JOptionPane.ERROR_MESSAGE);
+				}
+	    	}else {	    		
+	    		JOptionPane.showMessageDialog((Component)c, (Object)(new JLabel("Error, Tipo de Archivo no valido")), "Error de extensión", JOptionPane.ERROR_MESSAGE);
+	    	}
+	    			
+	    };
+	    
 	}
 	
 }

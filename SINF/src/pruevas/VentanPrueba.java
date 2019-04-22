@@ -8,6 +8,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -54,6 +55,7 @@ public class VentanPrueba {
 	 * Create the application.
 	 */
 	public VentanPrueba() {
+		new JFileChooser().showOpenDialog(frame);
 		initialize();
 	}
 
@@ -82,7 +84,7 @@ public class VentanPrueba {
 				//for(Component c:frame.getComponents())
 				if (findFocus(frame)!=null)btnNewButton.setText(findFocus(frame).toString());
 					else btnNewButton.setText("null");
-				btnNewButton.setText(frame.getMostRecentFocusOwner().toString());
+				//btnNewButton.setText(frame.getMostRecentFocusOwner().toString());
 			}
 		});
 		frame.setBounds(100, 100, 450, 300);
@@ -107,7 +109,7 @@ public class VentanPrueba {
 				//for(Component c:frame.getComponents())
 				if (findFocus(frame)!=null)btnNewButton.setText(findFocus(frame).toString());
 					else btnNewButton.setText("null");
-				btnNewButton.setText(frame.getMostRecentFocusOwner().toString());
+				//btnNewButton.setText(frame.getMostRecentFocusOwner().toString());
 			}
 		});
 		frame.getContentPane().add(scrollPane, "cell 2 1,grow");
@@ -143,7 +145,7 @@ public class VentanPrueba {
 				//for(Component c:frame.getComponents())
 				if (findFocus(frame)!=null)btnNewButton.setText(findFocus(frame).toString());
 					else btnNewButton.setText("null");
-				btnNewButton.setText(frame.getMostRecentFocusOwner().toString());
+				//btnNewButton.setText(frame.getMostRecentFocusOwner().toString());
 			}
 		});
 		panel.addKeyListener(new KeyAdapter() {
