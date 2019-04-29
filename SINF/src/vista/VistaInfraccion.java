@@ -1,5 +1,9 @@
+/**
+ * Ventana formulario infracción
+ * @author Mario
+ */
 package vista;
-
+/* importación librerias */
 import javax.swing.JInternalFrame;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
@@ -18,20 +22,23 @@ import javax.swing.JTextPane;
 import java.awt.Cursor;
 import javax.swing.border.LineBorder;
 import time.*;
-import java.awt.SystemColor;
 import javax.swing.JScrollPane;
 
+/**
+ * Clase principal
+ * @see ModeloInfraccion
+ * @see ControladorInfraccion
+ */
 public class VistaInfraccion extends JInternalFrame {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
+	//Variables de instancia
 	public JTextField txtNplacas;
 	public JTextField txtNserie;
 	public JTextField txtModelo;
 	public JComboBox<?> cbInfraccion;
 	ButtonGroup g1 = new ButtonGroup();
-	public JDateChooser dcFecha;
+	public JDateChooser dcFecha;// campo de fecha, libreria importada
 	public JTextField txtReferencias;
 	public JTextField txtPlacasEstado;
 	private JLabel lblActividadesADesarrollar;
@@ -65,9 +72,9 @@ public class VistaInfraccion extends JInternalFrame {
 	public JButton btnLimpiar;
 	public JButton btnAnular;
 	public JButton btnImprimir;
-	public TimeChooser timeChooser;
+	public TimeChooser timeChooser;//selector de hora, libreria externa
 	private JLabel lblHora;
-	public JComboBox<?> cbMunicipio;
+	public JComboBox<?> cbMunicipio;// campo de texto con municipios
 	private JLabel lblMunicipio;
 	public JTextField txtEstado;
 	private JLabel lblNoBoleta;
@@ -75,9 +82,13 @@ public class VistaInfraccion extends JInternalFrame {
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
 
-
+	///////Constructores e inicializadores
+	/**
+	 * Constructor por defecto
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public VistaInfraccion() {
+		//Configuraión ventana
 		setBorder(new LineBorder(MVC.COLOR_BG, 5, true));
 		getContentPane().setBackground(Color.GRAY);
 		setForeground(new Color(0, 0, 0));
@@ -90,7 +101,15 @@ public class VistaInfraccion extends JInternalFrame {
 		setBounds(100, 100, 724, 624);
 		getContentPane().setLayout(new MigLayout("", "[grow]", "[][][][][][][][][][][][][][grow][][][][][grow][][][]"));
 		
-
+		//inicialización componentes
+		//inicializa paneles
+		scrollPane = new JScrollPane();
+		getContentPane().add(scrollPane, "cell 0 13,grow");
+		
+		scrollPane_1 = new JScrollPane();
+		getContentPane().add(scrollPane_1, "cell 0 18,grow");
+		
+		//Inicializa etiquetas
 		JLabel lblNombreCompleto = new JLabel("Estado:");
 		lblNombreCompleto.setFont(MVC.FUENTE);
 		getContentPane().add(lblNombreCompleto, "flowx,cell 0 1,alignx left");
@@ -119,6 +138,88 @@ public class VistaInfraccion extends JInternalFrame {
 		lblCarrera.setFont(MVC.FUENTE);
 		getContentPane().add(lblCarrera, "flowx,cell 0 5");
 
+		lblDonde = new JLabel("Domicilio del conductor:");
+		lblDonde.setFont(MVC.FUENTE);
+		getContentPane().add(lblDonde, "flowx,cell 0 10");
+
+		lblNoLicensiaDel = new JLabel("N\u00B0 licensia del conductor:");
+		lblNoLicensiaDel.setFont(MVC.FUENTE);
+		getContentPane().add(lblNoLicensiaDel, "flowx,cell 0 11");
+		
+		lblElServicio = new JLabel("Marca y modelo del dispositivo de alcohol\u00EDmetro");
+		lblElServicio.setFont(MVC.FUENTE);
+		getContentPane().add(lblElServicio, "flowx,cell 0 16");
+		
+		lblResponsableDelPrograma = new JLabel("No. de polic\u00EDa de suguridad vial:");
+		lblResponsableDelPrograma.setFont(MVC.FUENTE);
+		getContentPane().add(lblResponsableDelPrograma, "flowx,cell 0 19");
+		
+		JLabel lblCreditosAprobados = new JLabel("Placas del estado de:");
+		lblCreditosAprobados.setFont(MVC.FUENTE);
+		getContentPane().add(lblCreditosAprobados, "cell 0 4");
+
+		JLabel lblNoDeControl = new JLabel("N\u00B0 de placas:");
+		lblNoDeControl.setFont(MVC.FUENTE);
+		getContentPane().add(lblNoDeControl, "flowx,cell 0 4,alignx left");
+
+		lblNoBoleta = new JLabel("N\u00B0 boleta");
+		lblNoBoleta.setFont(MVC.FUENTE);
+		getContentPane().add(lblNoBoleta, "flowx,cell 0 0");
+		
+		JLabel lblFechaDeInicio = new JLabel("Fecha");
+		lblFechaDeInicio.setFont(MVC.FUENTE);
+		getContentPane().add(lblFechaDeInicio, "cell 0 0");
+		
+		JLabel lblEdad = new JLabel("En la calle (referencias):");
+		lblEdad.setFont(MVC.FUENTE);
+		getContentPane().add(lblEdad, "flowx,cell 0 2");
+		
+		JLabel lblSexo = new JLabel("Infracci\u00F3n al:");
+		lblSexo.setFont(MVC.FUENTE);
+		getContentPane().add(lblSexo, "cell 0 2,alignx left");
+		
+		JLabel lblTitularDeLa = new JLabel("N\u00B0 serie:");
+		lblTitularDeLa.setFont(MVC.FUENTE);
+		getContentPane().add(lblTitularDeLa, "cell 0 6");
+		
+		lblMotivocircunstanciaDe = new JLabel("Motivo (circunstancia de los echos):");
+		lblMotivocircunstanciaDe.setFont(MVC.FUENTE);
+		getContentPane().add(lblMotivocircunstanciaDe, "flowx,cell 0 17");
+		
+		lblHora = new JLabel("Hora");
+		lblHora.setFont(MVC.FUENTE);
+		getContentPane().add(lblHora, "cell 0 0,alignx right");
+		
+		
+		lblNoEconomico = new JLabel("N\u00B0 econ\u00F3mico:");
+		lblNoEconomico.setFont(MVC.FUENTE);
+		getContentPane().add(lblNoEconomico, "cell 0 6");
+
+		lblColor = new JLabel("Color:");
+		lblColor.setFont(MVC.FUENTE);
+		getContentPane().add(lblColor, "cell 0 7");
+		
+		lblArticulosViolados = new JLabel("Art\u00EDculos violados:");
+		lblArticulosViolados.setFont(MVC.FUENTE);
+		getContentPane().add(lblArticulosViolados, "cell 0 12");
+
+		lblRetencionDe = new JLabel("Retenci\u00F3n de:");
+		lblRetencionDe.setFont(MVC.FUENTE);
+		getContentPane().add(lblRetencionDe, "flowx,cell 0 15");
+		
+		lblMunicipio = new JLabel("Municipio:");
+		lblMunicipio.setFont(MVC.FUENTE);
+		getContentPane().add(lblMunicipio, "cell 0 1");
+		
+		lblNombreDelPropietario = new JLabel("Nombre del propietario:");
+		lblNombreDelPropietario.setFont(MVC.FUENTE);
+		getContentPane().add(lblNombreDelPropietario, "cell 0 9");
+		
+		lblDomicilioDelPropietario = new JLabel("Domicilio del propietario:");
+		lblDomicilioDelPropietario.setFont(MVC.FUENTE);
+		getContentPane().add(lblDomicilioDelPropietario, "cell 0 10");
+		//inicializa campos de texto
+		
 		txtModelo = new JTextField();
 		txtModelo.setBorder(null);
 		txtModelo.setForeground(MVC.COLOR_BG);
@@ -128,30 +229,12 @@ public class VistaInfraccion extends JInternalFrame {
 		txtModelo.setColumns(10);
 		getContentPane().add(txtModelo, "cell 0 6,growx");
 
-		lblDonde = new JLabel("Domicilio del conductor:");
-		lblDonde.setFont(MVC.FUENTE);
-		getContentPane().add(lblDonde, "flowx,cell 0 10");
-
-		lblNoLicensiaDel = new JLabel("N\u00B0 licensia del conductor:");
-		lblNoLicensiaDel.setFont(MVC.FUENTE);
-		getContentPane().add(lblNoLicensiaDel, "flowx,cell 0 11");
-		
-		scrollPane = new JScrollPane();
-		getContentPane().add(scrollPane, "cell 0 13,grow");
-		
-				txtArticulosViolados = new JTextPane();
-				scrollPane.setViewportView(txtArticulosViolados);
-				txtArticulosViolados.setForeground(MVC.COLOR_BG);
-				txtArticulosViolados.setFont(MVC.FUENTE);
-				txtArticulosViolados.setBackground(MVC.COLOR_VALID);
-				txtArticulosViolados.setToolTipText("");
-
-		lblElServicio = new JLabel("Marca y modelo del dispositivo de alcohol\u00EDmetro");
-		lblElServicio.setFont(MVC.FUENTE);
-		getContentPane().add(lblElServicio, "flowx,cell 0 16");
-		
-		scrollPane_1 = new JScrollPane();
-		getContentPane().add(scrollPane_1, "cell 0 18,grow");
+		txtArticulosViolados = new JTextPane();
+		scrollPane.setViewportView(txtArticulosViolados);
+		txtArticulosViolados.setForeground(MVC.COLOR_BG);
+		txtArticulosViolados.setFont(MVC.FUENTE);
+		txtArticulosViolados.setBackground(MVC.COLOR_VALID);
+		txtArticulosViolados.setToolTipText("");
 		
 		txtMotivo = new JTextPane();
 		scrollPane_1.setViewportView(txtMotivo);
@@ -159,22 +242,6 @@ public class VistaInfraccion extends JInternalFrame {
 		txtMotivo.setToolTipText("");
 		txtMotivo.setFont(MVC.FUENTE);
 		txtMotivo.setBackground(MVC.COLOR_VALID);
-
-		lblResponsableDelPrograma = new JLabel("No. de polic\u00EDa de suguridad vial:");
-		lblResponsableDelPrograma.setFont(MVC.FUENTE);
-		getContentPane().add(lblResponsableDelPrograma, "flowx,cell 0 19");
-
-		btnInsertar = new JButton("Insertar");
-		btnInsertar.setBorder(new LineBorder(MVC.COLOR_VALID, 2, true));
-		btnInsertar.setFont(MVC.FUENTE);
-		btnInsertar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnInsertar.setForeground(MVC.COLOR_HIGHLIGHT);
-		btnInsertar.setBackground(MVC.COLOR_BG);
-		getContentPane().add(btnInsertar, "flowx,cell 0 21,growx,aligny baseline");
-
-		JLabel lblNoDeControl = new JLabel("N\u00B0 de placas:");
-		lblNoDeControl.setFont(MVC.FUENTE);
-		getContentPane().add(lblNoDeControl, "flowx,cell 0 4,alignx left");
 
 		txtNplacas = new JTextField();
 		txtNplacas.setBorder(null);
@@ -185,10 +252,6 @@ public class VistaInfraccion extends JInternalFrame {
 		txtNplacas.setColumns(10);
 		getContentPane().add(txtNplacas, "cell 0 4,growx");
 
-		JLabel lblCreditosAprobados = new JLabel("Placas del estado de:");
-		lblCreditosAprobados.setFont(MVC.FUENTE);
-		getContentPane().add(lblCreditosAprobados, "cell 0 4");
-
 		txtPlacasEstado = new JTextField();
 		txtPlacasEstado.setBorder(null);
 		txtPlacasEstado.setForeground(MVC.COLOR_BG);
@@ -197,10 +260,6 @@ public class VistaInfraccion extends JInternalFrame {
 		txtPlacasEstado.setToolTipText("");
 		txtPlacasEstado.setColumns(10);
 		getContentPane().add(txtPlacasEstado, "cell 0 4,growx");
-		
-		lblNoBoleta = new JLabel("N\u00B0 boleta");
-		lblNoBoleta.setFont(MVC.FUENTE);
-		getContentPane().add(lblNoBoleta, "flowx,cell 0 0");
 		
 		txtNboleta = new JTextField();
 		txtNboleta.setBorder(null);
@@ -211,22 +270,6 @@ public class VistaInfraccion extends JInternalFrame {
 		txtNboleta.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtNboleta, "cell 0 0,growx");
 
-		JLabel lblFechaDeInicio = new JLabel("Fecha");
-		lblFechaDeInicio.setFont(MVC.FUENTE);
-		getContentPane().add(lblFechaDeInicio, "cell 0 0");
-		
-		
-		dcFecha = new JDateChooser();
-		dcFecha.setFont(MVC.FUENTE);
-		dcFecha.setBackground(MVC.COLOR_VALID);
-		dcFecha.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		dcFecha.setToolTipText("Indicar la fecha.");
-		getContentPane().add(dcFecha, "cell 0 0,growx");
-
-		JLabel lblEdad = new JLabel("En la calle (referencias):");
-		lblEdad.setFont(MVC.FUENTE);
-		getContentPane().add(lblEdad, "flowx,cell 0 2");
-
 		txtReferencias = new JTextField();
 		txtReferencias.setBorder(null);
 		txtReferencias.setForeground(MVC.COLOR_BG);
@@ -235,20 +278,6 @@ public class VistaInfraccion extends JInternalFrame {
 		txtReferencias.setToolTipText("");
 		txtReferencias.setColumns(10);
 		getContentPane().add(txtReferencias, "cell 0 2,growx");
-
-		JLabel lblSexo = new JLabel("Infracci\u00F3n al:");
-		lblSexo.setFont(MVC.FUENTE);
-		getContentPane().add(lblSexo, "cell 0 2,alignx left");
-
-		cbInfraccion = new JComboBox();
-		cbInfraccion.setBorder(null);
-		cbInfraccion.setForeground(MVC.COLOR_BG);
-		cbInfraccion.setFont(MVC.FUENTE);
-		cbInfraccion.setBackground(MVC.COLOR_VALID);		
-		cbInfraccion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		cbInfraccion.setModel(new DefaultComboBoxModel(new String[] {"Conductor", "Propietario", "Concesionario", "Permisionario"}));
-		cbInfraccion.setToolTipText("");
-		getContentPane().add(cbInfraccion, "cell 0 2");
 
 		txtMarca = new JTextField();
 		txtMarca.setBorder(null);
@@ -259,10 +288,6 @@ public class VistaInfraccion extends JInternalFrame {
 		txtMarca.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtMarca, "cell 0 5,growx");
 
-		JLabel lblTitularDeLa = new JLabel("N\u00B0 serie:");
-		lblTitularDeLa.setFont(MVC.FUENTE);
-		getContentPane().add(lblTitularDeLa, "cell 0 6");
-
 		txtNserie = new JTextField();
 		txtNserie.setBorder(null);
 		txtNserie.setForeground(MVC.COLOR_BG);
@@ -272,10 +297,6 @@ public class VistaInfraccion extends JInternalFrame {
 		txtNserie.setColumns(10);
 		getContentPane().add(txtNserie, "cell 0 6,growx");
 
-		lblMotivocircunstanciaDe = new JLabel("Motivo (circunstancia de los echos):");
-		lblMotivocircunstanciaDe.setFont(MVC.FUENTE);
-		getContentPane().add(lblMotivocircunstanciaDe, "flowx,cell 0 17");
-
 		txtNpolicia = new JTextField();
 		txtNpolicia.setForeground(MVC.COLOR_BG);
 		txtNpolicia.setFont(MVC.FUENTE);
@@ -284,22 +305,6 @@ public class VistaInfraccion extends JInternalFrame {
 		txtNpolicia.setColumns(10);
 		getContentPane().add(txtNpolicia, "cell 0 19,growx");
 		
-		lblHora = new JLabel("Hora");
-		lblHora.setFont(MVC.FUENTE);
-		getContentPane().add(lblHora, "cell 0 0,alignx right");
-		
-		timeChooser = new TimeChooser();
-		timeChooser.setBorder(null);
-		timeChooser.setText("");
-		timeChooser.setHorizontalAlignment(JTextField.CENTER);
-		timeChooser.setBackground(MVC.COLOR_VALID);
-		timeChooser.setForeground(MVC.COLOR_BG);
-		getContentPane().add(timeChooser, "cell 0 0,alignx left");
-
-		lblNoEconomico = new JLabel("N\u00B0 econ\u00F3mico:");
-		lblNoEconomico.setFont(MVC.FUENTE);
-		getContentPane().add(lblNoEconomico, "cell 0 6");
-
 		txtNeconomico = new JTextField();
 		txtNeconomico.setBorder(null);
 		txtNeconomico.setForeground(MVC.COLOR_BG);
@@ -316,10 +321,6 @@ public class VistaInfraccion extends JInternalFrame {
 		txtRutaSitio.setColumns(10);
 		txtRutaSitio.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtRutaSitio, "cell 0 7,grow");
-
-		lblColor = new JLabel("Color:");
-		lblColor.setFont(MVC.FUENTE);
-		getContentPane().add(lblColor, "cell 0 7");
 
 		txtColor = new JTextField();
 		txtColor.setForeground(MVC.COLOR_BG);
@@ -345,14 +346,6 @@ public class VistaInfraccion extends JInternalFrame {
 		txtNlicenciaConductor.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtNlicenciaConductor, "cell 0 11,growx");
 
-		lblArticulosViolados = new JLabel("Art\u00EDculos violados:");
-		lblArticulosViolados.setFont(MVC.FUENTE);
-		getContentPane().add(lblArticulosViolados, "cell 0 12");
-
-		lblRetencionDe = new JLabel("Retenci\u00F3n de:");
-		lblRetencionDe.setFont(MVC.FUENTE);
-		getContentPane().add(lblRetencionDe, "flowx,cell 0 15");
-
 		txtRetencion = new JTextField();
 		txtRetencion.setForeground(MVC.COLOR_BG);
 		txtRetencion.setToolTipText("");
@@ -377,10 +370,6 @@ public class VistaInfraccion extends JInternalFrame {
 		txtDomicilioConductor.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtDomicilioConductor, "cell 0 10,grow");
 
-		lblNombreDelPropietario = new JLabel("Nombre del propietario:");
-		lblNombreDelPropietario.setFont(MVC.FUENTE);
-		getContentPane().add(lblNombreDelPropietario, "cell 0 9");
-
 		txtNombrePropietario = new JTextField();
 		txtNombrePropietario.setForeground(MVC.COLOR_BG);
 		txtNombrePropietario.setToolTipText("");
@@ -388,10 +377,6 @@ public class VistaInfraccion extends JInternalFrame {
 		txtNombrePropietario.setColumns(10);
 		txtNombrePropietario.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtNombrePropietario, "cell 0 9,growx");
-
-		lblDomicilioDelPropietario = new JLabel("Domicilio del propietario:");
-		lblDomicilioDelPropietario.setFont(MVC.FUENTE);
-		getContentPane().add(lblDomicilioDelPropietario, "cell 0 10");
 
 		txtDomicilioPropietario = new JTextField();
 		txtDomicilioPropietario.setForeground(MVC.COLOR_BG);
@@ -401,6 +386,62 @@ public class VistaInfraccion extends JInternalFrame {
 		txtDomicilioPropietario.setBackground(MVC.COLOR_VALID);
 		getContentPane().add(txtDomicilioPropietario, "cell 0 10,growx");
 
+		txtEstado = new JTextField();
+		txtEstado.setBorder(null);
+		txtEstado.setText("Zacatecas");
+		txtEstado.setToolTipText("");
+		txtEstado.setForeground(MVC.COLOR_BG);
+		txtEstado.setFont(MVC.FUENTE);
+		txtEstado.setColumns(10);
+		txtEstado.setBackground(MVC.COLOR_VALID);
+		getContentPane().add(txtEstado, "cell 0 1,growx");
+		
+		//inicializar combo boxes
+		cbMunicipio = new JComboBox();
+		cbMunicipio.setBorder(null);
+		cbMunicipio.setModel(new DefaultComboBoxModel(new String[] {"Apozol", "Apulco", "Atolinga ", "Benito Ju\u00E1rez", "Calera", "Ca\u00F1itas de Felipe Pescador", "Chalchihuites", "Concepci\u00F3n del Oro", "Cuauht\u00E9moc ", "El Plateado de J. Amaro", "El Salvador", "Fresnillo", "Genaro Codina", "General Enrique Estrada", "Gral. Francisco R. Murgu\u00EDa", "General P\u00E1nfilo Natera", "Guadalupe ", "Huanusco", "Jalpa", "Jerez", "Jim\u00E9nez del Teul", "Juan Aldama ", "Juchipila", "Loreto", "Luis Moya", "Mazapil", "Melchor Ocampo", "Mezquital del Oro", "Miguel Auza ", "Momax", "Monte Escobedo", "Morelos", "Moyahua de Estrada ", "Nochistl\u00E1n de Mej\u00EDa", "Noria de \u00C1ngeles", "Ojocaliente", "P\u00E1nuco", "Pinos ", "R\u00EDo Grande ", "Sa\u00EDn Alto ", "Santa Mar\u00EDa de la Paz", "Sombrerete", "Susticac\u00E1n", "Tabasco", "Tepechitl\u00E1n", "Tepetongo", "Te\u00FAl de Gonz\u00E1lez Ortega ", "Tlaltenango de S\u00E1nchez Rom\u00E1n", "Trancoso ", "Trinidad Garc\u00EDa de la Cadena", "Valpara\u00EDso", "Vetagrande", "Villa de Cos", "Villa Garc\u00EDa", "Villa Gonz\u00E1lez Ortega", "Villa Hidalgo", "Villanueva","Zacatecas"}));
+		cbMunicipio.setSelectedIndex(cbMunicipio.getItemCount()-1);
+		cbMunicipio.setToolTipText("");
+		cbMunicipio.setForeground(MVC.COLOR_BG);
+		cbMunicipio.setFont(MVC.FUENTE);
+		cbMunicipio.setBackground(MVC.COLOR_VALID);
+		getContentPane().add(cbMunicipio, "cell 0 1,growx");
+		
+		cbInfraccion = new JComboBox();
+		cbInfraccion.setBorder(null);
+		cbInfraccion.setForeground(MVC.COLOR_BG);
+		cbInfraccion.setFont(MVC.FUENTE);
+		cbInfraccion.setBackground(MVC.COLOR_VALID);		
+		cbInfraccion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		cbInfraccion.setModel(new DefaultComboBoxModel(new String[] {"Conductor", "Propietario", "Concesionario", "Permisionario"}));
+		cbInfraccion.setToolTipText("");
+		getContentPane().add(cbInfraccion, "cell 0 2");
+
+		dcFecha = new JDateChooser();
+		dcFecha.setFont(MVC.FUENTE);
+		dcFecha.setBackground(MVC.COLOR_VALID);
+		dcFecha.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		dcFecha.setToolTipText("Indicar la fecha.");
+		getContentPane().add(dcFecha, "cell 0 0,growx");
+		
+		//Inicializar time chooser
+		timeChooser = new TimeChooser();
+		timeChooser.setBorder(null);
+		timeChooser.setText("");
+		timeChooser.setHorizontalAlignment(JTextField.CENTER);
+		timeChooser.setBackground(MVC.COLOR_VALID);
+		timeChooser.setForeground(MVC.COLOR_BG);
+		getContentPane().add(timeChooser, "cell 0 0,alignx left");
+
+		//inicializar botones
+		btnInsertar = new JButton("Insertar");
+		btnInsertar.setBorder(new LineBorder(MVC.COLOR_VALID, 2, true));
+		btnInsertar.setFont(MVC.FUENTE);
+		btnInsertar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnInsertar.setForeground(MVC.COLOR_HIGHLIGHT);
+		btnInsertar.setBackground(MVC.COLOR_BG);
+		getContentPane().add(btnInsertar, "flowx,cell 0 21,growx,aligny baseline");
+		
 		btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.setBorder(new LineBorder(MVC.COLOR_VALID, 2, true));
 		btnLimpiar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -425,29 +466,11 @@ public class VistaInfraccion extends JInternalFrame {
 		btnImprimir.setBackground(MVC.COLOR_BG);
 		getContentPane().add(btnImprimir, "cell 0 21,growx");
 		
-		txtEstado = new JTextField();
-		txtEstado.setBorder(null);
-		txtEstado.setText("Zacatecas");
-		txtEstado.setToolTipText("");
-		txtEstado.setForeground(MVC.COLOR_BG);
-		txtEstado.setFont(MVC.FUENTE);
-		txtEstado.setColumns(10);
-		txtEstado.setBackground(MVC.COLOR_VALID);
-		getContentPane().add(txtEstado, "cell 0 1,growx");
 		
-		lblMunicipio = new JLabel("Municipio:");
-		lblMunicipio.setFont(MVC.FUENTE);
-		getContentPane().add(lblMunicipio, "cell 0 1");
 		
-		cbMunicipio = new JComboBox();
-		cbMunicipio.setBorder(null);
-		cbMunicipio.setModel(new DefaultComboBoxModel(new String[] {"Apozol", "Apulco", "Atolinga ", "Benito Ju\u00E1rez", "Calera", "Ca\u00F1itas de Felipe Pescador", "Chalchihuites", "Concepci\u00F3n del Oro", "Cuauht\u00E9moc ", "El Plateado de J. Amaro", "El Salvador", "Fresnillo", "Genaro Codina", "General Enrique Estrada", "Gral. Francisco R. Murgu\u00EDa", "General P\u00E1nfilo Natera", "Guadalupe ", "Huanusco", "Jalpa", "Jerez", "Jim\u00E9nez del Teul", "Juan Aldama ", "Juchipila", "Loreto", "Luis Moya", "Mazapil", "Melchor Ocampo", "Mezquital del Oro", "Miguel Auza ", "Momax", "Monte Escobedo", "Morelos", "Moyahua de Estrada ", "Nochistl\u00E1n de Mej\u00EDa", "Noria de \u00C1ngeles", "Ojocaliente", "P\u00E1nuco", "Pinos ", "R\u00EDo Grande ", "Sa\u00EDn Alto ", "Santa Mar\u00EDa de la Paz", "Sombrerete", "Susticac\u00E1n", "Tabasco", "Tepechitl\u00E1n", "Tepetongo", "Te\u00FAl de Gonz\u00E1lez Ortega ", "Tlaltenango de S\u00E1nchez Rom\u00E1n", "Trancoso ", "Trinidad Garc\u00EDa de la Cadena", "Valpara\u00EDso", "Vetagrande", "Villa de Cos", "Villa Garc\u00EDa", "Villa Gonz\u00E1lez Ortega", "Villa Hidalgo", "Villanueva","Zacatecas"}));
-		cbMunicipio.setSelectedIndex(cbMunicipio.getItemCount()-1);
-		cbMunicipio.setToolTipText("");
-		cbMunicipio.setForeground(MVC.COLOR_BG);
-		cbMunicipio.setFont(MVC.FUENTE);
-		cbMunicipio.setBackground(MVC.COLOR_VALID);
-		getContentPane().add(cbMunicipio, "cell 0 1,growx");
+		
+		
+		
 
-	}
-}
+	}//fin constructor por defecto
+}//fin clase principal

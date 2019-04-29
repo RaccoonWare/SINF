@@ -1,3 +1,6 @@
+/*
+ * funciones que llamo para obtener datos mientras pruebo las funcionces
+ */
 package pruevas;
 
 import javax.swing.text.JTextComponent;

@@ -1,5 +1,9 @@
+/**
+ * Logica de negicón de ventana de consulta de articulos
+ * @author David
+ */
 package modelo;
-
+/* importación de librerias */
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
@@ -7,138 +11,71 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
-import javax.swing.RowFilter;
+
 import java.awt.Color;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.*;
-
-import controlador.ControladorConsultaArticulos;
-import controlador.ControladorConsultaInfracciones;
-import controlador.ControladorInfraccion;
 import controlador.MVC;
 import exepciones.EmptyFieldExcepton;
 import vista.VistaConsultaArticulo;
-import vista.VistaConsultaInfraccion;
-import vista.VistaInfraccion;
 
+/**
+ * Clase principal
+ * @author David
+ * @see VistaConsultaArticulos
+ * @see ControladorConsultaDescargas
+ */
 public class ModeloConsultaArticulos {
-	Workbook wb;    
-    private static DefaultTableModel modeloT;
+	//variables de clase
+	VistaConsultaArticulo vistaConsultas;
+	Workbook wb;//archivo de office
+    private DefaultTableModel modeloT;//Modelo de tabla, el que se encuentra en la vista es un placeholder, en este se manejan los datos reales
+    //Variables de instancia
     public TableRowSorter<TableModel> filtro;
-    private File archivo=new File(MVC.getConfig().getProperty("articulos"));
-    
+    private File archivo;
 
-        
-    
-	////////////////Manejo de Archivos
-	/**
-	 * Carga contenido de tabla
-	 * @param archivo
-	 * @param tablaD
-	 * @return
-	 */
-	public String importar(File archivo, JTable tablaD){
-		
-		String respuesta="No se pudo realizar la importación.";
-        modeloT = new DefaultTableModel() {
-        	@Override
-            public boolean isCellEditable(int row, int column) {
-               //all cells false
-               return false;
-            }
-        };        
-        tablaD.setModel(modeloT);
-        try {
-            wb = WorkbookFactory.create(new FileInputStream(archivo));
-            Sheet hoja = wb.getSheetAt(0);
-            Iterator filaIterator = hoja.rowIterator();
-            int indiceFila=-1;
-            while (filaIterator.hasNext()) {                
-                indiceFila++;
-                Row fila = (Row) filaIterator.next();
-                Iterator columnaIterator = fila.cellIterator();
-                Object[] listaColumna = new Object[hoja.getLastRowNum()];
-                int indiceColumna=-1;
-                while (columnaIterator.hasNext()) {                    
-                    indiceColumna++;
-                    Cell celda = (Cell) columnaIterator.next();
-                    if(indiceFila==0){
-                        modeloT.addColumn(celda.getStringCellValue());
-                    }else{
-                        if(celda!=null){
-                            switch(celda.getCellType()){
-                                case Cell.CELL_TYPE_NUMERIC:
-                                    listaColumna[indiceColumna]= (int)Math.round(celda.getNumericCellValue());
-                                    break;
-                                case Cell.CELL_TYPE_STRING:
-                                    listaColumna[indiceColumna]= celda.getStringCellValue();
-                                    break;
-                                case Cell.CELL_TYPE_BOOLEAN:
-                                    listaColumna[indiceColumna]= celda.getBooleanCellValue();
-                                    break;
-                                default:
-                                    listaColumna[indiceColumna]=celda.getDateCellValue();
-                                    break;
-                            }
-                        }                        
-                    }
-                }
-                if(indiceFila!=0)modeloT.addRow(listaColumna);
-            }
-            tablaD.getColumnModel().getColumn(0).setPreferredWidth(250);
-            tablaD.getColumnModel().getColumn(1).setPreferredWidth(1000);
-            tablaD.getColumnModel().getColumn(2).setPreferredWidth(250);
-            respuesta="Importación exitosa";            
-        } catch (IOException | InvalidFormatException | EncryptedDocumentException e) {
-            System.err.println(e.getMessage());
-        }
-        return respuesta;
+	
+    ////////////////Constructores e iniciadores
+    /**
+     * Constructor por defecti
+     * @param vistaArticulos
+     */
+    public ModeloConsultaArticulos(VistaConsultaArticulo vistaArticulos) {
+    	this.vistaConsultas= vistaArticulos;
+    	//archivo=new File(MVC.getConfig().getProperty("articulos"));
+    	//modeloT=  new DefaultTableModel();
+    	
+    	iniciar();
+    	modeloT= (DefaultTableModel) vistaArticulos.tabla.getModel();
     }
     
-	/**
-	 * Exporta la tabla a un archivo Excel
-	 * @param archivo
-	 * @param tablaD
-	 * @return
-	 */
-    public String exportar(File archivo, JTable tablaD){
-        String respuesta="No se realizo con exito la exportación.";
-        //System.out.println("Filas: "+tablaD.getRowCount()+" \t Columnas: "+tablaD.getColumnCount());
-        int numFila=tablaD.getModel().getRowCount(), numColumna=tablaD.getModel().getColumnCount();
-        if(archivo.getName().endsWith("xls")){
-            wb = new HSSFWorkbook();
-        }else{
-            wb = new XSSFWorkbook();
-        }
-        Sheet hoja = wb.createSheet("Pruebita");
-        
-        try {
-            for (int i = -1; i < numFila; i++) {
-                Row fila = hoja.createRow(i+1);
-                for (int j = 0; j < numColumna; j++) {
-                    Cell celda = fila.createCell(j);
-                    if(i==-1){
-                        celda.setCellValue(String.valueOf(tablaD.getColumnName(j)));
-                    }else{
-                        celda.setCellValue(String.valueOf(tablaD.getModel().getValueAt(i, j)));
-                    }
-                    wb.write(new FileOutputStream(archivo));
-                }
-            }
-            respuesta="Exportación exitosa.";
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-        return respuesta;
+    public void iniciar() {    	
+    	vistaConsultas.show();
+		vistaConsultas.getContentPane().setFocusable(true);
+		vistaConsultas.setFocusable(true);
+		vistaConsultas.panel.setFocusable(true);
+		vistaConsultas.panel_1.setFocusable(true);
+		vistaConsultas.tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		archivo=new File(MVC.getConfig().getProperty("articulos"));
+		MVC.importar(archivo, vistaConsultas.tabla);
     }
-
+    
 	////////////////Manejo de formularios
     /**
      * llena los campos de texto para edición
      * @param vistaConsultas
+     * pre-condición: se selecciono un elemento de la tabla
+     * post-condicón: se limpian los campos
+     * @see agregaArticulo
+     * @see llenaCampos
+     * @see modificaArticulo 
+     * @see limpiaCampos
+     * @see campoQuitable
+     * @see quitaCampos
+     * @see validaCampos
      */
 	public void llenaCampos(VistaConsultaArticulo vistaConsultas) {
 		int row= vistaConsultas.tabla.getSelectedRow();
@@ -156,6 +93,14 @@ public class ModeloConsultaArticulos {
 	/**
 	 * Limpia los campos de edición y la selección de grupo
 	 * @param vistaConsultas
+	 * pre-condición: ninguna
+	 * post-condición: se limpia la selección en la tabla y se pone en estado para agregar
+	 * @see agregaArticulo
+     * @see llenaCampos
+     * @see modificaArticulo 
+     * @see limpiaCampos
+     * @see campoQuitable
+     * @see QuitaCampos
 	 */
 	public void limpiaCampos(VistaConsultaArticulo vistaConsultas) {
 		vistaConsultas.btnAccion.setText("Agregar");
@@ -167,34 +112,58 @@ public class ModeloConsultaArticulos {
 		filtrar(vistaConsultas.tabla, "");
 		vistaConsultas.tabla.clearSelection();
 		
-	}
+	}//fin limpiarCampos
 	
+	/**
+	 * Cambia el boton de acción al estado "Quitar", si se vuelve a oprimir se eliminara el dato del modelo, si se vuelve a llenar los datos regresa al estado modificable * @param vistaConsultas
+	 * pre-condición: los campos estan vacios
+	 * @see agregaArticulo
+     * @see llenaCampos
+     * @see modificaArticulo 
+     * @see limpiaCampos
+     * @see campoQuitable
+     * @see QuitaCampos
+	 */
 	public void campoQuitable(VistaConsultaArticulo vistaConsultas) {
 		vistaConsultas.txtArt.setBackground(Color.WHITE);
 		vistaConsultas.txtDesc.setBackground(Color.WHITE);
 		vistaConsultas.txtSanc.setBackground(Color.WHITE);
 		vistaConsultas.btnAccion.setText("Quitar");		
-	}
+	}//fin campoQuitable
 	
 	/**
 	 * añade un articulo a la lista
 	 * @param vistaConsultas
+	 * @see agregaArticulo
+     * @see llenaCampos
+     * @see modificaArticulo 
+     * @see limpiaCampos
+     * @see campoQuitable
+     * @see QuitaCampos
+     * pre-condición: los tres campos estan llenos, el boton de acción esta en estado "Agregar"
+     * postcondición articulo agregado al modelo, campos limpiados
+     * 
+     * Cuando cambie la función exportar tuve que importar el modelo directamente en vez de usar el local
 	 */
 
 	public void agregaArticulo(VistaConsultaArticulo vistaConsultas) {
-		modeloT.addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});		
-		modeloT.fireTableRowsInserted(modeloT.getRowCount()-1, modeloT.getRowCount()-1);
+		
+		//deloT.addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});		
+		//modeloT.fireTableRowsInserted(modeloT.getRowCount()-1, modeloT.getRowCount()-1);
+		((DefaultTableModel) vistaConsultas.tabla.getModel()).addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});		
+		((DefaultTableModel) vistaConsultas.tabla.getModel()).fireTableRowsInserted(modeloT.getRowCount()-1, modeloT.getRowCount()-1);
 		vistaConsultas.txtArt.setText("");
 		vistaConsultas.txtDesc.setText("");
 		vistaConsultas.txtSanc.setText("");
 		
-		exportar(archivo,vistaConsultas.tabla);
-	}
+		MVC.exportar(archivo,vistaConsultas.tabla);
+	}//fin AgregaArticulo
 	
 	/**
 	 * verifica que haya ifnnformación en los datos
 	 * @param vistaConsultas
 	 * @throws EmptyFieldExcepton 
+	 * @see validaCampos
 	 */
 	public void validaCampos(Object[] campos) throws EmptyFieldExcepton {
 		Object aux[]= new Object[campos.length];
@@ -213,10 +182,16 @@ public class ModeloConsultaArticulos {
 		for(int i=0;i<size;i++)
 			res[i]= original[i];
 		return res;
-	}
+	}//fin ValidaCampos
 	
 
-	
+	/**
+	 * Valida un solo campo
+	 * @param vistaConsultas
+	 * @return
+	 * @throws EmptyFieldExcepton
+	 * @see validaCampo
+	 */
 	public Object[] validaCampos(VistaConsultaArticulo vistaConsultas) throws EmptyFieldExcepton {
 		Object campos[] = new Object[] {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
 		Object aux[]= new Object[campos.length];
@@ -230,33 +205,72 @@ public class ModeloConsultaArticulos {
 		Object res[]=  arrayTrim(aux,vacios);
 		if (res.length==0) return res;
 		else throw new EmptyFieldExcepton(res);
-	}
+	}//fin validaCampo
 
+	/**
+	 * quita los un dato del modelo y la tabla
+	 * pre-condición: boton acción en estado quitar, campos vacios
+	 * post-condición modelo, tabla y archivos  actualizados 
+	 * @param vistaConsultas
+	 * @see agregaArticulo
+     * @see llenaCampos
+     * @see modificaArticulo 
+     * @see limpiaCampos
+     * @see campoQuitable
+     * @see QuitaCampos
+	 */
 	public void quitarCampo(VistaConsultaArticulo vistaConsultas) {
 		// TODO Auto-generated method stub
 		//if(vistaConsultas.tabla.getModel().equals(modeloT))
 		modeloT.removeRow(vistaConsultas.tabla.getSelectedRow());			
 		modeloT.fireTableDataChanged();
 		limpiaCampos(vistaConsultas);
-		exportar(archivo,vistaConsultas.tabla);
+		MVC.exportar(archivo,vistaConsultas.tabla);
 		vistaConsultas.txtBuscar.requestFocus();
 	}
 
+	/**
+	 * modifica el articulo seleccionado
+	 * @param vistaConsultas
+	 * pre-condición: los tres capos estan llenos
+	 * post-condición: modelo modificado y archivo actualizado
+	 * @see agregaArticulo
+     * @see llenaCampos
+     * @see modificaArticulo 
+     * @see limpiaCampos
+     * @see campoQuitable
+     * @see QuitaCampos
+     * 
+     * cuando cambie la función exportar a MVC tuve que obtener el modelo de la tabla en vez de usar ModeloT
+	 */
 	public void modificaArticulo(VistaConsultaArticulo vistaConsultas) {
 		// TODO Auto-generated method stub
 		//try {
 		//	validaCampos(vistaConsultas);
 			if(vistaConsultas.tabla.getModel().equals(modeloT)) {
-				modeloT.setValueAt(vistaConsultas.txtArt.getText(),vistaConsultas.tabla.getSelectedRow(),0);
-				modeloT.setValueAt(vistaConsultas.txtDesc.getText(),vistaConsultas.tabla.getSelectedRow(),1);
-				modeloT.setValueAt(vistaConsultas.txtSanc.getText(),vistaConsultas.tabla.getSelectedRow(),2);
-				modeloT.fireTableRowsUpdated(vistaConsultas.tabla.convertColumnIndexToView(vistaConsultas.tabla.getSelectedRow()),vistaConsultas.tabla.convertColumnIndexToView(vistaConsultas.tabla.getSelectedRow()) );			
-				exportar(archivo,vistaConsultas.tabla);
+				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtArt.getText(),vistaConsultas.tabla.getSelectedRow(),0);
+				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtDesc.getText(),vistaConsultas.tabla.getSelectedRow(),1);
+				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtSanc.getText(),vistaConsultas.tabla.getSelectedRow(),2);
+				((DefaultTableModel) vistaConsultas.tabla.getModel()).fireTableRowsUpdated(vistaConsultas.tabla.convertColumnIndexToView(vistaConsultas.tabla.getSelectedRow()),vistaConsultas.tabla.convertColumnIndexToView(vistaConsultas.tabla.getSelectedRow()) );			
+				MVC.exportar(archivo,vistaConsultas.tabla);
 			}
 		//}
 	}
 	
-	public void filtrar(JTable tabla, String texto) {
+	/**
+	 * filtra el contenido de la tabla y solo muestra los datos que conuerdan
+	 * @param tabla
+	 * @param texto
+	 * @see agregaArticulo
+     * @see llenaCampos
+     * @see modificaArticulo 
+     * @see limpiaCampos
+     * @see campoQuitable
+     * @see QuitaCampos
+     * pre-condicón: modelo iniciado
+     * post-condición: tabla actualizada, pero modelo sin modificar
+	 */
+	public void filtrar(JTable tabla, String texto) {		
 		filtro= new TableRowSorter<TableModel>(modeloT);
 		tabla.setRowSorter(filtro);
 		if(texto.length()==0) {
@@ -266,11 +280,11 @@ public class ModeloConsultaArticulos {
 		}
 		modeloT.fireTableDataChanged();
 		
-	}
+	}//fin filtrar
 	/*public void newFilter(){
 		RowFilter<modeloT,Object> filtro{
 			
 		}
 	}*/
 	
-}
+}// Fin clase principal

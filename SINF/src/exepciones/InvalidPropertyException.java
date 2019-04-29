@@ -14,6 +14,11 @@ public class InvalidPropertyException extends ErroresInit{
 		missingAtribute = new String[]{atribute};		
 	}
 	
+	public InvalidPropertyException(String[] atributes){
+		super(1);
+		missingAtribute = atributes;		
+	}
+	
 	public String getAtribute() {
 		return missingAtribute[0];
 	}

@@ -11,7 +11,7 @@ public class ErroresInit extends Exception{
 		 * -1,	Dato vacio;
 		 * 1,	ruta o nombre archivo no encontrado
 		 * 2,	valor RGB invalido
-		 * 3,   tipo fuente invalido
+		 * 3,   tipo fuente invalido		 * 
 		 */
 		super();
 		codigo=i;

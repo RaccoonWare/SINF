@@ -1,5 +1,9 @@
+/**
+ * Logica de la ventana de consulta de infracciones
+ * @author Mario
+ */
 package modelo;
-
+/* importar librerias  */
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
@@ -10,9 +14,19 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.*;
 
+/**
+ * 
+ * @author David
+ *
+ */
 public class ModeloConsultaInfracciones {
 	Workbook wb;
-
+	/**
+	 * importar datos
+	 * @param archivo
+	 * @param tablaD
+	 * @return
+	 */
 	public String Importar(File archivo, JTable tablaD){
 		String respuesta="No se pudo realizar la importación.";
 		DefaultTableModel modeloT = new DefaultTableModel();
@@ -62,7 +76,11 @@ public class ModeloConsultaInfracciones {
 		}
 		return respuesta;
 	}
-
+	/**
+	 * exporta los datos despues de añadir una nueva entrada
+	 * @param archivo
+	 * @return
+	 */
 	public String Exportar(File archivo, JTable tablaD){
 		String respuesta="No se realizo con exito la exportación.";
 		int numFila=tablaD.getRowCount(), numColumna=tablaD.getColumnCount();
@@ -90,7 +108,7 @@ public class ModeloConsultaInfracciones {
 			System.err.println(e.getMessage());
 		}
 		return respuesta;
-	}
+	}//fin exportar
 	
 
 }

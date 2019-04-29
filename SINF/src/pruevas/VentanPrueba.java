@@ -1,3 +1,6 @@
+/**
+ * programa donde pruebo comportamientos o funciones que quiero implementar
+ */
 package pruevas;
 
 import java.awt.Color;

@@ -1,4 +1,8 @@
+/**
+ * @author Mario
+ */
 package modelo;
+/* importación de librerias*/
 import org.apache.poi.ss.usermodel.*;
 import exepciones.*;
 import vista.VistaInfraccion;
@@ -16,8 +20,14 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.*;
 
-
+/**
+ * Clase principal
+ * @author Mario
+ * @see VistaInfraccion
+ * @see ControladorInfraccion
+ */
 public class ModeloInfraccion{
+	//Variables de instancia
 	Workbook wb;
 	private String Estado;
 	private String Nplacas;
@@ -45,243 +55,413 @@ public class ModeloInfraccion{
 	private JTable tabla;
 	private String hora;
 	private String Nboleta;
-	//AC = activo AN = anulado
-	private String estatus="AC";
+	private String estatus="AC";//Estado de la multa, AC = activo AN = anulado
 
+	///////////////Accesores y Modificadores	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getEstatus() {
 		return estatus;
 	}
-
+	/**
+	 * 
+	 * @param estatus
+	 */
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNboleta() {
 		return Nboleta;
 	}
-
+	/**
+	 * modifica el numero de la boleta
+	 * @param nboleta numero de la boleta
+	 * @throws Exception exceppcion generica
+	 * @throws ErroresCaptura//en caso que el formato sea incorrecto
+	 */
 	public void setNboleta(String nboleta) throws Exception , ErroresCaptura{
+			//variables de función
 			Pattern pattern = Pattern.compile("^[0-9]+$");
 			Matcher mather = pattern.matcher(nboleta);
+			
 			if (mather.find() == true) {
 				Nboleta = nboleta;
 			} else {
 				throw new ErroresCaptura(1);
 			}	
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getHora() {
 		return hora;
 	}
-
+	/**
+	 * 
+	 * @param hora
+	 */
 	public void setHora(String hora) {
 		this.hora = hora;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getEstado() {
 		return Estado;
 	}
-
+	/**
+	 * 
+	 * @param estado
+	 */
 	public void setEstado(String estado) {
 		Estado = estado;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNplacas() {
 		return Nplacas;
 	}
-
+	/**
+	 * 
+	 * @param nplacas
+	 */
 	public void setNplacas(String nplacas) {
 		Nplacas = nplacas;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNserie() {
 		return Nserie;
 	}
-
+	/**
+	 * 
+	 * @param nserie
+	 */
 	public void setNserie(String nserie) {
 		Nserie = nserie;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getModelo() {
 		return Modelo;
 	}
-
+	/**
+	 * 
+	 * @param modelo
+	 */
 	public void setModelo(String modelo) {
 		Modelo = modelo;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getReferencias() {
 		return Referencias;
 	}
-
+	/**
+	 * 
+	 * @param referencias
+	 */
 	public void setReferencias(String referencias) {
 		Referencias = referencias;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getPlacasEstado() {
 		return PlacasEstado;
 	}
-
+	/**
+	 * 
+	 * @param placasEstado
+	 */
 	public void setPlacasEstado(String placasEstado) {
 		PlacasEstado = placasEstado;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getArticulosViolados() {
 		return ArticulosViolados;
 	}
-
+	/**
+	 * 
+	 * @param articulosViolados
+	 */
 	public void setArticulosViolados(String articulosViolados) {
 		ArticulosViolados = articulosViolados;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNpolicia() {
 		return Npolicia;
 	}
-
+	/**
+	 * 
+	 * @param npolicia
+	 */
 	public void setNpolicia(String npolicia) {
 		Npolicia = npolicia;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getMarca() {
 		return Marca;
 	}
-
+	/**
+	 * 
+	 * @param marca
+	 */
 	public void setMarca(String marca) {
 		Marca = marca;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNeconomico() {
 		return Neconomico;
 	}
-
+	/**
+	 * 
+	 * @param neconomico
+	 */
 	public void setNeconomico(String neconomico) {
 		Neconomico = neconomico;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getRutaSitio() {
 		return RutaSitio;
 	}
-
+	/**
+	 * 
+	 * @param rutaSitio
+	 */
 	public void setRutaSitio(String rutaSitio) {
 		RutaSitio = rutaSitio;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getColor() {
 		return Color;
 	}
-
+	/**
+	 * 
+	 * @param color
+	 */
 	public void setColor(String color) {
 		Color = color;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNombreConductor() {
 		return NombreConductor;
 	}
-
+	/**
+	 * 
+	 * @param nombreConductor
+	 */
 	public void setNombreConductor(String nombreConductor) {
 		NombreConductor = nombreConductor;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getDomicilioConductor() {
 		return DomicilioConductor;
 	}
-
+	/**
+	 * 
+	 * @param domicilioConductor
+	 */
 	public void setDomicilioConductor(String domicilioConductor) {
 		DomicilioConductor = domicilioConductor;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNlicenciaConductor() {
 		return NlicenciaConductor;
 	}
-
+	/**
+	 * 
+	 * @param nlicenciaConductor
+	 */
 	public void setNlicenciaConductor(String nlicenciaConductor) {
 		NlicenciaConductor = nlicenciaConductor;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNombrePropietario() {
 		return NombrePropietario;
 	}
-
+	/**
+	 * 
+	 * @param nombrePropietario
+	 */
 	public void setNombrePropietario(String nombrePropietario) {
 		NombrePropietario = nombrePropietario;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getDomicilioPropietario() {
 		return DomicilioPropietario;
 	}
-
+	/**
+	 * 
+	 * @param domicilioPropietario
+	 */
 	public void setDomicilioPropietario(String domicilioPropietario) {
 		DomicilioPropietario = domicilioPropietario;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getMarcaModelo() {
 		return MarcaModelo;
 	}
-
+	/**
+	 * 
+	 * @param marcaModelo
+	 */
 	public void setMarcaModelo(String marcaModelo) {
 		MarcaModelo = marcaModelo;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getRetencion() {
 		return Retencion;
 	}
-
+	/**
+	 * 	
+	 * @param retencion
+	 */
 	public void setRetencion(String retencion) {
 		Retencion = retencion;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getMotivo() {
 		return Motivo;
 	}
-
+	/**
+	 * 
+	 * @param motivo
+	 */
 	public void setMotivo(String motivo) {
 		Motivo = motivo;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getInfraccion() {
 		return Infraccion;
 	}
-
+	/**
+	 * 
+	 * @param infraccion
+	 */
 	public void setInfraccion(String infraccion) {
 		Infraccion = infraccion;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getMunicipio() {
 		return Municipio;
 	}
-
+	/**
+	 * 
+	 * @param municipio
+	 */
 	public void setMunicipio(String municipio) {
 		Municipio = municipio;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getFecha() {
 		return Fecha;
 	}
-
+	/**
+	 * Establece la fecha
+	 * @param fec	fecha deseada
+	 */
 	public void setFecha(Date fec) {
 		try {
+			//variables de función
 			java.util.Date inicio = fec;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			
 			Fecha=sdf.format(inicio);
 			Fecha=Fecha.substring(0,2).contains("/")?"0"+Fecha:Fecha;
+			
+		//manejo de errores
 		} catch(NullPointerException ex) {
 			System.err.println("Error en la fecha "+ex);
 		}
-	}
+	}//fin setFecha
 
-
+	/**
+	 * determina el nuero de filas que ocuparan las tablas
+	 * @param archivo archivo a analizar
+	 */
 	public void nFilas(File archivo){
-		DefaultTableModel modeloT = new DefaultTableModel();
-		tabla = new JTable();
+		//variable de función
+		DefaultTableModel modeloT = new DefaultTableModel();//modelo de tabla
+		tabla = new JTable();//tabla
+		
 		tabla.setModel(modeloT);
 		//tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		int indiceFila=-1;
 		try {
-			wb = WorkbookFactory.create(new FileInputStream(archivo));
-			Sheet hoja = wb.getSheetAt(0);
+			wb = WorkbookFactory.create(new FileInputStream(archivo));//abre el archivo
+			Sheet hoja = wb.getSheetAt(0);//obtiene la hoja 0
 			@SuppressWarnings("rawtypes")
-			Iterator filaIterator = hoja.rowIterator();
-
+			Iterator filaIterator = hoja.rowIterator();//iterador de renglones
+			//recorre los renglones
 			while (filaIterator.hasNext()) {                
 				indiceFila++;
 				Row fila = (Row) filaIterator.next();
@@ -289,7 +469,7 @@ public class ModeloInfraccion{
 				Iterator columnaIterator = fila.cellIterator();
 				Object[] listaColumna = new Object[1000];
 				int indiceColumna=-1;
-				while (columnaIterator.hasNext()) {                    
+				while (columnaIterator.hasNext()) {//recorre las celdas                    
 					indiceColumna++;
 					Cell celda = (Cell) columnaIterator.next();
 					if(indiceFila==0){
@@ -314,13 +494,20 @@ public class ModeloInfraccion{
 						}                        
 					}
 				}
+				//si el modelo existe se agregan datos
 				if(indiceFila!=0)modeloT.addRow(listaColumna);
 			}
+			//Manejo de errores
 		} catch (IOException | InvalidFormatException | EncryptedDocumentException e) {
 			System.err.println(e.getMessage());
 		}
-	}
+	}//fin nFilas
 
+	/**
+	 * exporta los datos despues de añadir una nueva entrada
+	 * @param archivo
+	 * @return
+	 */
 	public String Exportar(File archivo){
 		String respuesta="Algo a salido mal y no pudimos guardar los datos";
 		nFilas(archivo);
@@ -445,8 +632,13 @@ public class ModeloInfraccion{
 			System.err.println(e.getMessage());
 		}
 		return respuesta;
-	}
+	}//fin Exportar
 	
+	////////Funciones Miscelaneas
+	/**
+	 * limpia las los campos
+	 * @param vistaInfraccion
+	 */	
 	public void limpiarDatos(VistaInfraccion vistaInfraccion) {
 		// TODO Auto-generated method stub
 		vistaInfraccion.txtNboleta.setText("");
@@ -476,5 +668,5 @@ public class ModeloInfraccion{
 		vistaInfraccion.dcFecha.setDate(null);
 		vistaInfraccion.timeChooser.setText("");
 		//ModeloBoleta.setNboleta(VistaInfraccion.txtNboleta.getText());
-	}
+	}//fin limpiarDatos
 }

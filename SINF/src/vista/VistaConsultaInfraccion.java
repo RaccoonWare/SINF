@@ -1,14 +1,14 @@
+/**
+ * ventana Consulta registro de infracciones
+ * @author Mario
+ */
 package vista;
-
+/* importación de librerias */
 import javax.swing.JInternalFrame;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.Color;
@@ -27,60 +27,75 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+/**
+ * clase prinicpal
+ * @author Mario
+ * @see MoeloConsultaInfracciones
+ * @see ControladorConsultaInfracciones
+ */
 public class VistaConsultaInfraccion extends JInternalFrame {
-	/**
-	 * 
-	 */
+	//variables de clase
 	private static final long serialVersionUID = 1L;
-	public JTable tabla;
+	////variables de instancia
+	public JTable tabla;//tabla
 	public static String nomTabla;
 	public static String dato, titulo;
-	public JTextField txtFolio;
-	public JTextField txtPlaca;
-	public JButton btnEliminar, btnAnular;
-	public JButton btnConsultar;
+	public JTextField txtFolio;//"Etiqueta Folio"
+	public JTextField txtPlaca;//Etiqueta "Placa"
+	public JButton btnEliminar, btnAnular;//botoes anular y eliminar
+	public JButton btnConsultar;//boton consulatr
+	
+	////////Constructores e inicializadores
+	/**
+	 * constructor por defecto
+	 */
 	public VistaConsultaInfraccion() {
-		setBorder(new LineBorder(MVC.COLOR_BG, 5, true));
-		getContentPane().setBackground(Color.WHITE);
-		setTitle(titulo);
+		//Configuraión ventana
+		setBorder(new LineBorder(MVC.COLOR_BG, 5, true));//cambia el borde
+		getContentPane().setBackground(Color.WHITE);//color de fondo
+		setTitle(titulo);//titulo ventana
 		setMaximizable(true);
 		setIconifiable(true);
 		setClosable(true);
-		setBounds(10, 10, 577, 488);
-		getContentPane().setLayout(new MigLayout("", "[106.00,grow]", "[top][grow,fill][bottom]"));
+		setBounds(10, 10, 577, 488);//cambia tamaño
+		getContentPane().setLayout(new MigLayout("", "[106.00,grow]", "[top][grow,fill][bottom]"));//establece manejador de layout
 
-		JButton btnModficar = new JButton("Modficar");
-		btnModficar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnModficar.setBackground(Color.WHITE);
-		btnModficar.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnModficar.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnModficar.setFont(MVC.FUENTE);
+		//Inicializa componentes
 		
+		//inicializa panel principal
 		JPanel panel = new JPanel();
 		panel.setBackground(MVC.COLOR_BG);
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Consultas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(245, 255, 250)));
 		getContentPane().add(panel, "cell 0 0,growx,aligny top");
 		panel.setLayout(new MigLayout("", "[][grow,fill][grow]", "[grow][grow][]"));
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(Color.WHITE);
+		scrollPane.setFont(new Font("Arial", Font.BOLD, 12));
+		getContentPane().add(scrollPane, "cell 0 1,grow");
+		//inicializa  etiquetas
 		JLabel lblFecha = new JLabel("Fecha");
 		lblFecha.setFont(MVC.FUENTE);
 		lblFecha.setForeground(MVC.COLOR_HIGHLIGHT);
 		lblFecha.setBackground(Color.RED);
 		panel.add(lblFecha, "cell 0 0");
 		
-		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setBorder(null);
-		dateChooser.setToolTipText("Indicar la fecha.");
-		dateChooser.setFont(MVC.FUENTE);
-		dateChooser.setBackground(MVC.COLOR_VALID);
-		panel.add(dateChooser, "cell 1 0,alignx trailing");
-		
 		JLabel lblFolio = new JLabel("Folio");
 		lblFolio.setFont(MVC.FUENTE);
 		lblFolio.setForeground(MVC.COLOR_HIGHLIGHT);
 		panel.add(lblFolio, "flowx,cell 2 0");
+		
+		JLabel lblPlaca = new JLabel("Placa");
+		lblPlaca.setFont(MVC.FUENTE);
+		lblPlaca.setForeground(MVC.COLOR_HIGHLIGHT);
+		panel.add(lblPlaca, "flowx,cell 2 1,alignx left");
+		
+		JLabel lblRegistros = new JLabel("Registros");
+		lblRegistros.setFont(MVC.FUENTE);
+		lblRegistros.setForeground(MVC.COLOR_HIGHLIGHT);
+		panel.add(lblRegistros, "cell 2 1");
+		
+		//Inicializa campos de texto
 		
 		txtFolio = new JTextField();
 		txtFolio.setBorder(null);
@@ -89,10 +104,20 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		txtFolio.setColumns(10);
 		panel.add(txtFolio, "cell 2 0,growx");
 		
-		JButton btnBusqueda = new JButton("");
-		btnBusqueda.setIcon(new ImageIcon(VistaConsultaInfraccion.class.getResource("/iconos/icons8-b\u00FAsqueda-14(1).png")));
-		btnBusqueda.setBackground(MVC.COLOR_HIGHLIGHT);
-		panel.add(btnBusqueda, "cell 0 1,alignx trailing");
+		txtPlaca = new JTextField();
+		txtPlaca.setBorder(null);
+		txtPlaca.setFont(MVC.FUENTE);
+		txtPlaca.setBackground(MVC.COLOR_VALID);
+		txtPlaca.setColumns(10);
+		panel.add(txtPlaca, "cell 2 1,growx");
+	
+		//Inicializa selectores de fecha
+		JDateChooser dateChooser = new JDateChooser();
+		dateChooser.setBorder(null);
+		dateChooser.setToolTipText("Indicar la fecha.");
+		dateChooser.setFont(MVC.FUENTE);
+		dateChooser.setBackground(MVC.COLOR_VALID);
+		panel.add(dateChooser, "cell 1 0,alignx trailing");
 		
 		JDateChooser dateChooser_1 = new JDateChooser();
 		dateChooser_1.setBorder(null);
@@ -101,23 +126,7 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		dateChooser_1.setBackground(MVC.COLOR_VALID);
 		panel.add(dateChooser_1, "cell 1 1,alignx trailing");
 		
-		JLabel lblPlaca = new JLabel("Placa");
-		lblPlaca.setFont(MVC.FUENTE);
-		lblPlaca.setForeground(MVC.COLOR_HIGHLIGHT);
-		panel.add(lblPlaca, "flowx,cell 2 1,alignx left");
-		
-		txtPlaca = new JTextField();
-		txtPlaca.setBorder(null);
-		txtPlaca.setFont(MVC.FUENTE);
-		txtPlaca.setBackground(MVC.COLOR_VALID);
-		txtPlaca.setColumns(10);
-		
-		panel.add(txtPlaca, "cell 2 1,growx");
-		
-		JLabel lblRegistros = new JLabel("Registros");
-		lblRegistros.setFont(MVC.FUENTE);
-		lblRegistros.setForeground(MVC.COLOR_HIGHLIGHT);
-		panel.add(lblRegistros, "cell 2 1");
+		//Inicializa combobox
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBorder(null);
@@ -126,10 +135,9 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		comboBox.setBackground(MVC.COLOR_VALID);
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Ambos", "Activos", "Anulados"}));
 		panel.add(comboBox, "cell 2 1");
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBackground(Color.WHITE);
-		scrollPane.setFont(new Font("Arial", Font.BOLD, 12));
-		getContentPane().add(scrollPane, "cell 0 1,grow");
+		
+		
+		//incicializa tabla
 		tabla = new JTable();
 		tabla.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -143,6 +151,20 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		tabla.setFont(MVC.FUENTE);
 		scrollPane.setViewportView(tabla);
 		
+		//Inicializa botones
+		
+		JButton btnModficar = new JButton("Modficar");
+		btnModficar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnModficar.setBackground(Color.WHITE);
+		btnModficar.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnModficar.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnModficar.setFont(MVC.FUENTE);
+		
+		JButton btnBusqueda = new JButton("");
+		btnBusqueda.setIcon(new ImageIcon(VistaConsultaInfraccion.class.getResource("/iconos/icons8-b\u00FAsqueda-14(1).png")));
+		btnBusqueda.setBackground(MVC.COLOR_HIGHLIGHT);
+		panel.add(btnBusqueda, "cell 0 1,alignx trailing");
+		
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnEliminar.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -151,11 +173,7 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		btnEliminar.setForeground(MVC.COLOR_HIGHLIGHT);
 		getContentPane().add(btnEliminar, "flowx,cell 0 2,growx");
 		
-		btnAnular = new JButton("Anular");
-		btnAnular.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		btnAnular = new JButton("Anular");		
 		btnAnular.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnAnular.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnAnular.setFont(MVC.FUENTE);
@@ -170,10 +188,10 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		btnConsultar.setBackground(MVC.COLOR_BG);
 		btnConsultar.setForeground(MVC.COLOR_HIGHLIGHT);
 		getContentPane().add(btnConsultar, "cell 0 2,growx");
-	}
+	}//fin constructor por defecto
 	
 	
-	
+//Anteriormente se hacia la importación de datos desde esta vetana, ahora esa función se encuentra en el modelo y se llama desde el controlador	
 //	public void traerdatos() {
 //		int fila=tabla.getSelectedRow();//es paara traer la fila seleccionada el getSelectedRow
 //		if (Principal.usuario=="Invitado") {//verificar el tipo de usuario Para asignarle permisos
@@ -284,4 +302,4 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 //			}
 //		}
 //	}
-}
+}//fin clase principal

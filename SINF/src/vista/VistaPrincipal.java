@@ -1,3 +1,8 @@
+/**
+ * Vista ventana principal
+ * @author Mario
+ */
+/* importación librerias*/
 package vista;
 
 import javax.swing.JFrame;
@@ -20,30 +25,60 @@ import javax.swing.border.MatteBorder;
 import controlador.MVC;
 import javax.swing.JScrollPane;
 
+/**
+ * Clase principal
+ * @see ModeloPrincipal
+ * @see ModeloPrincipal
+ */
 public class VistaPrincipal extends JFrame {
-
-	/**
-	 * 
-	 */
+	//Varables de clase
 	private static final long serialVersionUID = 5768440461778667680L;
-	private JPanel contentPane;
-	public JButton btnInfracciones, btnEstadisticas, btnConsultar, btnRespaldar;
-	public JButton btnEtiquetas;
-	public static JDesktopPane dpEscritorio;
-	public JButton btnRestaurar;
-	public JButton btnArticulos;
-	public JButton btnConfiguracin;
-
+	//Variables de instancia	
+	private JPanel contentPane;//contenedor principal
+	public static JDesktopPane dpEscritorio;//panel contenedor de ventanas internas
+	public JButton btnInfracciones,btnArticulos, btnConsultar, btnEstadisticas;//botones para llamar a otras venanas
+	public JButton btnRestaurar, btnRespaldar;//boton funciones de respaldo y restauración de datos
+	public JButton btnEtiquetas;//boto para mostrar/ocultar etiquetas
+	public JButton btnConfiguracin;//boton configuración
+	
+	
+	///////////////Constructores e inicializadores
+	/**
+	 * constructor por defecto
+	 */
 	public VistaPrincipal() {
-		setBackground(Color.WHITE);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1036, 521);
+		//configuración ventana
+		setBackground(Color.WHITE);//color de fondo
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//accion de cierre
+		setBounds(100, 100, 1036, 521);//tamaño por defecto
+		
+		
+		
+		//inicialización panaeles
+		////panel principal
 		contentPane = new JPanel();
 		contentPane.setBackground(MVC.COLOR_BG);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new MigLayout("", "[][grow][grow,fill]", "[grow][grow,fill][grow][grow,fill][grow,fill][grow,fill][grow][grow]"));
 
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/logoTransito.png")));
+		lblNewLabel.setBounds(345, 168, 553, 386);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		contentPane.add(scrollPane, "cell 1 0 2 8,grow");
+		//panel escritorio
+		dpEscritorio = new JDesktopPane();
+		scrollPane.setViewportView(dpEscritorio);
+		dpEscritorio.setBorder(new LineBorder(Color.BLACK));
+		dpEscritorio.setBackground(Color.WHITE);
+		dpEscritorio.add(lblNewLabel);
+		
+		
+		
+		//Inicialización botontes
+		////Boton  etiquetas
 		btnEtiquetas = new JButton("  ");
 		btnEtiquetas.setContentAreaFilled(false);
 		contentPane.add(btnEtiquetas, "cell 0 0,grow");
@@ -52,18 +87,7 @@ public class VistaPrincipal extends JFrame {
 		btnEtiquetas.setFont(MVC.FUENTE);
 		btnEtiquetas.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/icons8-men\u00FA-filled-42.png")));
 		
-		JScrollPane scrollPane = new JScrollPane();
-		contentPane.add(scrollPane, "cell 1 0 2 8,grow");
-
-		dpEscritorio = new JDesktopPane();
-		scrollPane.setViewportView(dpEscritorio);
-		dpEscritorio.setBorder(new LineBorder(Color.BLACK));
-		dpEscritorio.setBackground(Color.WHITE);
-
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/logoTransito.png")));
-		lblNewLabel.setBounds(345, 168, 553, 386);
-		dpEscritorio.add(lblNewLabel);
+		////boton infracciones
 		btnInfracciones = new JButton("Infracciones");
 		btnInfracciones.setBorder(null);
 		btnInfracciones.setForeground(MVC.COLOR_HIGHLIGHT);
@@ -73,7 +97,8 @@ public class VistaPrincipal extends JFrame {
 		btnInfracciones.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/icons8-formulario-42(1).png")));
 		btnInfracciones.setFont(MVC.FUENTE);
 		btnInfracciones.setBackground(Color.GRAY);
-
+		
+		////boton articulos
 		btnArticulos = new JButton("Art\u00EDculos");
 		btnArticulos.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnArticulos.setContentAreaFilled(false);
@@ -83,7 +108,8 @@ public class VistaPrincipal extends JFrame {
 		btnArticulos.setFont(MVC.FUENTE);
 		btnArticulos.setBorder(null);
 		btnArticulos.setBackground(Color.GRAY);
-
+		
+		////boton consultas
 		btnConsultar = new JButton("Consultar");
 		btnConsultar.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnConsultar.setContentAreaFilled(false);
@@ -94,6 +120,7 @@ public class VistaPrincipal extends JFrame {
 		btnConsultar.setFont(MVC.FUENTE);
 		btnConsultar.setBackground(Color.GRAY);
 
+		////boton estadisticas
 		btnEstadisticas = new JButton("Estad\u00EDsticas");
 		btnEstadisticas.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnEstadisticas.setContentAreaFilled(false);
@@ -104,6 +131,7 @@ public class VistaPrincipal extends JFrame {
 		btnEstadisticas.setFont(MVC.FUENTE);
 		btnEstadisticas.setBackground(Color.GRAY);
 
+		////boton respaldos
 		btnRespaldar = new JButton("Respaldar");
 		btnRespaldar.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnRespaldar.setContentAreaFilled(false);
@@ -114,6 +142,7 @@ public class VistaPrincipal extends JFrame {
 		btnRespaldar.setFont(MVC.FUENTE);
 		btnRespaldar.setBackground(Color.GRAY);
 
+		////boton restauración
 		btnRestaurar = new JButton("Restaurar");
 		btnRestaurar.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnRestaurar.setContentAreaFilled(false);
@@ -124,6 +153,7 @@ public class VistaPrincipal extends JFrame {
 		btnRestaurar.setBorder(null);
 		btnRestaurar.setBackground(Color.GRAY);
 
+		////boton configuración
 		btnConfiguracin = new JButton("Configuraci\u00F3n  ");
 		btnConfiguracin.setForeground(MVC.COLOR_HIGHLIGHT);
 		btnConfiguracin.setContentAreaFilled(false);
@@ -133,5 +163,5 @@ public class VistaPrincipal extends JFrame {
 		btnConfiguracin.setFont(MVC.FUENTE);
 		btnConfiguracin.setBorder(null);
 		btnConfiguracin.setBackground(Color.GRAY);
-	}
-}
+	}//fin constructor VistaPrincipal
+}//fin clase VistaPrincipal

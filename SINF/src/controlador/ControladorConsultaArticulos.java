@@ -1,4 +1,10 @@
+/**
+ * Controlador de eventos de la ventana de consulta de articulos
+ * @author Mario
+ * @author David
+ */
 package controlador;
+/* importación de archivos */
 
 import java.awt.Color;
 import java.awt.Component;
@@ -9,57 +15,68 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
-import javax.swing.table.AbstractTableModel;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import modelo.ModeloConsultaArticulos;
 import vista.VistaConsultaArticulo;
 import vista.VistaPrincipal;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.JTextComponent;
 
 import exepciones.EmptyFieldExcepton;
-
+/**
+ * Clase principal
+ * @author David
+ * @see VistaConsultaArticulo
+ * @see ModeloConsutaArticulos
+ */
 public class ControladorConsultaArticulos implements ActionListener,FocusListener,KeyListener,MouseListener,TableModelListener, ListSelectionListener{
-	ModeloConsultaArticulos modeloConsultas = new ModeloConsultaArticulos();
-	VistaConsultaArticulo vistaConsultas= new VistaConsultaArticulo();
-	JFileChooser selecArchivo = new JFileChooser();
+	//variables de instncia
+	VistaConsultaArticulo vistaConsultas;//= new VistaConsultaArticulo();
+	ModeloConsultaArticulos modeloConsultas;// = new ModeloConsultaArticulos(vistaConsultas);	
+	JFileChooser selecArchivo;// = new JFileChooser();
 	File archivo;
 	int contAccion=0;
 
+	////////////////Construtroes e iniciadores
+	/**
+	 * Constructor por defecto
+	 * @param vistaConsultas
+	 * @param modeloConsultas
+	 */
 	public ControladorConsultaArticulos(VistaConsultaArticulo vistaConsultas, ModeloConsultaArticulos modeloConsultas){
 		this.modeloConsultas=modeloConsultas;
 		this.vistaConsultas= vistaConsultas;		
 		this.AddListeners();
-	}
-	///////////////////////Configuraciónes	
+	}///fin contructor 
+	
+	/**
+	 * inicializa la vista y modelo
+	 */
 	public void iniciar() {
-		VistaPrincipal.dpEscritorio.add(vistaConsultas);
+		modeloConsultas.iniciar();
 		vistaConsultas.show();
-		vistaConsultas.getContentPane().setFocusable(true);
-		vistaConsultas.setFocusable(true);
-		vistaConsultas.panel.setFocusable(true);
-		vistaConsultas.panel_1.setFocusable(true);
-		vistaConsultas.tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		archivo=new File(MVC.getConfig().getProperty("articulos"));
-		modeloConsultas.importar(archivo, vistaConsultas.tabla);
+		VistaPrincipal.dpEscritorio.add(vistaConsultas);
+		
 		/*Object[] campos= {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
 		MVC.coloreaCampos(campos,MVC.COLOR_INVALID);*/
-	}
+	}//fin iniciar
 
+	/**
+	 * @deprecated no se logro inicar correctamente, si el componenet es privado no permite mas recursividad, y los listeners no parecen funcionar, mejor usar el addListeners normal
+	 * @param contenedo contenedor
+	 * @param visitado //arreglo de elementos visitado
+	 * @param n
+	 * @see addListeners
+	 */
+	/*
 	private void subComponentAddListener(Component[] contenedo,ArrayList<Component> visitado, int n) {
 		for(Component o: this.vistaConsultas.getContentPane().getComponents()) {
 			//System.out.println("Componente #"+ n +" - "+" Nombre: "+o.hashCode()+" \tclase: "+ o.getClass());
@@ -87,13 +104,17 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 			}
 			
 		}
-	}
+	}//fin subComponentAddListener*/
+	
+	/**
+	 * inicializa los listeners
+	 */
 	protected void AddListeners() {
 		//buscar manera de que los demas componentes(no solo los swing) obtengan un focus listener para poder hacer click en ellos y perdier foco
 		//subComponentAddListener(vistaConsultas.getContentPane().getComponents(),new ArrayList<Component>(),0 );
-		
+		//listener de la venana general
 		this.vistaConsultas.addFocusListener(this);
-		
+		//listeners de los paneles
 		this.vistaConsultas.getContentPane().addMouseListener(this);
 		this.vistaConsultas.getContentPane().addFocusListener(this);
 		this.vistaConsultas.getContentPane().addKeyListener(this);		
@@ -105,10 +126,10 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		this.vistaConsultas.panel_1.addMouseListener(this);
 		this.vistaConsultas.panel_1.addFocusListener(this);
 		this.vistaConsultas.panel_1.addKeyListener(this);
-		
+		//listeners del boton
 		this.vistaConsultas.btnAccion.addActionListener(this);
 		this.vistaConsultas.btnAccion.addMouseListener(this);
-		
+		//Listeners de los campos de texto
 		this.vistaConsultas.txtArt.addKeyListener(this);
 		this.vistaConsultas.txtArt.addMouseListener(this);
 		this.vistaConsultas.txtArt.addFocusListener(this);
@@ -120,10 +141,11 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		this.vistaConsultas.txtSanc.addKeyListener(this);
 		this.vistaConsultas.txtSanc.addMouseListener(this);
 		this.vistaConsultas.txtSanc.addFocusListener(this);
-		
+		//lsitenrs del campo de busqueda(JERoundTExField)
 		this.vistaConsultas.txtBuscar.addKeyListener(this);
 		this.vistaConsultas.txtBuscar.addFocusListener(this);
 		
+		//Listeners de la tabla
 		this.vistaConsultas.tabla.addKeyListener(this);
 		this.vistaConsultas.tabla.addFocusListener((FocusListener) this);
 		this.vistaConsultas.tabla.getSelectionModel().addListSelectionListener(this);
@@ -135,21 +157,19 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		//sm.addListSelectionListener((ListSelectionModel)this);
 		//this.vistaConsultas.tabla.addSelectionListener(this);
 		//this.vistaConsultas.btnRecargar.addActionListener(this);
-	}
-	
+	}//fin add Listeners
 
-
-		
-	
-	
-	
 	////////////////////////Manejo de eventos
 	///////////////Acciones
-	
+	/**
+	 * Eventos de acción
+	 */
 	@Override
 	public void actionPerformed(ActionEvent a) {
+		//variables de instancia
 		contAccion++;
-		Object[] camposTexto;
+		Object[] camposTexto;//pequeño arreglo que agrupo los campos de texto relacionados a los datos de la tabla
+		
 		if(a.getSource() == vistaConsultas.btnAccion||a.getSource() == vistaConsultas.txtArt||a.getSource() == vistaConsultas.txtDesc||a.getSource() == vistaConsultas.txtSanc){
 			//int fila= vistaConsultas.tabla.getSelectedRow();
 			//System.
@@ -286,19 +306,29 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		}*/
 		///////////////Eventos de teclado		
 	}
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void keyPressed(KeyEvent k) {
 		// TODO Auto-generated method stub
 	}
+	
+	/**
+	 * Evento tecla soltada
+	 */
 	@Override
 	public void keyReleased(KeyEvent k) {
 		// TODO Auto-generated method stub
-		//if(k.getSource() instanceof JTextComponent)
-		//	((JTextComponent)k.getSource()).setBackground(Color.RED);
+
+		///////////Tecla Escape: limpia los campos
 		if(k.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			modeloConsultas.limpiaCampos(vistaConsultas);
-			//vistaConsultas.btnAccion.setText("Agregar");
+			vistaConsultas.btnAccion.setText("Agregar");
 		}
+		
+		////////////Origen campo Busqueda: realiza el filtrado
 		if(k.getSource().equals(vistaConsultas.txtBuscar)) {
 			modeloConsultas.filtrar(vistaConsultas.tabla,""+vistaConsultas.txtBuscar.getText());
 			if(modeloConsultas.filtro.getViewRowCount()>0)
@@ -306,10 +336,13 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 			else
 				vistaConsultas.txtBuscar.setBackground(MVC.COLOR_INVALID);
 		}
+		
+		///////////Origen campos de texto relacionados a la tabla, los valida
 		if((k.getSource().equals(vistaConsultas.txtArt))||(k.getSource().equals(vistaConsultas.txtDesc))||(k.getSource().equals(vistaConsultas.txtArt))){
 			Object camposTexto[] ={vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
 			//Object camp[]= {k.getSource()};
-			switch(vistaConsultas.btnAccion.getText()) {
+			//comportamiendo  basado en el estado del boton de acción
+			switch(vistaConsultas.btnAccion.getText()) {				
 				case("Agregar"):{
 					try {
 						modeloConsultas.validaCampos(camposTexto);
@@ -355,9 +388,10 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 				default:{
 					System.out.println("Error tecla");
 				}
-				}
-			
 			}
+			
+		}
+		//antes solo checaba los campos relacionados a la tambla
 		/*	try{
 				modeloConsultas.validaCampos(campo);
 				modeloConsultas.validaCampos(campos);
@@ -371,28 +405,44 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 			}			
 		}*/
 	}
+	
+	/**
+	 * tecla presionada
+	 * originalemtne aqui trataba de realizar aquí las validaciones, pero debido a una desincronización con ls verificaciones se movieron las erificaciones a Keyreleased
+	 */
 	@Override
 	public void keyTyped(KeyEvent k) {
 		// TODO Auto-generated method stub
-		/*if(k.getSource() instanceof JTextComponent)
-			((JTextComponent)k.getSource()).setBackground(Color.BLUE);*/
-		
-		
-	}
+	}//fin keyTiped
 	
 	///////////////Eventos del Raton
 	@Override
+	/**
+	 * 
+	 */
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/**
+	 * evento mouse entra al area de un comonente
+	 * si es un campo lo ilumnia
+	 * precondición: no se encuentra ene stado de error
+	 */
 	@Override
 	public void mouseEntered(MouseEvent m) {
 		// TODO Auto-generated method stub
 		if((m.getSource().equals(vistaConsultas.txtArt)||m.getSource().equals(vistaConsultas.txtDesc)||m.getSource().equals(vistaConsultas.txtSanc)) && !(((JComponent)m.getSource()).hasFocus()) && !(((JTextComponent)m.getSource()).getBackground().equals(MVC.COLOR_INVALID))) {
 				((JTextComponent)m.getSource()).setBackground(MVC.COLOR_HIGHLIGHT);
 		}
-	}
+	}//fin mouseEntered
+	
+	/**
+	 * evento cursor abandona el area un componente
+	 * cambia el color a su estado normal
+	 * precondición: el compnoente no se encuentra en estado de error 
+	 */
 	@Override
 	public void mouseExited(MouseEvent m) {
 		// TODO Auto-generated method stub		
@@ -401,7 +451,12 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 				((JTextComponent)m.getSource()).setBackground(MVC.COLOR_VALID);
 			}
 		}
-	}
+	}//fin mouse Exited
+	
+	/**
+	 * evento se presiona el boton del mouse
+	 * masque nada se utiliza en caso de que se clickeé un panel, este pide foco, lo que permite que se pueda presionar la tecla ESC en cualquier parte y que esta siga cumpliendo su función de limppiar los campos
+	 */
 	@Override
 	public void mousePressed(MouseEvent m) {
 		// TODO Auto-generated method stub
@@ -411,21 +466,34 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 			vistaConsultas.getContentPane().requestFocus();
 		}
 		
-	}
+	}//fin mousePressed
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 	
+	////////Eventos en el modelo de tabla
+	/**
+	 * detecto un cambio en el modelo de datos
+	 * llena los campos en base al renglon seleccionado actualmente
+	 */
 	public void valueChanged(ListSelectionEvent t) {
-		modeloConsultas.llenaCampos(vistaConsultas);
-	}
+		//modeloConsultas.llenaCampos(vistaConsultas);
+	}//fin valueChanged
 	
+	/**
+	 * Evento de cambios en la tabla
+	 * lo desactive para evitar bucle infinito de actualizaciones
+	 */
 	public void tableChanged(TableModelEvent t) {
 		//((Component)t.getSource()).setBackground(Color.LIGHT_GRAY);
 		//modeloConsultas.limpiaCampos(vistaConsultas);
-	}
+	}//fin table changed
 	
 	
-}
+}// fin clase principal
