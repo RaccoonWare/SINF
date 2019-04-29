@@ -87,21 +87,22 @@ public class MVC {
 		//trata de inicializar los compoentes
 		try {
 			//variables de función, MVC del login
-			/*VistaLogin vista = new VistaLogin();
+			VistaLogin vista = new VistaLogin();
 			ModeloLogin modelo= new ModeloLogin(vista);
-			ControladorLogin controlador= new ControladorLogin(vista,modelo);*/			
+			ControladorLogin controlador= new ControladorLogin(vista,modelo);
 			
 			//dialog.setDefaultCloseOperation(JDialog.);
-			//vista.setVisible(true);
-			//manejo de errores
+			vista.setVisible(true);
+
 			
-			VistaPrincipal vista = new VistaPrincipal();
+			/*VistaPrincipal vista = new VistaPrincipal();
 			ModeloPrincipal modelo= new ModeloPrincipal(vista);
 			ControladorPrincipal controlador= new ControladorPrincipal(vista,modelo);
 			controlador.iniciar();
 			
 			modelo.iniciarConsultaArticulos(vista);
-			vista.setVisible(true);
+			vista.setVisible(true);*/
+			//manejo de errores
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
