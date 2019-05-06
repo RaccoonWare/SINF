@@ -40,7 +40,7 @@ public class VistaConsultaArticulo extends JInternalFrame {
 	public JTextField txtArt,txtDesc, txtSanc;//campos de texto relacionados al contenido de la tabla
 	public JButton btnAccion;//boton acción, dependiendo del contexto puede agregar, actualizar o quitar los articulos de la tabla
 	public JTable tabla;
-	public JPanel panel;//, panel_1;//paneles interos, panel_1 es solo estetico, panel cotiene los campos de edición
+	public JPanel panel, panel_1;//paneles interos, panel_1 es solo estetico, panel cotiene los campos de edición
 	
 	/**
 	 * Constructor por defecto
@@ -48,7 +48,7 @@ public class VistaConsultaArticulo extends JInternalFrame {
 	public VistaConsultaArticulo() {
 		//Configuración de la ventana
 		setBorder(new LineBorder(MVC.COLOR_BG, 5, true));//cambia el borde
-		getContentPane().setBackground(Color.WHITE);//fondo
+		getContentPane().setBackground(Color.GRAY);//fondo
 		setTitle("Articulos");//titulo
 		setMaximizable(true);
 		setIconifiable(true);
@@ -58,17 +58,17 @@ public class VistaConsultaArticulo extends JInternalFrame {
 		//inicializa componentes
 
 		//inicializa paneles
-		//panel_1 = new JPanel();
-		//getContentPane().add(panel_1, "cell 0 1,grow");
-		//panel_1.setLayout(new MigLayout("", "[]", "[]"));
-		//panel_1.setBackground(Color.DARK_GRAY);
+		panel_1 = new JPanel();
+		getContentPane().add(panel_1, "cell 0 1,grow");
+		panel_1.setLayout(new MigLayout("", "[]", "[]"));
+		panel_1.setBackground(Color.DARK_GRAY);
 		
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Agregar/Modificar Articulo", TitledBorder.LEADING, TitledBorder.TOP, null, MVC.COLOR_HIGHLIGHT));
 		((javax.swing.border.TitledBorder)panel.getBorder()).setTitleFont(MVC.FUENTE);
 		getContentPane().add(panel, "cell 0 3,grow");
 		panel.setLayout(new MigLayout("", "[grow]", "[grow][][]"));
-		panel.setBackground(MVC.COLOR_BG);
+		panel.setBackground(Color.DARK_GRAY);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		getContentPane().add(scrollPane, "cell 0 2,grow");

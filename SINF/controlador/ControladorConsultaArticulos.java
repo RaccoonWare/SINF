@@ -61,17 +61,9 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	 * inicializa la vista y modelo
 	 */
 	public void iniciar() {
-		VistaPrincipal.dpEscritorio.add(vistaConsultas);
 		modeloConsultas.iniciar();
 		vistaConsultas.show();
-		vistaConsultas.getContentPane().setFocusable(true);
-		vistaConsultas.setFocusable(true);
-		vistaConsultas.panel.setFocusable(true);
-		//vistaConsultas.panel_1.setFocusable(true);
-		vistaConsultas.tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		archivo=new File(MVC.getConfig().getProperty("articulos"));
-		MVC.importar(archivo, vistaConsultas.tabla);
-		
+		VistaPrincipal.dpEscritorio.add(vistaConsultas);
 		
 		/*Object[] campos= {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
 		MVC.coloreaCampos(campos,MVC.COLOR_INVALID);*/
@@ -131,9 +123,9 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		this.vistaConsultas.panel.addFocusListener(this);
 		this.vistaConsultas.panel.addKeyListener(this);
 		
-		//this.vistaConsultas.panel_1.addMouseListener(this);
-		//this.vistaConsultas.panel_1.addFocusListener(this);
-		//this.vistaConsultas.panel_1.addKeyListener(this);
+		this.vistaConsultas.panel_1.addMouseListener(this);
+		this.vistaConsultas.panel_1.addFocusListener(this);
+		this.vistaConsultas.panel_1.addKeyListener(this);
 		//listeners del boton
 		this.vistaConsultas.btnAccion.addActionListener(this);
 		this.vistaConsultas.btnAccion.addMouseListener(this);

@@ -1,9 +1,9 @@
 /**
- * MVC.java	Clase pricipal (y ubicaciÃ³n de funciones auxiliares, probablemtne deberia cambiarse a un archivo separado en el modelo)
+ * MVC.java	Clase pricipal (y ubicación de funciones auxiliares, probablemtne deberia cambiarse a un archivo separado en el modelo)
  * @author Mario
  * @author David
  */
-/* ImportaciÃ³n de librerias */
+/* Importación de librerias */
 package controlador;
 import java.awt.Color;
 import java.awt.Font;
@@ -46,7 +46,7 @@ import vista.VistaPrincipal;
 public class MVC {
 	
 	/////////////////Constantes de paquete
-	/* ConfiguraciÃ³n */
+	/* Configuración */
 	static Properties config = new Properties();
 	/* Colores*/
 	public static final Color COLOR_BG; //Color oscuro de fondo    
@@ -59,7 +59,7 @@ public class MVC {
     
     /**
      * Costructor constantes de paquete
-     * como las variables son static final pero requieren inicializarse desde un archivo externo se crea esta declaraciÃ³n especial
+     * como las variables son static final pero requieren inicializarse desde un archivo externo se crea esta declaración especial
      */
     
     static {
@@ -70,7 +70,7 @@ public class MVC {
             COLOR_INVALID= iniciarColor(MVC.getConfig().getProperty("color_campoError"));
             COLOR_HIGHLIGHT	= iniciarColor(MVC.getConfig().getProperty("color_letraClara"));
             COLOR_LETRA	= iniciarColor(MVC.getConfig().getProperty("color_letraClara"));
-            FUENTE= new Font("Arial", Font.BOLD, 14);//implementaiÃ³n del estilo mediante archivo sigue incompleta, por ahora solo la declaro aquÃ­
+            FUENTE= new Font("Arial", Font.BOLD, 14);//implementaión del estilo mediante archivo sigue incompleta, por ahora solo la declaro aquí
             
     	}
     }
@@ -89,7 +89,7 @@ public class MVC {
 		//new MVC();
 		//trata de inicializar los compoentes
 		try {
-			//variables de funciÃ³n, MVC del login
+			//variables de función, MVC del login
 			VistaLogin vista = new VistaLogin();
 			ModeloLogin modelo= new ModeloLogin(vista);
 			ControladorLogin controlador= new ControladorLogin(vista,modelo);
@@ -109,44 +109,36 @@ public class MVC {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//versiÃ³n previa
-		//antes de la creaciÃ³n del login se llamava la pantalla principal directamente
+		//versión previa
+		//antes de la creación del login se llamava la pantalla principal directamente
 		/*VistaPrincipal vista = new VistaPrincipal();
 		ModeloPrincipal modelo= new ModeloPrincipal(vista);
 		ControladorPrincipal controlador= new ControladorPrincipal(vista,modelo);
 		controlador.iniciar();
 		vista.setVisible(true);*/
 		 
-	}//fin funciÃ³n main
+	}//fin función main
 	
 	/**
-	 * FunciÃ³n para cargar la configuraciÃ³n desde un archivo de propiedades
-	 * pre-condiciÃ³n: el archivo existe
+	 * Función para cargar la configuración desde un archivo de propiedades
+	 * pre-condición: el archivo existe
 	 */
 	public static void loadConfig(){
 		
 		try{
-			//variables de funciÃ³n
-			//variables de funciï¿½n
+			//variables de función
 			FileInputStream configInput = null;
-			URL is = ClassLoader.getSystemResource("datos/configuracion.properties");
-            configInput = new FileInputStream(is.getFile());
-            
-            //carrga las propiedades
-            config.load(configInput);
-            setConfig(config);
-			/*FileInputStream configInput = null;
 			
 			File user = new File(System.getProperty("datos/configuracion.properties"));
 			
-			URL is = new URL("C:/SINF/datos/configuracion.properties");
+			//URL is = new URL("C:/SINF/datos/configuracion.properties");
             configInput = new FileInputStream(user);
             //carrga las propiedades
             config.load(configInput);
-            setConfig(config);*/
+            setConfig(config);
         //manejo de errores
         } catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Error cargando configuraciÃ³n\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error cargando configuración\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }//fin metodo loadConfig
@@ -159,11 +151,11 @@ public class MVC {
 	* @param tablaD
 	* @return
 	* @see exportar
-	* antes las ventanas de consulta de archivo e infracciones tenian una instancias propia de la funciÃ³n, la transferi aquÃ­ para que las dos puesdan llamarlo
+	* antes las ventanas de consulta de archivo e infracciones tenian una instancias propia de la función, la transferi aquí para que las dos puesdan llamarlo
 	*/
 	public static String importar(File archivo, JTable tablaD){
-		//variables de funciÃ³n
-		String respuesta="No se pudo realizar la importaciÃ³n.";		
+		//variables de función
+		String respuesta="No se pudo realizar la importación.";		
 		//sobreEscribe el constructor del Modelo de datos para inhabilidar la edicion directa
 		DefaultTableModel modeloT = new DefaultTableModel() {
 			@Override
@@ -218,7 +210,7 @@ public class MVC {
 			tablaD.getColumnModel().getColumn(1).setPreferredWidth(1000);
 			tablaD.getColumnModel().getColumn(2).setPreferredWidth(250);
 			wb.close();//cierra el archivo
-			respuesta="ImportaciÃ³n exitosa";            
+			respuesta="Importación exitosa";            
 		//manejo de errores
 		} catch (IOException | InvalidFormatException | EncryptedDocumentException e) {
 		System.err.println(e.getMessage());
@@ -231,13 +223,13 @@ public class MVC {
 	* @param archivo
 	* @param tablaD
 	* @return
-	* Antes los dos modelos de consulta de articulos e infracciones tenian una copia identica de la funciÃ³n, la movi aquÃ­ para
+	* Antes los dos modelos de consulta de articulos e infracciones tenian una copia identica de la función, la movi aquí para
 	* @see importar
 	*/
 	public static String exportar(File archivo, JTable tablaD){
 		//variables locales
 		Workbook wb;//maneador archivo office
-		String respuesta="No se realizo con exito la exportaciÃ³n.";//mensaje
+		String respuesta="No se realizo con exito la exportación.";//mensaje
 		int numFila=tablaD.getModel().getRowCount(), numColumna=tablaD.getModel().getColumnCount();//numero de filas (incluyendo espacios vacios
 		
 		//inicia el archivo como hoja de trabajo
@@ -250,19 +242,19 @@ public class MVC {
 		//recorre el modelo y va transfiriendo datos
 		try {
 			for (int i = -1; i < numFila; i++) {//recorre filas
-			    Row fila = hoja.createRow(i+1);//se prepara para aÃ±adir una nueva columa de datos
+			    Row fila = hoja.createRow(i+1);//se prepara para añadir una nueva columa de datos
 			    for (int j = 0; j < numColumna; j++) {//recorre columnas
 			        Cell celda = fila.createCell(j);//crea celda nueva
 			        if(i==-1){//si el indice es -1 lee las cabeceras
 			            celda.setCellValue(String.valueOf(tablaD.getColumnName(j)));
-			        }else{//aÃ±ade a el valor en la celda
+			        }else{//añade a el valor en la celda
 			            celda.setCellValue(String.valueOf(tablaD.getModel().getValueAt(i, j)));
 			        }
 			        wb.write(new FileOutputStream(archivo));//guarda los cambios
 			    }
 			}
 			wb.close();//cierra el documento
-			respuesta="ExportaciÃ³n exitosa.";
+			respuesta="Exportación exitosa.";
 		//Manejo de erores
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -270,13 +262,13 @@ public class MVC {
 		return respuesta;
 	}//fin exportar
 	
-	////////importaciÃ³n de propiedades desde archivo
+	////////importación de propiedades desde archivo
 	
 	/**
 	 * importa un color basado en la cadena con los valores RGB
 	 * @param rgb	codigo RGB (valores decimales)
 	 * @return	El color equivalente al codigo RGB
-	 * pre-condiciÃ³n, el texto biene en formato n,n,n; 0 <= n < 255
+	 * pre-condición, el texto biene en formato n,n,n; 0 <= n < 255
 	 */
 	private static Color iniciarColor(String rgb) {
 		//System.out.println("rgb= "+rgb);
@@ -301,7 +293,7 @@ public class MVC {
 		}
 		//errores de iniciacion
 		catch(ErroresInit e) {
-			System.out.println("Error de inicializaciÃ³n, codigo de error " +e.codigo );
+			System.out.println("Error de inicialización, codigo de error " +e.codigo );
 			e.printStackTrace();
 		}
 		//Null pointer, probablmente un error de parseo 
@@ -312,7 +304,7 @@ public class MVC {
 		return c;
 	}//fin iniciarColor
 	/**
-	 * FunciÃ³n para cargar la fuente desde el archivo
+	 * Función para cargar la fuente desde el archivo
 	 * debido a los posibles modificadores aun no esta implementada direcaente
 	 * por ahora esta desactivada y la fuente se declara en este archivo en vez de importarse desde archivo de propiedades	
 	 */
@@ -324,8 +316,8 @@ public class MVC {
 			String[] vals = font.split(",");
 			String fuente=vals[0];
 			String estilo=vals[1];			//investigar sobre TextAtributes para mas uso avanzaddo o uso de multiples atributos de estilo, por mientras con esta basta
-			int tamaÃ±o=Integer.parseInt(vals[2]);
-			//f= new Font(fuente,Font.,tamaÃ±o);
+			int tamaño=Integer.parseInt(vals[2]);
+			//f= new Font(fuente,Font.,tamaño);
 		}catch(NullPointerException e) {
 			
 		}
@@ -349,16 +341,16 @@ public class MVC {
 		MVC.config = config;
 	}//fin setConfig
 	
-	//anteriormente habia puesto aquÃ­ las funciones de importar y exportar, pero loas movi al modelo principal
+	//anteriormente habia puesto aquí las funciones de importar y exportar, pero loas movi al modelo principal
 
 	///////////////// Funciones Miscelaneas
 	/////////////Funciones publicas
 	/**
-	 * funciÃ³n que determina si un numero esta dentro de un rango de otros dos numeros
+	 * función que determina si un numero esta dentro de un rango de otros dos numeros
 	 * @param n	numero a evaluar
 	 * @param m numero inferior
 	 * @param M nuero mayor
-	 * pre-condiciÃ³n: m<=M
+	 * pre-condición: m<=M
 	 * @return
 	 */
 	public static boolean inRange(int n,int m, int M) {

@@ -76,10 +76,10 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		txtFolio.setColumns(10);
 		panel.add(txtFolio, "cell 2 0,growx");
 
-		btnBuscar = new JButton(/*"Buscar"*/);
+		btnBuscar = new JButton("");
 		btnBuscar.setBorder(null);
 		btnBuscar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnBuscar.setIcon(new ImageIcon(VistaConsultaInfraccion.class.getResource("/iconos/buscar.png")));
+		btnBuscar.setIcon(new ImageIcon(VistaConsultaInfraccion.class.getResource("/iconos/buscar2.png")));
 		btnBuscar.setBackground(new Color(234, 254, 255));
 		panel.add(btnBuscar, "cell 0 1,growx");
 

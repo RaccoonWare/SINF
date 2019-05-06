@@ -8,7 +8,7 @@ public class Test {
 	@org.junit.Test
 	public void testModeloInfracciones() {
 		ModeloInfraccion modeloInfraccion = new ModeloInfraccion();
-		modeloInfraccion.setColor("");
+		//modeloInfraccion.setColor("");
 		assertNotNull(modeloInfraccion.getColor());
 	}
 	

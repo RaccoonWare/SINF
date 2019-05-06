@@ -45,7 +45,7 @@ public class ModeloConsultaArticulos {
      */
     public ModeloConsultaArticulos(VistaConsultaArticulo vistaArticulos) {
     	this.vistaConsultas= vistaArticulos;
-    	archivo=new File(MVC.getConfig().getProperty("articulos"));
+    	//archivo=new File(MVC.getConfig().getProperty("articulos"));
     	//modeloT=  new DefaultTableModel();
     	
     	iniciar();
@@ -53,7 +53,14 @@ public class ModeloConsultaArticulos {
     }
     
     public void iniciar() {    	
-    	
+    	vistaConsultas.show();
+		vistaConsultas.getContentPane().setFocusable(true);
+		vistaConsultas.setFocusable(true);
+		vistaConsultas.panel.setFocusable(true);
+		vistaConsultas.panel_1.setFocusable(true);
+		vistaConsultas.tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		archivo=new File(MVC.getConfig().getProperty("articulos"));
+		MVC.importar(archivo, vistaConsultas.tabla);
     }
     
 	////////////////Manejo de formularios
