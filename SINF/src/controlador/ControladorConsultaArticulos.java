@@ -491,7 +491,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	 * llena los campos en base al renglon seleccionado actualmente
 	 */
 	public void valueChanged(ListSelectionEvent t) {
-		//modeloConsultas.llenaCampos(vistaConsultas);
+		modeloConsultas.llenaCampos(vistaConsultas);
 	}//fin valueChanged
 	
 	/**
@@ -499,8 +499,8 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	 * lo desactive para evitar bucle infinito de actualizaciones
 	 */
 	public void tableChanged(TableModelEvent t) {
-		//((Component)t.getSource()).setBackground(Color.LIGHT_GRAY);
-		//modeloConsultas.limpiaCampos(vistaConsultas);
+		((Component)t.getSource()).setBackground(Color.LIGHT_GRAY);
+		modeloConsultas.limpiaCampos(vistaConsultas);
 	}//fin table changed
 	
 	

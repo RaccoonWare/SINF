@@ -32,7 +32,7 @@ public class ModeloConsultaArticulos {
 	//variables de clase
 	VistaConsultaArticulo vistaConsultas;
 	Workbook wb;//archivo de office
-    private DefaultTableModel modeloT;//Modelo de tabla, el que se encuentra en la vista es un placeholder, en este se manejan los datos reales
+    //private DefaultTableModel modeloT;//Modelo de tabla, el que se encuentra en la vista es un placeholder, en este se manejan los datos reales
     //Variables de instancia
     public TableRowSorter<TableModel> filtro;
     private File archivo;
@@ -49,7 +49,7 @@ public class ModeloConsultaArticulos {
     	//modeloT=  new DefaultTableModel();
     	
     	iniciar();
-    	modeloT= (DefaultTableModel) vistaArticulos.tabla.getModel();
+    	//modeloT= (DefaultTableModel) vistaArticulos.tabla.getModel();
     }
     
     public void iniciar() {    	
@@ -74,11 +74,11 @@ public class ModeloConsultaArticulos {
 		int row= vistaConsultas.tabla.getSelectedRow();
 		vistaConsultas.btnAccion.setText("Modificar");		
 		if(row>=0){
-			vistaConsultas.txtArt.setText((String) vistaConsultas.tabla.getValueAt(row,0));
+			vistaConsultas.txtArt.setText(""+(String) vistaConsultas.tabla.getValueAt(row,0));
 			vistaConsultas.txtArt.setBackground(MVC.COLOR_VALID);
-			vistaConsultas.txtDesc.setText((String) vistaConsultas.tabla.getValueAt(row,1));
+			vistaConsultas.txtDesc.setText(""+(String) vistaConsultas.tabla.getValueAt(row,1));
 			vistaConsultas.txtDesc.setBackground(MVC.COLOR_VALID);
-			vistaConsultas.txtSanc.setText((String) vistaConsultas.tabla.getValueAt(row,2));
+			vistaConsultas.txtSanc.setText(""+(String) vistaConsultas.tabla.getValueAt(row,2));
 			vistaConsultas.txtSanc.setBackground(MVC.COLOR_VALID);
 		}
 	}
@@ -144,7 +144,7 @@ public class ModeloConsultaArticulos {
 		//deloT.addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});		
 		//modeloT.fireTableRowsInserted(modeloT.getRowCount()-1, modeloT.getRowCount()-1);
 		((DefaultTableModel) vistaConsultas.tabla.getModel()).addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});		
-		((DefaultTableModel) vistaConsultas.tabla.getModel()).fireTableRowsInserted(modeloT.getRowCount()-1, modeloT.getRowCount()-1);
+		((DefaultTableModel) vistaConsultas.tabla.getModel()).fireTableRowsInserted(((DefaultTableModel)vistaConsultas.tabla.getModel()).getRowCount()-1, ((DefaultTableModel)vistaConsultas.tabla.getModel()).getRowCount()-1);
 		vistaConsultas.txtArt.setText("");
 		vistaConsultas.txtDesc.setText("");
 		vistaConsultas.txtSanc.setText("");
@@ -215,8 +215,8 @@ public class ModeloConsultaArticulos {
 	public void quitarCampo(VistaConsultaArticulo vistaConsultas) {
 		// TODO Auto-generated method stub
 		//if(vistaConsultas.tabla.getModel().equals(modeloT))
-		modeloT.removeRow(vistaConsultas.tabla.getSelectedRow());			
-		modeloT.fireTableDataChanged();
+		((DefaultTableModel)vistaConsultas.tabla.getModel()).removeRow(vistaConsultas.tabla.getSelectedRow());			
+		((DefaultTableModel)vistaConsultas.tabla.getModel()).fireTableDataChanged();
 		limpiaCampos(vistaConsultas);
 		MVC.exportar(archivo,vistaConsultas.tabla);
 		vistaConsultas.txtBuscar.requestFocus();
@@ -240,7 +240,7 @@ public class ModeloConsultaArticulos {
 		// TODO Auto-generated method stub
 		//try {
 		//	validaCampos(vistaConsultas);
-			if(vistaConsultas.tabla.getModel().equals(modeloT)) {
+			if(vistaConsultas.tabla.getModel().equals(((DefaultTableModel)vistaConsultas.tabla.getModel()))) {
 				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtArt.getText(),vistaConsultas.tabla.getSelectedRow(),0);
 				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtDesc.getText(),vistaConsultas.tabla.getSelectedRow(),1);
 				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtSanc.getText(),vistaConsultas.tabla.getSelectedRow(),2);
@@ -264,14 +264,14 @@ public class ModeloConsultaArticulos {
      * post-condición: tabla actualizada, pero modelo sin modificar
 	 */
 	public void filtrar(JTable tabla, String texto) {		
-		filtro= new TableRowSorter<TableModel>(modeloT);
+		filtro= new TableRowSorter<TableModel>(((DefaultTableModel)vistaConsultas.tabla.getModel()));
 		tabla.setRowSorter(filtro);
 		if(texto.length()==0) {
 			filtro.setRowFilter(null);
 		}else {
 			filtro.setRowFilter(RowFilter.regexFilter(texto));
 		}
-		modeloT.fireTableDataChanged();
+		((DefaultTableModel)vistaConsultas.tabla.getModel()).fireTableDataChanged();
 		
 	}//fin filtrar
 	/*public void newFilter(){
