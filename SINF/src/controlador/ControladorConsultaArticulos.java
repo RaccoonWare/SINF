@@ -9,6 +9,7 @@ package controlador;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -28,6 +29,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 
 import exepciones.EmptyFieldExcepton;
@@ -156,9 +158,12 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		//Listeners de la tabla
 		this.vistaConsultas.tabla.addKeyListener(this);
 		this.vistaConsultas.tabla.addFocusListener((FocusListener) this);
+		this.vistaConsultas.tabla.addMouseListener(this);
 		this.vistaConsultas.tabla.getSelectionModel().addListSelectionListener(this);
-		
-		
+		//listeners del popupmenu de la talba
+		this.vistaConsultas.itemAgregar.addActionListener(this);
+		this.vistaConsultas.itemModificar.addActionListener(this);
+		this.vistaConsultas.itemQuitar.addActionListener(this);
 		//this.vistaConsultas.tabla.getModel().addTableModelListener((TableModelListener) this);
 		//SelectionListener tableListener = new S
 		//ListSelectionModel sm=this.vistaConsultas.tabla.getSelectionModel();
@@ -171,13 +176,15 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	///////////////Acciones
 	/**
 	 * Eventos de acción
+	 * Originalmente solo erea el boton de acción
+	 * pero se agregaron los elemenntos de JPopMenu
 	 */
 	@Override
 	public void actionPerformed(ActionEvent a) {
 		//variables de instancia
 		contAccion++;
 		Object[] camposTexto;//pequeño arreglo que agrupo los campos de texto relacionados a los datos de la tabla
-		
+		//Fuente Botón de acción, la acción dependeera de la etiqueta actual
 		if(a.getSource() == vistaConsultas.btnAccion||a.getSource() == vistaConsultas.txtArt||a.getSource() == vistaConsultas.txtDesc||a.getSource() == vistaConsultas.txtSanc){
 			//int fila= vistaConsultas.tabla.getSelectedRow();
 			//System.
@@ -186,36 +193,36 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 				case("Agregar"):{
 					try {
 						modeloConsultas.validaCampos(camposTexto);
-						modeloConsultas.agregaArticulo(vistaConsultas);
+						modeloConsultas.agregaArticulo();
 					} catch (EmptyFieldExcepton e) {
 						// TODO Auto-generated catch block
 						MVC.coloreaCampos(e.camposVacios, MVC.COLOR_INVALID);
 					}
 					break;
-				}
+				}//fin acciones botón accion estaddo "Agregar"
 				case("Modificar"):{
 					try {
 						modeloConsultas.validaCampos(camposTexto);
-						modeloConsultas.modificaArticulo(vistaConsultas);
+						modeloConsultas.modificaArticulo();
 					}catch (EmptyFieldExcepton e) {
 						// TODO Auto-generated catch block
 						if(e.camposVacios.length==3)
-							modeloConsultas.campoQuitable(vistaConsultas);
+							modeloConsultas.campoQuitable();
 						else
 							MVC.coloreaCampos(e.camposVacios, MVC.COLOR_INVALID);
 					}
 					break;
-				}
-				case("Quitar"):{
+				}//fin acciones botón accion estaddo "Modificar"
+				case("Eliminar"):{
 					try {
 						modeloConsultas.validaCampos(camposTexto);
-						modeloConsultas.quitarCampo(vistaConsultas);
+						modeloConsultas.quitarCampo();
 						vistaConsultas.btnAccion.setText("Modificar");
 					} catch (EmptyFieldExcepton e) {
 						// TODO Auto-generated catch block
 						if(e.camposVacios.length==3) {
 							if(vistaConsultas.tabla.getSelectedRow()>=0)
-								modeloConsultas.quitarCampo(vistaConsultas);
+								modeloConsultas.quitarCampo();
 							else 
 								System.out.println("Error, codigo de Indice negativo");
 						}else {
@@ -226,8 +233,21 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 				}
 				
 				default:{System.out.println("Error acción");break;}
-			
-			}
+				
+			}//fin acciones botón accion estaddo "Eliminar"
+		//caso origien elemento popup
+		}else if(a.getSource().equals(vistaConsultas.itemAgregar)) {
+			modeloConsultas.limpiaCampos();
+			vistaConsultas.btnAccion.setText("Agregar");
+		}else if (a.getSource().equals(vistaConsultas.itemModificar)) {				
+			modeloConsultas.llenaCampos();
+			vistaConsultas.txtDesc.requestFocus();
+		}else if (a.getSource().equals(vistaConsultas.itemQuitar)) {
+			modeloConsultas.quitarCampo();
+			modeloConsultas.limpiaCampos();
+
+		}
+			//anteriormente eran tres botones de acción
 			/*switch(((JButton)e.getSource()).getText()){
 				case("Agregar"):{
 					try {						
@@ -262,7 +282,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 			
 			//archivo=new File(MVC.getConfig().getProperty("articulos"));
 			//modeloConsultas.Importar(archivo, vistaConsultas.tabla);
-		}
+		
 			
 
 //		if(e.getSource() == vistaConsultas.btnRecargar){
@@ -275,14 +295,18 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 //				}
 //			}
 //		}
-	}
+	}//fin actionPerformed
 	///////////////Elementos en Foco	
+	/**
+	 * Evento foco ganado
+	 * se usa principalemtne para cambios de colores de campos y para detectar si se selecciono la tabla
+	 */
 	@Override
 	public void focusGained(FocusEvent f) {
 		// TODO Auto-generated method stub
 		Object campos[]= {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
 		if(f.getSource().equals(vistaConsultas.tabla)||f.getSource().equals(vistaConsultas.tabla.getComponents())) {
-			modeloConsultas.llenaCampos(vistaConsultas);		
+			modeloConsultas.llenaCampos();		
 		}else if (f.getSource() instanceof JTextComponent){			
 			((JTextComponent)f.getSource()).setBackground(Color.WHITE);
 		}
@@ -298,7 +322,13 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 			}		
 		}*/
 		
-	}
+	}//fin focusGained
+	
+	/**
+	 * Evento foco perdido
+	 * princplamente para cambio de colores de campos
+	 */
+	
 	@Override
 	public void focusLost(FocusEvent f) {		
 		// TODO Auto-generated method stub
@@ -312,9 +342,9 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		/*if(e.getSource().equals(vistaConsultas.tabla)) {
 			//limpiaCampos();
 		}*/
-		///////////////Eventos de teclado		
-	}
-	
+			
+	}//Fin focusLost
+	///////////////Eventos de teclado	
 	/**
 	 * 
 	 */
@@ -332,8 +362,16 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 
 		///////////Tecla Escape: limpia los campos
 		if(k.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			modeloConsultas.limpiaCampos(vistaConsultas);
+			modeloConsultas.limpiaCampos();
 			vistaConsultas.btnAccion.setText("Agregar");
+		}
+		///////////Tecla Eliminar/suprimir y retroceso: si seta en un campo de texto no hace nada, en cualquier otro lado borra el elemento actual de la tabla
+		if(k.getKeyCode() == KeyEvent.VK_DELETE || k.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
+			//System.out.println("se presiono la tecla suprimir");
+			//System.out.println("fila= "+vistaConsultas.tabla.getSelectedRow());
+			if((!vistaConsultas.txtArt.hasFocus() && !vistaConsultas.txtDesc.hasFocus() && !vistaConsultas.txtSanc.hasFocus() && !vistaConsultas.txtBuscar.hasFocus())&&vistaConsultas.tabla.getSelectedRow()>=0)
+				modeloConsultas.quitarCampo();
+				modeloConsultas.limpiaCampos();
 		}
 		
 		////////////Origen campo Busqueda: realiza el filtrado
@@ -368,13 +406,13 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 					} catch (EmptyFieldExcepton e) {
 						// TODO Auto-generated catch block
 						if(e.camposVacios.equals(camposTexto))
-							modeloConsultas.campoQuitable(vistaConsultas);
+							modeloConsultas.campoQuitable();
 						else
 							MVC.coloreaCampos(e.camposVacios, MVC.COLOR_INVALID);
 					}
 					break;
 				}
-				case("Quitar"):{
+				case("Eliminar"):{
 					try {
 						modeloConsultas.validaCampos(camposTexto);
 						MVC.coloreaCampos(camposTexto, MVC.COLOR_VALID);
@@ -412,7 +450,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 					
 			}			
 		}*/
-	}
+	}//fin KeyReleeased
 	
 	/**
 	 * tecla presionada
@@ -464,15 +502,32 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	/**
 	 * evento se presiona el boton del mouse
 	 * masque nada se utiliza en caso de que se clickeé un panel, este pide foco, lo que permite que se pueda presionar la tecla ESC en cualquier parte y que esta siga cumpliendo su función de limppiar los campos
-	 */
+	 * cuando agregue el popup menu tambien detecta si se presionola tabla para mostrarlo y sus elementos*/
 	@Override
 	public void mousePressed(MouseEvent m) {
 		// TODO Auto-generated method stub
+		//caso tabla origen tabla
+		if(m.getSource().equals(vistaConsultas.tabla)) {
+			System.out.println("Herp");
+			if (SwingUtilities.isRightMouseButton(m))
+				vistaConsultas.popupMenu.show(m.getComponent(),m.getX(),m.getY());
+			//selecciona la columna seleccionada (en caso que el se presione el boton derecho, con en izquierdo ocurre por default
+			Point p= m.getPoint();
+			int currentRow= vistaConsultas.tabla.rowAtPoint(p);
+			vistaConsultas.tabla.setRowSelectionInterval(currentRow, currentRow);
+		//si el elemento oprimido no es es la tabla oculta el menu popup
+		}else
+			vistaConsultas.popupMenu.hide();
+		
+
+			//origen paneles en general			
 		if (m.getSource() instanceof JPanel){			
+
 			((JPanel)m.getSource()).requestFocus();
 		}else if (m.getSource() == vistaConsultas.getContentPane()){			
 			vistaConsultas.getContentPane().requestFocus();
-		}
+		} 
+		
 		
 	}//fin mousePressed
 	
@@ -491,7 +546,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	 * llena los campos en base al renglon seleccionado actualmente
 	 */
 	public void valueChanged(ListSelectionEvent t) {
-		modeloConsultas.llenaCampos(vistaConsultas);
+		modeloConsultas.llenaCampos();
 	}//fin valueChanged
 	
 	/**
@@ -500,7 +555,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	 */
 	public void tableChanged(TableModelEvent t) {
 		((Component)t.getSource()).setBackground(Color.LIGHT_GRAY);
-		modeloConsultas.limpiaCampos(vistaConsultas);
+		modeloConsultas.limpiaCampos();
 	}//fin table changed
 	
 	

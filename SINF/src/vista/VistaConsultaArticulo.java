@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import controlador.MVC;
 
@@ -22,6 +23,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Clase pricipal
@@ -41,6 +46,8 @@ public class VistaConsultaArticulo extends JInternalFrame {
 	public JButton btnAccion;//boton acción, dependiendo del contexto puede agregar, actualizar o quitar los articulos de la tabla
 	public JTable tabla;
 	public JPanel panel;//, panel_1;//paneles interos, panel_1 es solo estetico, panel cotiene los campos de edición
+	public JPopupMenu popupMenu;//menu boton secundario para la tabla, 
+	public JMenuItem itemAgregar,itemModificar,itemQuitar;//opciones  en el menu del boton secundario en la tabla	
 	
 	/**
 	 * Constructor por defecto
@@ -120,12 +127,32 @@ public class VistaConsultaArticulo extends JInternalFrame {
 		panel.add(txtSanc, "cell 0 0,growx");
 		
 		
+		
+		
+		
 		//inicializa tabla
 		tabla = new JTable();
 		tabla.setFont(new Font("Arial", Font.BOLD, 14));
 		tabla.setBackground(Color.WHITE);
 		scrollPane.setViewportView(tabla);
-				
+		
+		//inicializar menu popup para tabla
+		popupMenu = new JPopupMenu();
+		popupMenu.setLabel("");
+		
+		///inicializa los commpunentes del popu
+		itemAgregar= new JMenuItem("Agregar");
+		itemModificar= new JMenuItem("Modificar");
+		itemQuitar= new JMenuItem("Eliminar");
+		////Agrega los compnentes a l popup
+		popupMenu.add(itemAgregar);
+		popupMenu.add(itemModificar);
+		popupMenu.add(itemQuitar);
+		///integra el popup a la tabla
+		//addPopup(tabla, popupMenu);//añade menu popup a latabla/generado automaticamente
+		tabla.setComponentPopupMenu(popupMenu);//añade menu popup a la tabla
+		
+		
 		//Inicializa boton
 		btnAccion = new JButton("Agregar");		
 		btnAccion.setFont(MVC.FUENTE);
@@ -256,4 +283,5 @@ public class VistaConsultaArticulo extends JInternalFrame {
 //			}
 //		}
 //	}
+	
 }//fin clase principal

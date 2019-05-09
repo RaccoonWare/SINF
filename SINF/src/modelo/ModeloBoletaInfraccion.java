@@ -6,12 +6,13 @@ import java.awt.event.ActionListener;
 import javax.swing.Action;
 
 import controlador.ControladorBoletaInfraccion;
-import vista.BoletaInfraccion;
+//import vista.BoletaInfraccion;
+import vista.VistaInfraccion;
 
 public class ModeloBoletaInfraccion implements ActionListener{
-	private BoletaInfraccion VistaBoleta;
+	private VistaInfraccion VistaBoleta;
 	private ControladorBoletaInfraccion ControladorBoleta;
-	public ModeloBoletaInfraccion(BoletaInfraccion VistaBoleta,ControladorBoletaInfraccion ControladorBoleta) {
+	public ModeloBoletaInfraccion(VistaInfraccion VistaBoleta,ControladorBoletaInfraccion ControladorBoleta) {
 		this.VistaBoleta=VistaBoleta;
 		this.ControladorBoleta=ControladorBoleta;
 		this.VistaBoleta.btnInsertar.addActionListener(this);

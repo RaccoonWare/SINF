@@ -13,6 +13,10 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.hssf.usermodel.*;
@@ -45,16 +49,41 @@ public class ModeloConsultaArticulos {
      */
     public ModeloConsultaArticulos(VistaConsultaArticulo vistaArticulos) {
     	this.vistaConsultas= vistaArticulos;
-    	archivo=new File(MVC.getConfig().getProperty("articulos"));
-    	//modeloT=  new DefaultTableModel();
-    	
     	iniciar();
-    	//modeloT= (DefaultTableModel) vistaArticulos.tabla.getModel();
+
     }
     
+    /**
+     * inicializa los componentes
+     */
     public void iniciar() {    	
-    	
+    	//modeloT=  new DefaultTableModel();
+    	archivo=new File(MVC.getConfig().getProperty("articulos"));
+    	//modeloT= (DefaultTableModel) vistaArticulos.tabla.getModel();
     }
+    /**
+     * Añade componenetes al popup menu, generado automaticamene
+     * @param component
+     * @param popup
+     * @deprecated ...ver si puedo implementarlo manualemente con los demas elementos
+     */
+    /*private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}//Fin addPopup*/
     
 	////////////////Manejo de formularios
     /**
@@ -70,7 +99,7 @@ public class ModeloConsultaArticulos {
      * @see quitaCampos
      * @see validaCampos
      */
-	public void llenaCampos(VistaConsultaArticulo vistaConsultas) {
+	public void llenaCampos() {
 		int row= vistaConsultas.tabla.getSelectedRow();
 		vistaConsultas.btnAccion.setText("Modificar");		
 		if(row>=0){
@@ -95,20 +124,20 @@ public class ModeloConsultaArticulos {
      * @see campoQuitable
      * @see QuitaCampos
 	 */
-	public void limpiaCampos(VistaConsultaArticulo vistaConsultas) {
+	public void limpiaCampos() {
 		vistaConsultas.btnAccion.setText("Agregar");
 		vistaConsultas.tabla.clearSelection();
 		vistaConsultas.txtArt.setText("");
 		vistaConsultas.txtDesc.setText("");
 		vistaConsultas.txtSanc.setText("");
 		vistaConsultas.txtBuscar.setText("");
-		filtrar(vistaConsultas.tabla, "");
+		//filtrar(vistaConsultas.tabla, "");
 		vistaConsultas.tabla.clearSelection();
 		
 	}//fin limpiarCampos
 	
 	/**
-	 * Cambia el boton de acción al estado "Quitar", si se vuelve a oprimir se eliminara el dato del modelo, si se vuelve a llenar los datos regresa al estado modificable * @param vistaConsultas
+	 * Cambia el boton de acción al estado "Eliminar", si se vuelve a oprimir se eliminara el dato del modelo, si se vuelve a llenar los datos regresa al estado modificable * @param vistaConsultas
 	 * pre-condición: los campos estan vacios
 	 * @see agregaArticulo
      * @see llenaCampos
@@ -117,11 +146,11 @@ public class ModeloConsultaArticulos {
      * @see campoQuitable
      * @see QuitaCampos
 	 */
-	public void campoQuitable(VistaConsultaArticulo vistaConsultas) {
+	public void campoQuitable() {
 		vistaConsultas.txtArt.setBackground(Color.WHITE);
 		vistaConsultas.txtDesc.setBackground(Color.WHITE);
 		vistaConsultas.txtSanc.setBackground(Color.WHITE);
-		vistaConsultas.btnAccion.setText("Quitar");		
+		vistaConsultas.btnAccion.setText("Eliminar");		
 	}//fin campoQuitable
 	
 	/**
@@ -139,7 +168,7 @@ public class ModeloConsultaArticulos {
      * Cuando cambie la función exportar tuve que importar el modelo directamente en vez de usar el local
 	 */
 
-	public void agregaArticulo(VistaConsultaArticulo vistaConsultas) {
+	public void agregaArticulo() {
 		
 		//deloT.addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});		
 		//modeloT.fireTableRowsInserted(modeloT.getRowCount()-1, modeloT.getRowCount()-1);
@@ -185,7 +214,7 @@ public class ModeloConsultaArticulos {
 	 * @throws EmptyFieldExcepton
 	 * @see validaCampo
 	 */
-	public Object[] validaCampos(VistaConsultaArticulo vistaConsultas) throws EmptyFieldExcepton {
+	public Object[] validaCampos() throws EmptyFieldExcepton {
 		Object campos[] = new Object[] {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
 		Object aux[]= new Object[campos.length];
 		int vacios=0;
@@ -202,7 +231,7 @@ public class ModeloConsultaArticulos {
 
 	/**
 	 * quita los un dato del modelo y la tabla
-	 * pre-condición: boton acción en estado quitar, campos vacios
+	 * pre-condición: boton acción en estado Eliminar, campos vacios
 	 * post-condición modelo, tabla y archivos  actualizados 
 	 * @param vistaConsultas
 	 * @see agregaArticulo
@@ -212,14 +241,15 @@ public class ModeloConsultaArticulos {
      * @see campoQuitable
      * @see QuitaCampos
 	 */
-	public void quitarCampo(VistaConsultaArticulo vistaConsultas) {
+	public void quitarCampo() {
 		// TODO Auto-generated method stub
 		//if(vistaConsultas.tabla.getModel().equals(modeloT))
 		((DefaultTableModel)vistaConsultas.tabla.getModel()).removeRow(vistaConsultas.tabla.getSelectedRow());			
 		((DefaultTableModel)vistaConsultas.tabla.getModel()).fireTableDataChanged();
-		limpiaCampos(vistaConsultas);
+		limpiaCampos();
 		MVC.exportar(archivo,vistaConsultas.tabla);
 		vistaConsultas.txtBuscar.requestFocus();
+		
 	}
 
 	/**
@@ -236,7 +266,7 @@ public class ModeloConsultaArticulos {
      * 
      * cuando cambie la función exportar a MVC tuve que obtener el modelo de la tabla en vez de usar ModeloT
 	 */
-	public void modificaArticulo(VistaConsultaArticulo vistaConsultas) {
+	public void modificaArticulo() {
 		// TODO Auto-generated method stub
 		//try {
 		//	validaCampos(vistaConsultas);
