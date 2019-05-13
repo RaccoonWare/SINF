@@ -60,19 +60,27 @@ public class MVC {
     /**
      * Costructor constantes de paquete
      * como las variables son static final pero requieren inicializarse desde un archivo externo se crea esta declaración especial
+     * se edito el metodo para que maneje de valores por defecto en caso que no logre cargar el archivo
      */
     
     static {
-    	{
-    		loadConfig();//llama al archivo
-    		COLOR_BG		= iniciarColor(MVC.getConfig().getProperty("color_fondo"));            
-            COLOR_VALID	=iniciarColor(MVC.getConfig().getProperty("color_campoNormal"));
-            COLOR_INVALID= iniciarColor(MVC.getConfig().getProperty("color_campoError"));
-            COLOR_HIGHLIGHT	= iniciarColor(MVC.getConfig().getProperty("color_letraClara"));
-            COLOR_LETRA	= iniciarColor(MVC.getConfig().getProperty("color_letraClara"));
-            FUENTE= new Font("Arial", Font.BOLD, 14);//implementaión del estilo mediante archivo sigue incompleta, por ahora solo la declaro aquí
-            
-    	}
+    	//trata de carga el archivo
+    	try{
+    		loadConfig();//llama al archivo y carga las propiedades, en caso de no cargar el archivo carga valores predeterminados de acuerdo a la peleta escogida en el diseño inicial    		
+    	//manejo de errores
+    	}catch(Exception e) {    		
+    		e.printStackTrace();
+    		//checar si es posible cargar propiedades desde codigo en vez de archivo, de ser así insertar valores predeterminados aquí
+    	//indpendientemente si se logra cargar o no los datos, asigna los colores
+	    }finally {
+	    	COLOR_BG= iniciarColor(MVC.getConfig().getProperty("color_fondo"),new Color(58,63,64));            
+		    COLOR_VALID	=iniciarColor(MVC.getConfig().getProperty("color_campoNormal"),new Color(187,202,204));
+		    COLOR_INVALID= iniciarColor(MVC.getConfig().getProperty("color_campoError"),new Color(201,79,76));
+		    COLOR_HIGHLIGHT	= iniciarColor(MVC.getConfig().getProperty("color_letraClara"),new Color(234,253,255));
+		    COLOR_LETRA	= iniciarColor(MVC.getConfig().getProperty("color_letraClara"),new Color(234,253,255));
+		    FUENTE= new Font("Arial", Font.BOLD, 14);//implementaión del estilo mediante archivo sigue incompleta, por ahora solo la declaro aquí
+	    }
+
     }
     // 
     /* Archivo propiedades */
@@ -85,7 +93,7 @@ public class MVC {
 	 * Clase principal
 	 * Inicia el programa, llamando la pantalla de login 
 	 * */
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		//new MVC();
 		//trata de inicializar los compoentes
 		try {
@@ -108,6 +116,7 @@ public class MVC {
 			//manejo de errores
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		}
 		//versión previa
 		//antes de la creación del login se llamava la pantalla principal directamente
@@ -123,7 +132,7 @@ public class MVC {
 	 * Función para cargar la configuración desde un archivo de propiedades
 	 * pre-condición: el archivo existe
 	 */
-	public static void loadConfig(){
+	public static void loadConfig() throws Exception{
 		
 		try{
 			//variables de función
@@ -148,6 +157,7 @@ public class MVC {
         } catch(Exception e){
             JOptionPane.showMessageDialog(null, "Error cargando configuración\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
+            throw e;
         }
     }//fin metodo loadConfig
 	
@@ -166,11 +176,15 @@ public class MVC {
 		String respuesta="No se pudo realizar la importación.";		
 		//sobreEscribe el constructor del Modelo de datos para inhabilidar la edicion directa
 		DefaultTableModel modeloT = new DefaultTableModel() {
+			//variable de instancia
+			public boolean editable= false;//bandera para posible habilitación de edición
+			//la clase DefaultTableModel por defecto pone sus celdas como editables y sin metodo set para cambiar la opción, declarando editable y sobreescribiendo el metodo habilito su posible edición
 			@Override
 			public boolean isCellEditable(int row, int column) {
 			   //all cells false
-			   return false;
+			   return editable;
 			}
+						
 		};        
 		tablaD.setModel(modeloT);//asigna a la tabla de la vista el modelo creado
 		try {
@@ -275,13 +289,15 @@ public class MVC {
 	/**
 	 * importa un color basado en la cadena con los valores RGB
 	 * @param rgb	codigo RGB (valores decimales)
+	 * @param def	codigo RGB (color por defecto encaso de no poder cargarse)
 	 * @return	El color equivalente al codigo RGB
 	 * pre-condición, el texto biene en formato n,n,n; 0 <= n < 255
+	 * editado para dar colors por defecto diferentes cuando se llame
 	 */
-	private static Color iniciarColor(String rgb) {
+	private static Color iniciarColor(String rgb, Color def) {
 		//System.out.println("rgb= "+rgb);
 		//variables de funcion
-		Color c= Color.WHITE;//color resultante, blanco por defecto
+		Color c= def;//color resultante, se asigna el color por defecto en caso de no poder parsear
 		
 		try{
 			//divide la cadena RGN

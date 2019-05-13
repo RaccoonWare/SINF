@@ -71,8 +71,8 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		vistaConsultas.panel.setFocusable(true);
 		//vistaConsultas.panel_1.setFocusable(true);
 		vistaConsultas.tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		archivo=new File(MVC.getConfig().getProperty("articulos"));
-		MVC.importar(archivo, vistaConsultas.tabla);
+		//archivo=new File(MVC.getConfig().getProperty("articulos"));
+		//MVC.importar(archivo, vistaConsultas.tabla);
 		
 		
 		/*Object[] campos= {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
@@ -237,11 +237,12 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 			}//fin acciones botón accion estaddo "Eliminar"
 		//caso origien elemento popup
 		}else if(a.getSource().equals(vistaConsultas.itemAgregar)) {
+			vistaConsultas.tabla.clearSelection();
 			modeloConsultas.limpiaCampos();
 			vistaConsultas.btnAccion.setText("Agregar");
 		}else if (a.getSource().equals(vistaConsultas.itemModificar)) {				
 			modeloConsultas.llenaCampos();
-			vistaConsultas.txtDesc.requestFocus();
+			vistaConsultas.txtArt.requestFocus();
 		}else if (a.getSource().equals(vistaConsultas.itemQuitar)) {
 			modeloConsultas.quitarCampo();
 			modeloConsultas.limpiaCampos();
@@ -376,7 +377,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		
 		////////////Origen campo Busqueda: realiza el filtrado
 		if(k.getSource().equals(vistaConsultas.txtBuscar)) {
-			modeloConsultas.filtrar(vistaConsultas.tabla,""+vistaConsultas.txtBuscar.getText());
+			modeloConsultas.filtrar(""+vistaConsultas.txtBuscar.getText());
 			if(modeloConsultas.filtro.getViewRowCount()>0)
 				vistaConsultas.txtBuscar.setBackground(MVC.COLOR_VALID);
 			else
@@ -508,7 +509,8 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		// TODO Auto-generated method stub
 		//caso tabla origen tabla
 		if(m.getSource().equals(vistaConsultas.tabla)) {
-			System.out.println("Herp");
+			vistaConsultas.tabla.requestFocus();
+			//System.out.println("Herp");
 			if (SwingUtilities.isRightMouseButton(m))
 				vistaConsultas.popupMenu.show(m.getComponent(),m.getX(),m.getY());
 			//selecciona la columna seleccionada (en caso que el se presione el boton derecho, con en izquierdo ocurre por default

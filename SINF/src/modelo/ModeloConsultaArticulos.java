@@ -59,7 +59,12 @@ public class ModeloConsultaArticulos {
     public void iniciar() {    	
     	//modeloT=  new DefaultTableModel();
     	archivo=new File(MVC.getConfig().getProperty("articulos"));
+    	MVC.importar(archivo, vistaConsultas.tabla);
     	//modeloT= (DefaultTableModel) vistaArticulos.tabla.getModel();
+    	filtro= new TableRowSorter<TableModel>(((DefaultTableModel)vistaConsultas.tabla.getModel()));    	
+    	vistaConsultas.tabla.setRowSorter(filtro);
+    	filtro.setRowFilter(null);
+    	
     }
     /**
      * Añade componenetes al popup menu, generado automaticamene
@@ -101,14 +106,16 @@ public class ModeloConsultaArticulos {
      */
 	public void llenaCampos() {
 		int row= vistaConsultas.tabla.getSelectedRow();
-		vistaConsultas.btnAccion.setText("Modificar");		
-		if(row>=0){
-			vistaConsultas.txtArt.setText(""+(String) vistaConsultas.tabla.getValueAt(row,0));
-			vistaConsultas.txtArt.setBackground(MVC.COLOR_VALID);
-			vistaConsultas.txtDesc.setText(""+(String) vistaConsultas.tabla.getValueAt(row,1));
-			vistaConsultas.txtDesc.setBackground(MVC.COLOR_VALID);
-			vistaConsultas.txtSanc.setText(""+(String) vistaConsultas.tabla.getValueAt(row,2));
-			vistaConsultas.txtSanc.setBackground(MVC.COLOR_VALID);
+		if(row>=0) {
+			vistaConsultas.btnAccion.setText("Modificar");
+			if(row>=0){
+				vistaConsultas.txtArt.setText(""+(String) vistaConsultas.tabla.getValueAt(row,0));
+				vistaConsultas.txtArt.setBackground(MVC.COLOR_VALID);
+				vistaConsultas.txtDesc.setText(""+(String) vistaConsultas.tabla.getValueAt(row,1));
+				vistaConsultas.txtDesc.setBackground(MVC.COLOR_VALID);
+				vistaConsultas.txtSanc.setText(""+(String) vistaConsultas.tabla.getValueAt(row,2));
+				vistaConsultas.txtSanc.setBackground(MVC.COLOR_VALID);
+			}			
 		}
 	}
     
@@ -152,34 +159,6 @@ public class ModeloConsultaArticulos {
 		vistaConsultas.txtSanc.setBackground(Color.WHITE);
 		vistaConsultas.btnAccion.setText("Eliminar");		
 	}//fin campoQuitable
-	
-	/**
-	 * añade un articulo a la lista
-	 * @param vistaConsultas
-	 * @see agregaArticulo
-     * @see llenaCampos
-     * @see modificaArticulo 
-     * @see limpiaCampos
-     * @see campoQuitable
-     * @see QuitaCampos
-     * pre-condición: los tres campos estan llenos, el boton de acción esta en estado "Agregar"
-     * postcondición articulo agregado al modelo, campos limpiados
-     * 
-     * Cuando cambie la función exportar tuve que importar el modelo directamente en vez de usar el local
-	 */
-
-	public void agregaArticulo() {
-		
-		//deloT.addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});		
-		//modeloT.fireTableRowsInserted(modeloT.getRowCount()-1, modeloT.getRowCount()-1);
-		((DefaultTableModel) vistaConsultas.tabla.getModel()).addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});		
-		((DefaultTableModel) vistaConsultas.tabla.getModel()).fireTableRowsInserted(((DefaultTableModel)vistaConsultas.tabla.getModel()).getRowCount()-1, ((DefaultTableModel)vistaConsultas.tabla.getModel()).getRowCount()-1);
-		vistaConsultas.txtArt.setText("");
-		vistaConsultas.txtDesc.setText("");
-		vistaConsultas.txtSanc.setText("");
-		
-		MVC.exportar(archivo,vistaConsultas.tabla);
-	}//fin AgregaArticulo
 	
 	/**
 	 * verifica que haya ifnnformación en los datos
@@ -228,11 +207,10 @@ public class ModeloConsultaArticulos {
 		if (res.length==0) return res;
 		else throw new EmptyFieldExcepton(res);
 	}//fin validaCampo
-
+	
+	///////////////////manejo datos tabla
 	/**
-	 * quita los un dato del modelo y la tabla
-	 * pre-condición: boton acción en estado Eliminar, campos vacios
-	 * post-condición modelo, tabla y archivos  actualizados 
+	 * añade un articulo a la lista
 	 * @param vistaConsultas
 	 * @see agregaArticulo
      * @see llenaCampos
@@ -240,17 +218,27 @@ public class ModeloConsultaArticulos {
      * @see limpiaCampos
      * @see campoQuitable
      * @see QuitaCampos
+     * pre-condición: los tres campos estan llenos, el boton de acción esta en estado "Agregar"
+     * postcondición articulo agregado al modelo, campos limpiados
+     * cuando cambie la función exportar a MVC tuve que obtener el modelo de la tabla en vez de usar ModeloT (por alguna razón  importarlo/asignarlo desde MVC hace que no funcione localmente, por lo que ahora se hace casteo desde el mvc
 	 */
-	public void quitarCampo() {
-		// TODO Auto-generated method stub
-		//if(vistaConsultas.tabla.getModel().equals(modeloT))
-		((DefaultTableModel)vistaConsultas.tabla.getModel()).removeRow(vistaConsultas.tabla.getSelectedRow());			
-		((DefaultTableModel)vistaConsultas.tabla.getModel()).fireTableDataChanged();
-		limpiaCampos();
-		MVC.exportar(archivo,vistaConsultas.tabla);
-		vistaConsultas.txtBuscar.requestFocus();
+
+	public void agregaArticulo() {
+		RowFilter aux= filtro.getRowFilter();
+		filtro.setRowFilter(null);
+		//deloT.addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});		
+		//modeloT.fireTableRowsInserted(modeloT.getRowCount()-1, modeloT.getRowCount()-1);
+		((DefaultTableModel) vistaConsultas.tabla.getModel()).addRow(new Object[]{vistaConsultas.txtArt.getText(),vistaConsultas.txtDesc.getText(),vistaConsultas.txtSanc.getText()});		
+		((DefaultTableModel) vistaConsultas.tabla.getModel()).fireTableRowsInserted(((DefaultTableModel)vistaConsultas.tabla.getModel()).getRowCount()-1, ((DefaultTableModel)vistaConsultas.tabla.getModel()).getRowCount()-1);
+		//((DefaultTableModel) vistaConsultas.tabla.getModel()).fireTableRowsUpdated(((DefaultTableModel)vistaConsultas.tabla.getModel()).getRowCount()-1, ((DefaultTableModel)vistaConsultas.tabla.getModel()).getRowCount()-1);;
+		filtro.setRowFilter(aux);
+		vistaConsultas.txtArt.setText("");
+		vistaConsultas.txtDesc.setText("");
+		vistaConsultas.txtSanc.setText("");
 		
-	}
+		
+		MVC.exportar(archivo,vistaConsultas.tabla);
+	}//fin AgregaArticulo		
 
 	/**
 	 * modifica el articulo seleccionado
@@ -262,23 +250,49 @@ public class ModeloConsultaArticulos {
      * @see modificaArticulo 
      * @see limpiaCampos
      * @see campoQuitable
-     * @see QuitaCampos
-     * 
-     * cuando cambie la función exportar a MVC tuve que obtener el modelo de la tabla en vez de usar ModeloT
+     * @see QuitaCampos    
+     * cuando cambie la función exportar a MVC tuve que obtener el modelo de la tabla en vez de usar ModeloT (por alguna razón  importarlo desde MVC hace que no funcione localmente, por lo que ahora se hace casteo desde el mvc
+     * se "modifico"  el codigo para restaurar la función cuando el elemento esta filtrado (se habia perdido cuando se combino con el codigo de mario y se deshabilito la variable modeloT
 	 */
 	public void modificaArticulo() {
 		// TODO Auto-generated method stub
 		//try {
 		//	validaCampos(vistaConsultas);
-			if(vistaConsultas.tabla.getModel().equals(((DefaultTableModel)vistaConsultas.tabla.getModel()))) {
-				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtArt.getText(),vistaConsultas.tabla.getSelectedRow(),0);
-				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtDesc.getText(),vistaConsultas.tabla.getSelectedRow(),1);
-				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtSanc.getText(),vistaConsultas.tabla.getSelectedRow(),2);
+			if(vistaConsultas.tabla.getModel().equals(((DefaultTableModel)vistaConsultas.tabla.getModel()))) {				
+				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtArt.getText(),filtro.convertRowIndexToModel(vistaConsultas.tabla.getSelectedRow()),0);//modifica el campo de articulos, pero en vez de hacerlo directamente basado en el modelo, lo hace basado en el filtro en caso que latabla se encuentre filtrada actualmente
+				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtDesc.getText(),filtro.convertRowIndexToModel(vistaConsultas.tabla.getSelectedRow()),1);//modifica el campo de descripción, pero en vez de hacerlo directamente basado en el modelo, lo hace basado en el filtro en caso que latabla se encuentre filtrada actualmente
+				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtSanc.getText(),filtro.convertRowIndexToModel(vistaConsultas.tabla.getSelectedRow()),2);//modifica el campo sanciones, pero en vez de hacerlo directamente basado en el modelo, lo hace basado en el filtro en caso que latabla se encuentre filtrada actualmente
 				((DefaultTableModel) vistaConsultas.tabla.getModel()).fireTableRowsUpdated(vistaConsultas.tabla.convertColumnIndexToView(vistaConsultas.tabla.getSelectedRow()),vistaConsultas.tabla.convertColumnIndexToView(vistaConsultas.tabla.getSelectedRow()) );			
 				MVC.exportar(archivo,vistaConsultas.tabla);
 			}
 		//}
-	}
+	}//quitar Modificar Articulo
+	
+	/**
+	 * quita los un dato del modelo y la tabla
+	 * pre-condición: boton acción en estado Eliminar, campos vacios
+	 * post-condición modelo, tabla y archivos  actualizados 
+	 * @param vistaConsultas
+	 * @see agregaArticulo
+     * @see llenaCampos
+     * @see modificaArticulo 
+     * @see limpiaCampos
+     * @see campoQuitable
+     * @see QuitaCampos
+     * cuando cambie la función exportar a MVC tuve que obtener el modelo de la tabla en vez de usar ModeloT (por alguna razón  importarlo desde MVC hace que no funcione localmente, por lo que ahora se hace casteo desde el mvc
+     * se "modifico"  el codigo para restaurar la función cuando el elemento esta filtrado (se habia perdido cuando se combino con el codigo de mario y se deshabilito la variable modeloT
+	 */
+	public void quitarCampo() {
+		// TODO Auto-generated method stub
+		//if(vistaConsultas.tabla.getModel().equals(modeloT))
+		((DefaultTableModel)vistaConsultas.tabla.getModel()).removeRow(filtro.convertRowIndexToModel(vistaConsultas.tabla.getSelectedRow()));//quita el campo, pero en vez de hacerlo directamente basado en el modelo, lo hace basado en el filtro en caso que latabla se encuentre filtrada actualmente			
+		((DefaultTableModel)vistaConsultas.tabla.getModel()).fireTableDataChanged();
+		limpiaCampos();
+	
+		MVC.exportar(archivo,vistaConsultas.tabla);
+		vistaConsultas.txtBuscar.requestFocus();
+		
+	}//fin Quitar campo
 	
 	/**
 	 * filtra el contenido de la tabla y solo muestra los datos que conuerdan
@@ -293,9 +307,9 @@ public class ModeloConsultaArticulos {
      * pre-condicón: modelo iniciado
      * post-condición: tabla actualizada, pero modelo sin modificar
 	 */
-	public void filtrar(JTable tabla, String texto) {		
-		filtro= new TableRowSorter<TableModel>(((DefaultTableModel)vistaConsultas.tabla.getModel()));
-		tabla.setRowSorter(filtro);
+	public void filtrar(String texto) {		
+		//filtro= new TableRowSorter<TableModel>(((DefaultTableModel)vistaConsultas.tabla.getModel()));    	
+    	//vistaConsultas.tabla.setRowSorter(filtro);
 		if(texto.length()==0) {
 			filtro.setRowFilter(null);
 		}else {
