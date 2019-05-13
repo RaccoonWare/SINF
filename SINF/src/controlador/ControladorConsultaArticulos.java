@@ -370,9 +370,10 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		if(k.getKeyCode() == KeyEvent.VK_DELETE || k.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
 			//System.out.println("se presiono la tecla suprimir");
 			//System.out.println("fila= "+vistaConsultas.tabla.getSelectedRow());
-			if((!vistaConsultas.txtArt.hasFocus() && !vistaConsultas.txtDesc.hasFocus() && !vistaConsultas.txtSanc.hasFocus() && !vistaConsultas.txtBuscar.hasFocus())&&vistaConsultas.tabla.getSelectedRow()>=0)
+			if((!vistaConsultas.txtArt.hasFocus() && !vistaConsultas.txtDesc.hasFocus() && !vistaConsultas.txtSanc.hasFocus() && !vistaConsultas.txtBuscar.hasFocus()) && vistaConsultas.tabla.getSelectedRow()>=0) {
 				modeloConsultas.quitarCampo();
 				modeloConsultas.limpiaCampos();
+			}
 		}
 		
 		////////////Origen campo Busqueda: realiza el filtrado
@@ -518,8 +519,8 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 			int currentRow= vistaConsultas.tabla.rowAtPoint(p);
 			vistaConsultas.tabla.setRowSelectionInterval(currentRow, currentRow);
 		//si el elemento oprimido no es es la tabla oculta el menu popup
-		}else
-			vistaConsultas.popupMenu.hide();
+		}//else
+		//	vistaConsultas.popupMenu.hide();
 		
 
 			//origen paneles en general			
