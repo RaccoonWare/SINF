@@ -4,25 +4,28 @@
  */
 package modelo;
 /* importación de librerias */
-import java.io.*;
+//librerias Swing
+import java.io.*;//manejo archivos
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
-
+//libreras awt
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+//Librerias Apache poi  (libreria externa)
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.*;
+//librerias y clases propias
 import controlador.MVC;
+import controlador.MVC.HiloArchivo;
 import exepciones.EmptyFieldExcepton;
 import vista.VistaConsultaArticulo;
 
@@ -38,10 +41,11 @@ public class ModeloConsultaArticulos {
 	Workbook wb;//archivo de office
     //private DefaultTableModel modeloT;//Modelo de tabla, el que se encuentra en la vista es un placeholder, en este se manejan los datos reales
     //Variables de instancia
-    public TableRowSorter<TableModel> filtro;
+    public TableRowSorter<TableModel> filtro;//filtro para datos
     private File archivo;
-
-	
+    private Thread hiloArchivo, hiloTabla;//hilos para ejecución paralela
+    private HiloArchivo runArchivo;
+    
     ////////////////Constructores e iniciadores
     /**
      * Constructor por defecti
@@ -64,7 +68,9 @@ public class ModeloConsultaArticulos {
     	filtro= new TableRowSorter<TableModel>(((DefaultTableModel)vistaConsultas.tabla.getModel()));    	
     	vistaConsultas.tabla.setRowSorter(filtro);
     	filtro.setRowFilter(null);
-    	
+    	runArchivo= new HiloArchivo(vistaConsultas.tabla,archivo);
+    	hiloArchivo= new Thread(hiloArchivo);
+    	hiloArchivo.start();    	    	
     }
     /**
      * Añade componenetes al popup menu, generado automaticamene
@@ -89,6 +95,8 @@ public class ModeloConsultaArticulos {
 			}
 		});
 	}//Fin addPopup*/
+    
+    
     
 	////////////////Manejo de formularios
     /**
@@ -237,7 +245,8 @@ public class ModeloConsultaArticulos {
 		vistaConsultas.txtSanc.setText("");
 		
 		
-		MVC.exportar(archivo,vistaConsultas.tabla);
+		//MVC.exportar(archivo,vistaConsultas.tabla);
+		runArchivo.activate();
 	}//fin AgregaArticulo		
 
 	/**
@@ -263,7 +272,8 @@ public class ModeloConsultaArticulos {
 				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtDesc.getText(),filtro.convertRowIndexToModel(vistaConsultas.tabla.getSelectedRow()),1);//modifica el campo de descripción, pero en vez de hacerlo directamente basado en el modelo, lo hace basado en el filtro en caso que latabla se encuentre filtrada actualmente
 				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtSanc.getText(),filtro.convertRowIndexToModel(vistaConsultas.tabla.getSelectedRow()),2);//modifica el campo sanciones, pero en vez de hacerlo directamente basado en el modelo, lo hace basado en el filtro en caso que latabla se encuentre filtrada actualmente
 				((DefaultTableModel) vistaConsultas.tabla.getModel()).fireTableRowsUpdated(vistaConsultas.tabla.convertColumnIndexToView(vistaConsultas.tabla.getSelectedRow()),vistaConsultas.tabla.convertColumnIndexToView(vistaConsultas.tabla.getSelectedRow()) );			
-				MVC.exportar(archivo,vistaConsultas.tabla);
+				//MVC.exportar(archivo,vistaConsultas.tabla);
+				runArchivo.activate();
 			}
 		//}
 	}//quitar Modificar Articulo
@@ -289,7 +299,8 @@ public class ModeloConsultaArticulos {
 		((DefaultTableModel)vistaConsultas.tabla.getModel()).fireTableDataChanged();
 		limpiaCampos();
 	
-		MVC.exportar(archivo,vistaConsultas.tabla);
+		//MVC.exportar(archivo,vistaConsultas.tabla);
+		runArchivo.activate();
 		vistaConsultas.txtBuscar.requestFocus();
 		
 	}//fin Quitar campo

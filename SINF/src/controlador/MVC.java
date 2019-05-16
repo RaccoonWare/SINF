@@ -426,5 +426,56 @@ public class MVC {
 	}//fin compara
 	
 	
+	//////////////SubClases
+	/**
+	* Clase para manejo de hilo del manejo de archivo
+	* Si se realiza una ejecución lineal cuando se modifican las tablas causa un retraso considrable
+	* por lo que se implementa este hilo para permmitir una ejeución mas rapida
+	* @author David
+	*
+	*/
+	public static class HiloArchivo implements Runnable {
+	//variables de clase
+		private boolean active;
+		private JTable tabla;
+		private File archivo;
+		
+		//constructores e inicializadores
+		public HiloArchivo(JTable tabla,File archivo ) {
+			active= false;
+			this.tabla= tabla;
+			this.archivo= archivo;
+		}
+		
+		//setters y getters
+		public boolean isActive() {
+			return active; 
+		}
+		
+		public void activate() {
+			active= true;
+		}
+		
+		public void deactivate() {
+			active= false;
+		}
+		
+		public void setActive(boolean active) {
+			this.active=active;
+		}
+		
+		
+		/////////implementación Runnable
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			if(isActive()) {
+				MVC.exportar(archivo, tabla);
+				deactivate();
+			}
+		}
+		
+	}//fin clase HiloArchivo
+	
 	
 }// Fin de clase MVC
