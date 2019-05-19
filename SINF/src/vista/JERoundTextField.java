@@ -19,7 +19,11 @@ import javax.swing.border.EmptyBorder;
  */ 
 public class JERoundTextField extends JTextField{ 
 
-    private int arcw=20; 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -418186671853261052L;
+	private int arcw=20; 
     private int arch=20; 
     private Image image= new ImageIcon(
             getClass().getResource("/iconos/buscar.png")).getImage(); 

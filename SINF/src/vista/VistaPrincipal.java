@@ -1,5 +1,6 @@
+//Vista principal 
 package vista;
-
+/*Importacion de archivos*/
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,28 +11,29 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.border.MatteBorder;
-
-public class VistaPrincipal extends JFrame {
-
+import java.awt.Toolkit;
 	/**
-	 * 
+	 * Conviguraciones de vista
+	 * @author Mario Rangel A.
+	 * @see ModeloPrincipal
+	 * @see ControladorPrincipal
 	 */
+public class VistaPrincipal extends JFrame {
+	//Variables de instancia
 	private static final long serialVersionUID = 5768440461778667680L;
 	private JPanel contentPane;
-	public JButton btnInfracciones, btnEstadisticas, btnConsultar, btnRespaldar;
+	public JButton btnInfracciones, btnConsultar, btnRespaldar;
 	public JButton btnEtiquetas;
 	public static JDesktopPane dpEscritorio;
 	public JButton btnRestaurar;
 	public JButton btnArticulos;
 	public JButton btnConfiguracin;
-
+	//Constructor por defecto
 	public VistaPrincipal() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(VistaPrincipal.class.getResource("/iconos/LogoSINF.png")));
+		//Propiedades del diseño
 		setBackground(Color.WHITE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1036, 521);
@@ -39,7 +41,7 @@ public class VistaPrincipal extends JFrame {
 		contentPane.setBackground(new Color(58, 63, 64));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new MigLayout("", "[][grow,fill]", "[grow][grow,fill][grow][grow,fill][grow,fill][grow,fill][grow][grow]"));
+		contentPane.setLayout(new MigLayout("", "[][grow,fill]", "[grow][grow,fill][grow][grow,fill][grow,fill][grow][grow]"));
 
 		btnEtiquetas = new JButton("  ");
 		btnEtiquetas.setContentAreaFilled(false);
@@ -52,7 +54,7 @@ public class VistaPrincipal extends JFrame {
 		dpEscritorio = new JDesktopPane();
 		dpEscritorio.setBorder(new LineBorder(Color.BLACK));
 		dpEscritorio.setBackground(Color.WHITE);
-		contentPane.add(dpEscritorio, "cell 1 0 1 8,grow");
+		contentPane.add(dpEscritorio, "cell 1 0 1 7,grow");
 
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/logoTransito.png")));
@@ -89,20 +91,10 @@ public class VistaPrincipal extends JFrame {
 		btnConsultar.setFont(new Font("Arial", Font.BOLD, 14));
 		btnConsultar.setBackground(Color.GRAY);
 
-		btnEstadisticas = new JButton("Estad\u00EDsticas");
-		btnEstadisticas.setForeground(new Color(234, 254, 255));
-		btnEstadisticas.setContentAreaFilled(false);
-		contentPane.add(btnEstadisticas, "cell 0 4,grow");
-		btnEstadisticas.setBorder(null);
-		btnEstadisticas.setHorizontalAlignment(SwingConstants.LEADING);
-		btnEstadisticas.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/icons8-estad\u00EDsticas-42(1).png")));
-		btnEstadisticas.setFont(new Font("Arial", Font.BOLD, 14));
-		btnEstadisticas.setBackground(Color.GRAY);
-
 		btnRespaldar = new JButton("Respaldar");
 		btnRespaldar.setForeground(new Color(234, 254, 255));
 		btnRespaldar.setContentAreaFilled(false);
-		contentPane.add(btnRespaldar, "cell 0 5,grow");
+		contentPane.add(btnRespaldar, "cell 0 4,grow");
 		btnRespaldar.setBorder(null);
 		btnRespaldar.setHorizontalAlignment(SwingConstants.LEADING);
 		btnRespaldar.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/icons8-base-de-datos-filled-42(1).png")));
@@ -112,7 +104,7 @@ public class VistaPrincipal extends JFrame {
 		btnRestaurar = new JButton("Restaurar");
 		btnRestaurar.setForeground(new Color(234, 254, 255));
 		btnRestaurar.setContentAreaFilled(false);
-		contentPane.add(btnRestaurar, "cell 0 6,grow");
+		contentPane.add(btnRestaurar, "cell 0 5,grow");
 		btnRestaurar.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/icons8-base-de-datos-filled-42.png")));
 		btnRestaurar.setHorizontalAlignment(SwingConstants.LEADING);
 		btnRestaurar.setFont(new Font("Arial", Font.BOLD, 14));
@@ -122,7 +114,7 @@ public class VistaPrincipal extends JFrame {
 		btnConfiguracin = new JButton("Configuraci\u00F3n  ");
 		btnConfiguracin.setForeground(new Color(234, 254, 255));
 		btnConfiguracin.setContentAreaFilled(false);
-		contentPane.add(btnConfiguracin, "cell 0 7,grow");
+		contentPane.add(btnConfiguracin, "cell 0 6,grow");
 		btnConfiguracin.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/icons8-ajustes-42.png")));
 		btnConfiguracin.setHorizontalAlignment(SwingConstants.LEADING);
 		btnConfiguracin.setFont(new Font("Arial", Font.BOLD, 14));

@@ -59,8 +59,6 @@ public class VistaInfraccion extends JInternalFrame {
 	public JTextPane txtMotivo;
 	public JButton btnInsertar;
 	public JButton btnLimpiar;
-	public JButton btnAnular;
-	public JButton btnImprimir;
 	public TimeChooser timeChooser;
 	private JLabel lblHora;
 	public JComboBox<?> cbMunicipio;
@@ -83,7 +81,7 @@ public class VistaInfraccion extends JInternalFrame {
 		setClosable(true);
 		setBounds(100, 100, 724, 624);
 		getContentPane().setLayout(new MigLayout("", "[grow]", "[][][][][][][][][][][][][][grow][][][][][grow][][][]"));
-		
+
 
 		JLabel lblNombreCompleto = new JLabel("Estado:");
 		lblNombreCompleto.setFont(new Font("Arial", Font.BOLD, 14));
@@ -395,22 +393,6 @@ public class VistaInfraccion extends JInternalFrame {
 		btnLimpiar.setFont(new Font("Arial", Font.BOLD, 14));
 		btnLimpiar.setBackground(new Color(58, 63, 64));
 		getContentPane().add(btnLimpiar, "cell 0 21,growx");
-
-		btnAnular = new JButton("Anular");
-		btnAnular.setBorder(new LineBorder(SystemColor.textHighlight, 2, true));
-		btnAnular.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnAnular.setForeground(new Color(234, 254, 255));
-		btnAnular.setFont(new Font("Arial", Font.BOLD, 14));
-		btnAnular.setBackground(new Color(58, 63, 64));
-		getContentPane().add(btnAnular, "cell 0 21,growx");
-
-		btnImprimir = new JButton("Imprimir");
-		btnImprimir.setBorder(new LineBorder(SystemColor.textHighlight, 2, true));
-		btnImprimir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnImprimir.setForeground(new Color(234, 254, 255));
-		btnImprimir.setFont(new Font("Arial", Font.BOLD, 14));
-		btnImprimir.setBackground(new Color(58, 63, 64));
-		getContentPane().add(btnImprimir, "cell 0 21,growx");
 		
 		txtEstado = new JTextField();
 		txtEstado.setBorder(null);
