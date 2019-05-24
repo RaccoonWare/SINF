@@ -39,8 +39,9 @@ public class ModeloLogin {
 	 * @param campo
 	 * @return true si los datos coiciden, false de lo cotrario
 	 * @since 1.0
+	 * se cambio para poder accesarse desde configuración
 	 */
-	public boolean validaCampo(Component campo) {
+	public static boolean validaCampo(Component campo) {
 		//variable de función
 		boolean res= true;//bandera de resultado
 		//Analiza contenido del campo
@@ -70,8 +71,7 @@ public class ModeloLogin {
 	 * @since 1.0
 	 * anteriormente hacia referencia a un archivo excel, pero se modifico para que lea los datos de acceso desde el archivo de propiedades
 	 */
-	public boolean validaLogin(VistaLogin vistaLogin) {
-		// TODO Auto-generated method stub
+	public boolean validaLogin() {	
 		//variables de funcion
 		String usuario= vistaLogin.txtUsuario.getText();//texto del campo de usuario
         char[] pass= vistaLogin.txtPass.getPassword();//texto del campo de contraseña (arrelo de caracteres)        

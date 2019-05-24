@@ -94,7 +94,7 @@ public class ControladorInfraccion implements ActionListener, MouseListener{
 				/*Control de excepciones para los errores de captura*/
 				try {
 					obtenerdatos();
-					archivo=new File(MVC.getConfig().getProperty("infracciones"));
+					archivo= MVC.INFRACCIONES;
 
 					try {
 						ModeloBoleta.Exportar(archivo);

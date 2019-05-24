@@ -18,6 +18,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 
@@ -78,7 +79,7 @@ public class ControladorLogin implements ActionListener, FocusListener, KeyListe
 		vistaLogin.txtPass.setEnabled(false);
 		//if(true){
 		//Valida login
-		if(modeloLogin.validaLogin(vistaLogin)) {
+		if(modeloLogin.validaLogin()) {
 			VistaPrincipal vistaMain=  new VistaPrincipal();
 			ModeloPrincipal modeloMain= new ModeloPrincipal(vistaMain);
 			ControladorPrincipal controladorMain= new ControladorPrincipal(vistaMain,modeloMain);
@@ -202,9 +203,16 @@ public class ControladorLogin implements ActionListener, FocusListener, KeyListe
 			vistaLogin.dispose();
 		//teclas auxiliares: las ignora
 			//todas las demas teclas:m da error
-		}else if(k.getKeyCode() != KeyEvent.VK_SHIFT &&k.getKeyCode() != KeyEvent.VK_UP&&k.getKeyCode() != KeyEvent.VK_DOWN&&k.getKeyCode() != KeyEvent.VK_LEFT&&k.getKeyCode() != KeyEvent.VK_RIGHT) {
-			MVC.coloreaCampo(k.getComponent(), MVC.COLOR_INVALID);
+			//lo modifique para que haga el chequeo del texto en vez de las teclas para el caso que se presionen teclas especiales que no alteran el contenido del campo
+		}else if(k.getSource() instanceof JTextField) {
+			if(k.getKeyCode() != KeyEvent.VK_SHIFT && k.getKeyCode() != KeyEvent.VK_CONTROL && k.getKeyCode() != KeyEvent.VK_DEAD_TILDE && k.getKeyCode() != KeyEvent.VK_KP_UP && k.getKeyCode() != KeyEvent.VK_DOWN && k.getKeyCode() != KeyEvent.VK_LEFT && k.getKeyCode() != KeyEvent.VK_RIGHT ) {
+				if(modeloLogin.validaCampo(k.getComponent()))
+					MVC.coloreaCampo(k.getComponent(), MVC.COLOR_INVALID);
+				else
+					MVC.coloreaCampo(k.getComponent(), Color.WHITE);
+			}
 		}
+			
 	}//fin keyReleased
 	/**
 	 * tecla tipeada

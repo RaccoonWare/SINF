@@ -120,7 +120,7 @@ public class ControladorPrincipal implements ActionListener, MouseListener{
 				JOptionPane.showMessageDialog(vistaPrincipal, "Error, no se pudo exportar los archivos");
 			}
 		}else if (arg0.getSource()==vistaPrincipal.btnConfiguracin){
-
+			modeloPrincipal.iniciarConfiguracion(vistaPrincipal);
 		}
 	}//fin actionPerformed
 

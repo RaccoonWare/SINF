@@ -131,7 +131,7 @@ public class VistaConsultaArticulo extends JInternalFrame {
 		
 		
 		//inicializa tabla
-		tabla = new JTable();
+		tabla = new JTable();		
 		tabla.setFont(new Font("Arial", Font.BOLD, 14));
 		tabla.setBackground(Color.WHITE);
 		scrollPane.setViewportView(tabla);

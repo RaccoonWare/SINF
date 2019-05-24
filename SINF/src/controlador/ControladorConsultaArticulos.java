@@ -73,7 +73,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		vistaConsultas.tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		//archivo=new File(MVC.getConfig().getProperty("articulos"));
 		//MVC.importar(archivo, vistaConsultas.tabla);
-		
+		vistaConsultas.toFront();
 		
 		/*Object[] campos= {vistaConsultas.txtArt,vistaConsultas.txtDesc,vistaConsultas.txtSanc};
 		MVC.coloreaCampos(campos,MVC.COLOR_INVALID);*/
@@ -362,7 +362,7 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 		// TODO Auto-generated method stub
 
 		///////////Tecla Escape: limpia los campos
-		if(k.getKeyCode() == KeyEvent.VK_ESCAPE) {
+		if(k.getKeyCode() == KeyEvent.VK_ESCAPE || k.getKeyCode()== KeyEvent.VK_INSERT) {
 			modeloConsultas.limpiaCampos();
 			vistaConsultas.btnAccion.setText("Agregar");
 		}
@@ -375,6 +375,8 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 				modeloConsultas.limpiaCampos();
 			}
 		}
+		
+		/////////tecla Insertar, se pone en modo de insersion de datos
 		
 		////////////Origen campo Busqueda: realiza el filtrado
 		if(k.getSource().equals(vistaConsultas.txtBuscar)) {
@@ -548,8 +550,11 @@ public class ControladorConsultaArticulos implements ActionListener,FocusListene
 	 * detecto un cambio en el modelo de datos
 	 * llena los campos en base al renglon seleccionado actualmente
 	 */
-	public void valueChanged(ListSelectionEvent t) {
-		modeloConsultas.llenaCampos();
+	public void valueChanged(ListSelectionEvent t) {		
+		if(vistaConsultas.tabla.getSelectedRow()>=0) {
+			vistaConsultas.tabla.setRowSelectionInterval(vistaConsultas.tabla.getSelectedRow(),vistaConsultas.tabla.getSelectedRow());
+			modeloConsultas.llenaCampos();
+		}
 	}//fin valueChanged
 	
 	/**

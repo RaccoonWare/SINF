@@ -54,13 +54,16 @@ public class ControladorConsultaInfracciones implements ActionListener, MouseLis
 	public void iniciar() {
 		VistaPrincipal.dpEscritorio.add(vistaConsultas);
 		vistaConsultas.show();
-		archivo=new File(MVC.getConfig().getProperty("infracciones"));
+		System.out.println("ruta: " + MVC.RUTA_INFRACCION);
+		System.out.println("archivo: "+ MVC.INFRACCIONES.getAbsolutePath().substring(MVC.INFRACCIONES.getParent().length()));
+		System.out.println("path:" +MVC.INFRACCIONES.getAbsolutePath());
+		archivo=MVC.INFRACCIONES;
 		modeloConsultas.Importar(archivo, vistaConsultas.tabla);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//contAccion++;
-		archivo=new File(MVC.getConfig().getProperty("infracciones"));
+		archivo= MVC.INFRACCIONES;		
 		if(e.getSource() == vistaConsultas.btnBuscar | e.getSource() == vistaConsultas.cbRegistros){
 			try {
 				if (vistaConsultas.dcInicio.getDate()!= null && vistaConsultas.dcFin.getDate()!= null) {
@@ -172,7 +175,7 @@ public class ControladorConsultaInfracciones implements ActionListener, MouseLis
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
-		archivo=new File(MVC.getConfig().getProperty("infracciones"));
+		archivo=new File(MVC.getConfig().getProperty("ruta_infracciones")+MVC.getConfig().getProperty("infracciones"));
 		try {
 			modeloConsultas.setCal1(vistaConsultas.dcInicio.getDate());
 			modeloConsultas.setCal2(vistaConsultas.dcFin.getDate());

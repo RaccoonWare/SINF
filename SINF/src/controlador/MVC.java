@@ -9,11 +9,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.zip.ZipFile;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -45,18 +52,26 @@ import vista.VistaPrincipal;
  */
 public class MVC {
 	
-	/////////////////Constantes de paquete
+	//Variables Globales
 	/* Configuración */
 	static Properties config = new Properties();
+	public static File RUTA_ARTICULO;
+	public static File RUTA_INFRACCION;
+	public static File ARTICULO;
+	public static File INFRACCIONES;
+	
 	/* Colores*/
+	/////////////////Constantes de paquete
 	public static final Color COLOR_BG; //Color oscuro de fondo    
 	public static final Color COLOR_HIGHLIGHT;//Color Cyan, para letras con fondo oscuro o para cuando se coloca el cursor ecima de algun campo de texto
 	public static final Color COLOR_VALID; // Color verde opaco, color default en los componentes de texto
     public static final Color COLOR_INVALID;//Color rojo opaco, color para indicar que un campo no cumple con el formato apropiado o esta vacio 
     public static final Color COLOR_LETRA;
+    public static final String SRC= src();//parte de la cadena de ruta, si se encuentra en proyecto,se agrega, si no no
     /*Fuente*/
     public static final Font FUENTE;//Fuente de texto predeterminada
     
+   
     /**
      * Costructor constantes de paquete
      * como las variables son static final pero requieren inicializarse desde un archivo externo se crea esta declaración especial
@@ -66,7 +81,12 @@ public class MVC {
     static {
     	//trata de carga el archivo
     	try{
-    		loadConfig();//llama al archivo y carga las propiedades, en caso de no cargar el archivo carga valores predeterminados de acuerdo a la peleta escogida en el diseño inicial    		
+    		
+    		loadConfig();//llama al archivo y carga las propiedades, en caso de no cargar el archivo carga valores predeterminados de acuerdo a la peleta escogida en el diseño inicial
+    		setRutaArticulo();
+    		setArchivoArticulos();
+    		setRutaInfraccion();
+    		setArchivoInfracciones();
     	//manejo de errores
     	}catch(Exception e) {    		
     		e.printStackTrace();
@@ -131,6 +151,9 @@ public class MVC {
 	/**
 	 * Función para cargar la configuración desde un archivo de propiedades
 	 * pre-condición: el archivo existe
+	 * post-condición:  todas los atributos dependietes del archiov se cargan
+	 * modificado para que capture la ruta mediante un Path en vez de URL
+	 * tambien se añade una configuración que corre por defecto en caso de que 
 	 */
 	public static void loadConfig() throws Exception{
 		
@@ -138,12 +161,22 @@ public class MVC {
 			//variables de función
 			//variables de funci�n
 			FileInputStream configInput = null;
-			URL is = ClassLoader.getSystemResource("datos/configuracion.properties");
-            configInput = new FileInputStream(is.getFile());
+			if(!(new File("datos\\").exists()) &&(new File("SINF.jar").exists()))
+				extractJar();
+			//URL is = ClassLoader.getSystemResource("datos/configuracion.properties");//previamente se accedia el archivo mediante una url, pero debido a la diferencia de formato entre texto url y texto Path esta puede causar errores
+			File is= new File(src()+"\\datos\\configuracion.properties");//ahora se accesa a la ruta mediante un File, la ruta por defecto toma en cuenta la carpeta /src/ que es la que se en la que se programa
+			if (!is.exists()){//verifica que exita el archivo
+				is= new File("dato/configuracion.properties");//si no encuentra el archivo trata de leer el archivo basandose en la carpeta raiz, esta ruta existira en la version final portatil									
+			}
+			
+			//configInput = new FileInputStream(is.getFile());//antes ccuando is era url con este metodo se iniciaba el inputStream
+			configInput = new FileInputStream(is);//se crea un inputStream para lectura del archivo
             
             //carrga las propiedades
-            config.load(configInput);
-            setConfig(config);
+            config.load(configInput);//carga desde el archivo
+            
+            
+            //codigo viejo
 			/*FileInputStream configInput = null;
 			
 			File user = new File(System.getProperty("datos/configuracion.properties"));
@@ -154,15 +187,93 @@ public class MVC {
             config.load(configInput);
             setConfig(config);*/
         //manejo de errores
-        } catch(Exception e){
+        }
+		////Apuntador vacio
+		catch(NullPointerException e) {
+			JOptionPane.showMessageDialog(null, "No se Pudo Leer el archivo\n"+e.getMessage(),"Error de lectura",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+			setDefaultConfig();//carga configuracción por defecto(probablemente haya que cambiar la bandera a false cuando se planee hacer la version instalable)
+		}
+		//No se tiene permiso para acceder a la ruta o archivo
+		catch(SecurityException e) {
+			JOptionPane.showMessageDialog(null, "El archivo o ruta de acceso estan protegidos, no se puede acceder al contenido\n"+e.getMessage(),"Error de Permisos",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+			setDefaultConfig();//carga configuracción por defecto(probablemente haya que cambiar la bandera a false cuando se planee hacer la version instalable)
+			//asumiendo que no se tenga permiso de escritura ni siquiera tratamos de crear el archivo secundario
+		}
+		////Archivo no encontrado
+		catch(FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Archivo no Encontrado, asegurese que la ruta de acceso sea correcta\n"+e.getMessage(),"Archivo no encontrado, se cargara la configuración por defecto",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+			setDefaultConfig();//carga configuracción por defecto(probablemente haya que cambiar la bandera a false cuando se planee hacer la version instalable)
+			saveConfig();
+        }
+		//Error Lectura Escritura
+		catch(IOException e) {
+			JOptionPane.showMessageDialog(null, "Error con el manejador de archivo\n"+e.getMessage(),"Error I/O",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+			setDefaultConfig();//carga configuracción por defecto(probablemente haya que cambiar la bandera a false cuando se planee hacer la version instalable)
+			throw e;
+		}
+		//error Generico
+		catch(Exception e){
             JOptionPane.showMessageDialog(null, "Error cargando configuración\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
-            throw e;
+            throw e;//si se llego a este error generico puede que el problema provenga de otra parte o sea algo no definido/contemplado, por lo que mejor lanzo el error para checar en su momento
         }
     }//fin metodo loadConfig
 	
+	
+	/**
+	 * Guarda el archivo de propiedades
+	 * pre-condición: la ruta de acceso tiene permiso de escritua y hay espacio suficiente
+	 * @param src boolean, bandera que determina si la carpeta src se considera parte de la ruta del archivo 
+	 * @throws IOException 
+	 */
+	
+	public static void saveConfig() throws IOException {
+		//variables locales
+		File archivoConfig= null;//ruta del archivo
+		FileOutputStream fo = null;//escritor de achivo
+		try {
+			File rutaArchivo= new File(SRC+"datos/current/");			
+			rutaArchivo.mkdirs();
+			rutaArchivo = new File(SRC+"datos/Backup/");
+			rutaArchivo.mkdirs();
+			archivoConfig = new File(SRC+"datos/configuracion.properties");//carga la ruta ruta source depende si se esta trabajando en el prorama o la version release
+			fo= new FileOutputStream(archivoConfig);//inicia escritor
+			config.store(fo, "Generaddo desde Programa");//guarda los datos
+		}
+		//////Manejo de errores
+		//No se tiene permiso para acceder a la ruta o archivo
+		catch(SecurityException e) {
+			JOptionPane.showMessageDialog(null, "El archivo o ruta de acceso estan protegidos, no se puede acceder al contenido\n"+e.getMessage(),"Error de Permisos",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+		//error del stream
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Error con el administrador de archivos\n"+e.getMessage(),"Error I/O",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+		////Archivo no encontrado
+		/*catch(FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Archivo no Encontrado, asegurese que la ruta de acceso sea correcta\n"+e.getMessage(),"Archivo no encontrado",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();			
+	    }*/
+		//error Generico
+		catch(Exception e){
+	        JOptionPane.showMessageDialog(null, "Error cargando configuración\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	        e.printStackTrace();
+	        throw e;//si se llego a este error generico puede que el problema provenga de otra parte o sea algo no definido/contemplado, por lo que mejor lanzo el error para checar en su momento
+	    }
+		//al final cierra el archivo
+		finally{
+			fo.close();			
+		}
+	}//fin saveConfig
 	////////Manejo de archivos
-	////////////////Manejo de Archivos
+	
+	////////////////Manejo de Archivos de la tabla
 	/**
 	* Carga contenido de tabla
 	* @param archivo
@@ -362,13 +473,152 @@ public class MVC {
      * @param config
      */
 	public static void setConfig(Properties config) {
-		MVC.config = config;
+		MVC.config = config;		
 	}//fin setConfig
 	
+	public static void setArchivoArticulos() {
+		ARTICULO= new File(config.getProperty("ruta_articulos")+"\\\\"+config.getProperty("articulos"));
+	}
+	
+	public static void setArchivoInfracciones() {
+		INFRACCIONES= new File(config.getProperty("ruta_infracciones")+"\\\\"+config.getProperty("infracciones"));
+	}
+	
+	public static void setRutaArticulo() {
+		RUTA_ARTICULO= new File(config.getProperty("ruta_articulos"));
+	}
+	
+	public static void setRutaArticulo(String nuevaRuta) {
+		config.setProperty("ruta_articulos", nuevaRuta);
+		RUTA_ARTICULO= new File(nuevaRuta);
+		try {
+			saveConfig();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Error, no se pudieron guardar los cambios", "Error de Escritura", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+	}
+	
+	public static void setRutaArticulo(File nuevaRuta) {
+		config.setProperty("ruta_articulos",nuevaRuta.getAbsolutePath());
+		RUTA_ARTICULO= nuevaRuta;
+		try {
+			saveConfig();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Error, no se pudieron guardar los cambios", "Error de Escritura", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+	}
+	
+	public static void setRutaInfraccion(File nuevaRuta) {
+		config.setProperty("ruta_infracciones",nuevaRuta.getAbsolutePath());
+		RUTA_INFRACCION= nuevaRuta;
+		try {
+			saveConfig();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Error, no se pudieron guardar los cambios", "Error de Escritura", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+	}
+	
+	public static void setRutaInfraccion(String nuevaRuta) {
+		config.setProperty("ruta_infracciones", nuevaRuta);
+		RUTA_INFRACCION= new File(nuevaRuta);
+		try {
+			saveConfig();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Error, no se pudieron guardar los cambios", "Error de Escritura", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+	}
+	
+	public static void setRutaInfraccion() {
+		RUTA_INFRACCION= new File(config.getProperty("ruta_articulos"));
+	}
+	
+	/**
+	 * Setter que Carga datos por defecto
+	 * @param src boolean ,bandera para indicar si se considera la carpeta source como parte de la ruta
+	 */
+	public static void setDefaultConfig() {
+		config.clear();//se limpia los datos para asegurar una instalación limpia
+		//carga los dats por defecto
+		config.setProperty("articulos","Articulos.xlsx");
+		config.setProperty("infracciones","Infracciones.xlsx");
+		config.setProperty("respaldos",SRC+"datos\\\\backup\\\\");
+		config.setProperty("ruta_articulos",SRC+"datos\\current\\\\");
+		config.setProperty("ruta_infracciones",SRC+"datos\\\\current\\\\");
+		config.setProperty("ruta_default",SRC+"datos\\\\current\\\\");
+		config.setProperty("usuario","Transito");
+		config.setProperty("contraseña","SINF");
+		config.setProperty("usuario_Default","Transito");
+		config.setProperty("contraseña_Default","SINF");
+		config.setProperty("color_letraClara","234,253,255");
+		config.setProperty("color_campoError","201,79,76");
+		config.setProperty("color_campoNormal","187,202,204");
+		config.setProperty("color_campoBlanco","255,255,255");
+		config.setProperty("color_fondo", "58,63,64");
+		config.setProperty("estiloFuente", "Arial, BOLD, 14");
+	}
+	
+	
+	private static void extractJar() {
+		JarFile jar;
+		try {
+			JOptionPane.showMessageDialog(null, "extrayendo archivo");
+			jar = new java.util.jar.JarFile(new File("SINF.jar"));
+			Enumeration<JarEntry> enumEntries = jar.entries();
+			while (enumEntries.hasMoreElements()) {
+			    java.util.jar.JarEntry file = (java.util.jar.JarEntry) enumEntries.nextElement();
+			    java.io.File f = new java.io.File(new File("").getAbsolutePath()+java.io.File.separator + file.getName());
+			    if(!f.getPath().contains("datos"+java.io.File.separator))
+			    	continue;
+				else {
+				    /*JOptionPane.showMessageDialog(null, "Nombre="+f.getName());
+				    JOptionPane.showMessageDialog(null, "ruta="+ f.getParent());
+				    JOptionPane.showMessageDialog(null, "ruta absoluta="+ f.getAbsolutePath());
+				    JOptionPane.showMessageDialog(null, "Archivo o directorio: "+ (f.isDirectory()?"Directorio":"Archivo"));*/
+				    if(!f.exists())
+			        {
+			            f.getParentFile().mkdirs();
+			            f = new java.io.File(new File("").getAbsolutePath()+java.io.File.separator + file.getName());
+			        }
+				    if (file.isDirectory()) { // if its a directory, create it
+				        f.mkdir();
+				        continue;
+				    }
+				    //JOptionPane.showMessageDialog(null, "Estableciiendo Input Stream "+ f.getAbsolutePath());
+				    java.io.InputStream is = jar.getInputStream(file); // get the input stream
+				   // JOptionPane.showMessageDialog(null, "Estableciendo  Output Stream "+ f.getAbsolutePath());
+				    java.io.FileOutputStream fos = new java.io.FileOutputStream(f);
+				    //JOptionPane.showMessageDialog(null, "tamaño input "+ file.getSize());
+				    //JOptionPane.showMessageDialog(null, "tamaño IS "+ is.available());
+				    while (is.available() > 0) {  // write contents of 'is' to 'fos'
+				    	//JOptionPane.showMessageDialog(null, "Escribiendo ="+ is+ " en "+ fos );
+				    	fos.write(is.read());
+				    }
+				    fos.close();
+				    is.close();
+				}
+			}
+			jar.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "error de extracción");
+			e.printStackTrace();
+		}
+		
+	}
 	//anteriormente habia puesto aquí las funciones de importar y exportar, pero loas movi al modelo principal
 
 	///////////////// Funciones Miscelaneas
 	/////////////Funciones publicas
+	
+	
 	/**
 	 * función que determina si un numero esta dentro de un rango de otros dos numeros
 	 * @param n	numero a evaluar
@@ -404,6 +654,17 @@ public class MVC {
 		}
 	}//fin coloreaCampo
 
+	/////////////////funciones privadasd
+	/**
+	 * verifica si existe la carpeta source, si existe se guarda como parte de la ruta, si no la omite
+	 * 
+	 */
+	private static String src() {
+		//variable local
+		File carpeta= new File("src\\\\");
+		//System.out.println("src existe: "+ carpeta.exists());
+		return carpeta.exists()? "src":"";
+	}
 	
 	/**
 	 * Compoara una cadena de texto con un arreglo de archvios
@@ -470,6 +731,7 @@ public class MVC {
 		public void run() {
 			// TODO Auto-generated method stub
 			if(isActive()) {
+				System.out.println("Guardando cambios");
 				MVC.exportar(archivo, tabla);
 				deactivate();
 			}

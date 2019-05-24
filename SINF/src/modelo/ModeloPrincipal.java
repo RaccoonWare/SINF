@@ -20,10 +20,14 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
+import controlador.ControladorConfiguracion;
 import controlador.ControladorConsultaArticulos;
 import controlador.ControladorConsultaInfracciones;
 import controlador.ControladorInfraccion;
 import controlador.MVC;
+import vista.VistaConfiguracion;
 import vista.VistaConsultaArticulo;
 import vista.VistaConsultaInfraccion;
 import vista.VistaInfraccion;
@@ -100,6 +104,19 @@ public class ModeloPrincipal {
 		
 	}//fin iniciarConsultaArticulos
 	
+	/**
+	 * Inicia una instancia de una ventana de consulta de articulo
+	 * @param vistaPrincipal
+	 */
+	public void iniciarConfiguracion(VistaPrincipal vistaPrincipal) {
+		// TODO Auto-generated method stub
+		VistaConfiguracion VC= new VistaConfiguracion();
+		ModeloConfiguracion MC= new ModeloConfiguracion(VC);
+		ControladorConfiguracion CC= new ControladorConfiguracion(VC,MC);		
+		CC.iniciar();
+		
+	}//fin iniciarConfiguración
+	
 	///////////////Metodos y funciones //////////
 	///////Gestion de archivos
 	/**
@@ -110,16 +127,17 @@ public class ModeloPrincipal {
 	 * @since 1.4
 	 * originalmente se encotraba en MVC
 	 * @see restaurar
+	 * se modifico cuando se agrego el menu de configuración para que cada archivo peuda tener su propia ruta y para que se pueda personalizar la ruta de cada uno
 	 */
 	public static void respaldar(VistaPrincipal ventana) throws IOException{
 		// TODO Auto-generated method stub
 		//varialbes de función
-		File articulos= new File(MVC.getConfig().getProperty("articulos"));//manejador de archivo de articulos actualmente en uso
-		File infracciones= new File(MVC.getConfig().getProperty("infracciones"));//manejador de archivo de infracciones actualmente en uso
+		File articulos= MVC.ARTICULO;//manejador de archivo de articulos actualmente en uso
+		File infracciones= MVC.INFRACCIONES;//manejador de archivo de infracciones actualmente en uso
 		LocalDateTime now= LocalDateTime.now();//fecha y hora actual 
 		DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");//formateador de fecha, el archivo creado se crea con el esquema "NombreArchivo FechaCrecion.xlsx"
-		File respArticulos= new File(MVC.getConfig().getProperty("respaldos")+"Articulos-"+now.format(formatoFecha)+".xlsx");//manejador de archvios de articulos de respaldo		
-		File respInfracciones = new File(MVC.getConfig().getProperty("respaldos")+"Infracciones-"+now.format(formatoFecha)+".xlsx");//manejador de archivos de infracciones de respaldo
+		File respArticulos= new File(MVC.getConfig().getProperty("respaldos")+"Articulos-"+now.format(formatoFecha)+".xlsx");//manejador de archvios de articulos de respaldo, modificado para que sea una ruta personalizable independiente a la de infracciones
+		File respInfracciones = new File(MVC.getConfig().getProperty("respaldos")+"Infracciones-"+now.format(formatoFecha)+".xlsx");//manejador de archivos de infracciones de respaldo, modificado para que sea una ruta personalizable independiente a la de  articulos
 		
 		try {
 			//copia el cotenido de los archivos en uso alos actuales
@@ -177,17 +195,17 @@ public class ModeloPrincipal {
 	    	File seleccionado= seleccionador.getSelectedFile();//manejador del archivo seleccionado
 	    	//verifica la extensión
 	    	if(seleccionado.getName().endsWith(".xlsx")){
-	    		File articulos= new File(MVC.getConfig().getProperty("articulos"));//manejador de archivo de articulos en ubicación a restaurar
-	    		File infracciones= new File(MVC.getConfig().getProperty("infracciones"));//manejador de infracciones en ubicación a restaurar
+	    		File articulos= MVC.ARTICULO	;//manejador de archivo de articulos en ubicación a restaurar
+	    		File infracciones= MVC.INFRACCIONES;//manejador de infracciones en ubicación a restaurar
 	    		
 	    		//analiza el nombre del archivo seleccionado y trata de copiar el contenido de este al archivo correspondite
 	    		try {
 		    		//restaura archivo de articulos
-	    			if(seleccionado.getName().startsWith(articulos.getName().substring(0, articulos.getName().length()-5))) {
+	    			if(seleccionado.getName().startsWith(FilenameUtils.getBaseName(articulos.getName()))) {
 						FileUtils.copyFile(seleccionado,articulos);
 						JOptionPane.showMessageDialog(c, "Archivo articulos restaurado exitosamente");
 		    		//restaura archivo de infraccioes
-	    			}else if(seleccionado.getName().startsWith(infracciones.getName().substring(0, infracciones.getName().length()-5))) {
+	    			}else if(seleccionado.getName().startsWith(FilenameUtils.getBaseName(infracciones.getName()))) {
 		    			FileUtils.copyFile(seleccionado,infracciones);
 		    			JOptionPane.showMessageDialog(c, "Archivo infracciones restaurado exitosamente");
 		    		//si el archivo no tiene un nombre que se encuentre en el archivo de propiedades lanza un mensaje de error
@@ -239,6 +257,5 @@ public class ModeloPrincipal {
 		vistaPrincipal.btnRestaurar.setText("");
 		vistaPrincipal.btnConfiguracin.setText("");
 	}
-	
-	
-}
+
+}//fin clase principal

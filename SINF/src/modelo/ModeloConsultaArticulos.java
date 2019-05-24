@@ -62,8 +62,9 @@ public class ModeloConsultaArticulos {
      */
     public void iniciar() {    	
     	//modeloT=  new DefaultTableModel();
-    	archivo=new File(MVC.getConfig().getProperty("articulos"));
+    	archivo= MVC.ARTICULO;
     	MVC.importar(archivo, vistaConsultas.tabla);
+    	vistaConsultas.tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	//modeloT= (DefaultTableModel) vistaArticulos.tabla.getModel();
     	filtro= new TableRowSorter<TableModel>(((DefaultTableModel)vistaConsultas.tabla.getModel()));    	
     	vistaConsultas.tabla.setRowSorter(filtro);
@@ -245,8 +246,8 @@ public class ModeloConsultaArticulos {
 		vistaConsultas.txtSanc.setText("");
 		
 		
-		//MVC.exportar(archivo,vistaConsultas.tabla);
-		runArchivo.activate();
+		MVC.exportar(archivo,vistaConsultas.tabla);
+		//runArchivo.activate();
 	}//fin AgregaArticulo		
 
 	/**
@@ -272,8 +273,8 @@ public class ModeloConsultaArticulos {
 				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtDesc.getText(),filtro.convertRowIndexToModel(vistaConsultas.tabla.getSelectedRow()),1);//modifica el campo de descripción, pero en vez de hacerlo directamente basado en el modelo, lo hace basado en el filtro en caso que latabla se encuentre filtrada actualmente
 				((DefaultTableModel) vistaConsultas.tabla.getModel()).setValueAt(vistaConsultas.txtSanc.getText(),filtro.convertRowIndexToModel(vistaConsultas.tabla.getSelectedRow()),2);//modifica el campo sanciones, pero en vez de hacerlo directamente basado en el modelo, lo hace basado en el filtro en caso que latabla se encuentre filtrada actualmente
 				((DefaultTableModel) vistaConsultas.tabla.getModel()).fireTableRowsUpdated(vistaConsultas.tabla.convertColumnIndexToView(vistaConsultas.tabla.getSelectedRow()),vistaConsultas.tabla.convertColumnIndexToView(vistaConsultas.tabla.getSelectedRow()) );			
-				//MVC.exportar(archivo,vistaConsultas.tabla);
-				runArchivo.activate();
+				MVC.exportar(archivo,vistaConsultas.tabla);
+				//runArchivo.activate();
 			}
 		//}
 	}//quitar Modificar Articulo
@@ -299,8 +300,8 @@ public class ModeloConsultaArticulos {
 		((DefaultTableModel)vistaConsultas.tabla.getModel()).fireTableDataChanged();
 		limpiaCampos();
 	
-		//MVC.exportar(archivo,vistaConsultas.tabla);
-		runArchivo.activate();
+		MVC.exportar(archivo,vistaConsultas.tabla);
+		//runArchivo.activate();
 		vistaConsultas.txtBuscar.requestFocus();
 		
 	}//fin Quitar campo
