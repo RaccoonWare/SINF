@@ -1,7 +1,6 @@
 package controlador;
 
 import java.awt.Color;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -95,11 +94,12 @@ public class ControladorInfraccion implements ActionListener, MouseListener{
 				/*Control de excepciones para los errores de captura*/
 				try {
 					obtenerdatos();
+					archivo= MVC.INFRACCIONES;
+
 					try {
 						ModeloBoleta.Exportar(archivo);
-						JOptionPane.showMessageDialog(null,"Los datos se guardaron correctamente");
 					} catch (Exception e1) {
-						// TODO Bloque catch generado automÃ¡ticamente
+						// TODO Bloque catch generado automáticamente
 						JOptionPane.showMessageDialog(null,"Algo salio mal al guardar los datos");
 					}
 				} catch (ErroresCaptura cod) {
@@ -156,67 +156,7 @@ public class ControladorInfraccion implements ActionListener, MouseListener{
 					}
 				}
 			}else if (VistaInfraccion.btnInsertar.getText().equals("Actualizar")) {
-				try {
-					obtenerdatos();
-					try {
-						ModeloBoleta.Actualizar();
-						JOptionPane.showMessageDialog(null,"Los datos se guardaron correctamente");
-						VistaInfraccion.dispose();
-						System.gc();
-					} catch (Exception e1) {
-						// TODO Bloque catch generado automï¿½ticamente
-						JOptionPane.showMessageDialog(null,"Algo salio mal al guardar los datos");
-					}
-				} catch (ErroresCaptura cod) {
-					// CONTROL DE EXCEPCIONES
-					switch (cod.getCodigo()) {
-					case "nBoleta":
-						VistaInfraccion.txtNboleta.setBackground(new Color(201,79,76));
-						break;
-					case "nPolocia":
-						VistaInfraccion.txtNpolicia.setBackground(new Color(201,79,76));
-						break;
-					case "hora":
-						VistaInfraccion.timeChooser.setBackground(new Color(201,79,76));
-						break;
-					case "estado":
-						VistaInfraccion.txtEstado.setBackground(new Color(201,79,76));
-						break;
-					case "placas":
-						VistaInfraccion.txtNplacas.setBackground(new Color(201,79,76));
-						break;
-					case "nPolicia":
-						VistaInfraccion.txtNpolicia.setBackground(new Color(201,79,76));
-						break;
-					case "color":
-						VistaInfraccion.txtColor.setBackground(new Color(201,79,76));
-						break;
-					case "fecha":
-						VistaInfraccion.dcFecha.setBorder(new LineBorder(new Color(201,79,76), 1, true));
-						break;
-					case "serie":
-						VistaInfraccion.txtNserie.setBackground(new Color(201,79,76));
-						break;
-					case "referencias":
-						VistaInfraccion.txtReferencias.setBackground(new Color(201,79,76));
-						break;
-					case "placasEstado":
-						VistaInfraccion.txtPlacasEstado.setBackground(new Color(201,79,76));
-						break;
-					case "articulos":
-						VistaInfraccion.txtArticulosViolados.setBackground(new Color(201,79,76));
-						break;
-					case "marcaSubmarca":
-						VistaInfraccion.txtMarcaModelo.setBackground(new Color(201,79,76));
-						break;
-					case "retencion":
-						VistaInfraccion.txtRetencion.setBackground(new Color(201,79,76));
-						break;
-					case "motivo":
-						VistaInfraccion.txtMotivo.setBackground(new Color(201,79,76));
-						break;
-					}
-				}
+				
 			}
 		}
 	}
@@ -332,41 +272,38 @@ public class ControladorInfraccion implements ActionListener, MouseListener{
 			VistaInfraccion.dcFecha.setBackground(new Color(187,202,204));
 			VistaInfraccion.dcFecha.setBorder(null);
 		}else if (e.getSource() == VistaInfraccion.btnInsertar) {
-			VistaInfraccion.btnInsertar.setBorder(new LineBorder(SystemColor.textHighlight, 2, true));
+			VistaInfraccion.btnInsertar.setBorder(null);
 		}else if (e.getSource() == VistaInfraccion.btnLimpiar) {
-			VistaInfraccion.btnLimpiar.setBorder(new LineBorder(SystemColor.textHighlight, 2, true));
+			VistaInfraccion.btnLimpiar.setBorder(null);
 		}else if (e.getSource() == VistaInfraccion.timeChooser) {
 			VistaInfraccion.timeChooser.setBackground(new Color(187,202,204));
 		}
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Apï¿½ndice de mï¿½todo generado automï¿½ticamente
+		// TODO Apéndice de método generado automáticamente
 
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Apï¿½ndice de mï¿½todo generado automï¿½ticamente
+		// TODO Apéndice de método generado automáticamente
 
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Apï¿½ndice de mï¿½todo generado automï¿½ticamente
+		// TODO Apéndice de método generado automáticamente
 
 	}
 	//Metodos privados
 	/*@param iniciar instancia la vista y la muestra*/
 	public void iniciar() {
-		archivo=MVC.INFRACCIONES;
 		try {
 			VistaPrincipal.dpEscritorio.add(VistaInfraccion);
 			VistaInfraccion.show();
-			VistaInfraccion.toFront();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Al parecer estas modificando dos boletas a la vez se serrarï¿½ de \n" + 
+			JOptionPane.showMessageDialog(null, "Al parecer estas modificando dos boletas a la vez se serrará de \n" + 
 					"manera automática la otra ventana y puedes intentarlo nuevamente. ",
 					"Advertencia", JOptionPane.WARNING_MESSAGE);
-			VistaPrincipal.dpEscritorio.repaint();
 		}
 
 	}
@@ -383,7 +320,7 @@ public class ControladorInfraccion implements ActionListener, MouseListener{
 		ModeloBoleta.setInfraccion(String.valueOf(VistaInfraccion.cbInfraccion.getSelectedItem()));
 		ModeloBoleta.setNplacas(VistaInfraccion.txtNplacas.getText().trim());
 		ModeloBoleta.setPlacasEstado(VistaInfraccion.txtPlacasEstado.getText().trim());
-		ModeloBoleta.setMarcaSubmarca(VistaInfraccion.txtMarca.getText().trim());
+		ModeloBoleta.setMarcaSubmarca(VistaInfraccion.txtMarcaModelo.getText().trim());
 		ModeloBoleta.setModelo(VistaInfraccion.txtModelo.getText().trim());
 		ModeloBoleta.setNserie(VistaInfraccion.txtNserie.getText().trim());
 		ModeloBoleta.setNeconomico(VistaInfraccion.txtNeconomico.getText().trim());

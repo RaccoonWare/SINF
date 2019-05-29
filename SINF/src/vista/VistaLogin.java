@@ -23,6 +23,7 @@ import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import java.awt.Toolkit;
 
 /**
  * Clase pricipal
@@ -48,7 +49,7 @@ public class VistaLogin extends JDialog {
 	 * solo para pruebas
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	 /*public static void main(String[] args) {
 		//inicializa una instancia de la clase
 		try {		
 			VistaLogin dialog = new VistaLogin();
@@ -58,17 +59,19 @@ public class VistaLogin extends JDialog {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 
 	/**
 	 * Constructor por defecto.
 	 */
 	public VistaLogin() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(VistaLogin.class.getResource("/iconos/LogoLogin.png")));
 		//configuración de ventana		
 		setTitle("Iniciar Sesi\u00F3n");//titulo de la ventana
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);//acción por defecto del boton de cierre
 		setBounds(100, 100, 435, 281);//tamaño por defecto
+		
 		
 		//inicializa panel principal
 		contentPane = new JPanel();

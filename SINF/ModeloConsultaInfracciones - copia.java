@@ -1,13 +1,10 @@
 package modelo;
 
-import java.awt.Color;
-import java.awt.Container;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.*;
@@ -15,30 +12,9 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.*;
 
-import controlador.MVC;
-
-public class ModeloConsultaInfracciones extends Thread{
+public class ModeloConsultaInfracciones {
 	Workbook wb;
 	private Calendar cal1, cal2, cal3;
-	private File archivo  = MVC.INFRACCIONES;
-	private JTable tablaD;
-	public String respuesta;
-	public Sheet hoja;
-	private String accion;
-	
-	
-	public String getAccion() {
-		return accion;
-	}
-	public void setAccion(String accion) {
-		this.accion = accion;
-	}
-	public JTable getTablaD() {
-		return tablaD;
-	}
-	public void setTablaD(JTable tablaD) {
-		this.tablaD = tablaD;
-	}
 
 	public Calendar getCal1() {
 		return cal1;
@@ -65,20 +41,20 @@ public class ModeloConsultaInfracciones extends Thread{
 
 	}
 
-	public void Importar(){		
-		respuesta="No se pudo realizar la importación.";
+	public String Importar(File archivo, JTable tablaD){
+		String respuesta="No se pudo realizar la importación.";
 		DefaultTableModel modeloT = new DefaultTableModel();
 		tablaD.setModel(modeloT);
 		tablaD.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		try {
 			wb = WorkbookFactory.create(new FileInputStream(archivo));
-			hoja = wb.getSheetAt(0);
-			Iterator<Row> filaIterator = hoja.rowIterator();
+			Sheet hoja = wb.getSheetAt(0);
+			Iterator filaIterator = hoja.rowIterator();
 			int indiceFila=-1;
 			while (filaIterator.hasNext()) {                
 				indiceFila++;
 				Row fila = (Row) filaIterator.next();
-				Iterator<Cell> columnaIterator = fila.cellIterator();
+				Iterator columnaIterator = fila.cellIterator();
 				Object[] listaColumna = new Object[1000];
 				int indiceColumna=-1;
 				while (columnaIterator.hasNext()) {                    
@@ -112,9 +88,10 @@ public class ModeloConsultaInfracciones extends Thread{
 		} catch (IOException | InvalidFormatException | EncryptedDocumentException e) {
 			System.err.println(e.getMessage());
 		}
+		return respuesta;
 	}
-	public String ImportarEspesifico(JTable tablaD, String nBoleta, String nPlaca, String status) throws ParseException{
-		String respuesta="No se pudo realizar la importaciï¿½n.";
+	public String ImportarEspesifico(File archivo, JTable tablaD, String nBoleta, String nPlaca, String status) throws ParseException{
+		String respuesta="No se pudo realizar la importación.";
 		DefaultTableModel modeloT = new DefaultTableModel();
 		tablaD.setModel(modeloT);
 		tablaD.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -134,12 +111,12 @@ public class ModeloConsultaInfracciones extends Thread{
 		try {
 			wb = WorkbookFactory.create(new FileInputStream(archivo));
 			Sheet hoja = wb.getSheetAt(0);
-			Iterator<Row> filaIterator = hoja.rowIterator();
+			Iterator filaIterator = hoja.rowIterator();
 			int indiceFila=-1;
 			while (filaIterator.hasNext()) {                
 				indiceFila++;
 				Row fila = (Row) filaIterator.next();
-				Iterator<Cell> columnaIterator = fila.cellIterator();
+				Iterator columnaIterator = fila.cellIterator();
 				Object[] listaColumna = new Object[1000];
 				int indiceColumna=-1;
 				while (columnaIterator.hasNext()) {                    
@@ -179,10 +156,6 @@ public class ModeloConsultaInfracciones extends Thread{
 							modeloT.addRow(listaColumna);
 						}
 
-					}else if(nBoleta.equals("") && nPlaca.equals("") && cal1!=null && cal2==null && String.valueOf(listaColumna[26]).contains(status)) {
-						if (cal1.equals(cal3)) {
-							modeloT.addRow(listaColumna);
-						}
 					}else if(!nBoleta.equals("") && cal1!=null && cal2!=null && String.valueOf(listaColumna[26]).contains(status)) {
 						if(String.valueOf(listaColumna[0]).contains(nBoleta) && 
 								cal3.after(cal1) && cal3.before(cal2)) {
@@ -222,8 +195,8 @@ public class ModeloConsultaInfracciones extends Thread{
 		return respuesta;
 	}
 
-	public void Exportar(){
-		this.respuesta="No se realizo con exito la exportaciï¿½n.";
+	public String Exportar(File archivo, JTable tablaD){
+		String respuesta="No se realizo con exito la exportación.";
 		int numFila=tablaD.getRowCount(), numColumna=tablaD.getColumnCount();
 		if(archivo.getName().endsWith("xls")){
 			wb = new HSSFWorkbook();
@@ -244,13 +217,14 @@ public class ModeloConsultaInfracciones extends Thread{
 					wb.write(new FileOutputStream(archivo));
 				}
 			}
-			this.respuesta="Exportaciï¿½n exitosa.";
+			respuesta="Exportación exitosa.";
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
+		return respuesta;
 	}
 
-	public Object[] ImportarParaModificar(JTable tablaD, String nBoleta) throws ParseException{
+	public Object[] ImportarParaModificar(File archivo, JTable tablaD, String nBoleta) throws ParseException{
 		DefaultTableModel modeloT = new DefaultTableModel();
 		Object[] datos = null;
 		tablaD.setModel(modeloT);
@@ -259,13 +233,13 @@ public class ModeloConsultaInfracciones extends Thread{
 		try {
 			wb = WorkbookFactory.create(new FileInputStream(archivo));
 			Sheet hoja = wb.getSheetAt(0);
-			Iterator<Row> filaIterator = hoja.rowIterator();
+			Iterator filaIterator = hoja.rowIterator();
 			int indiceFila=-1;
 			while (filaIterator.hasNext()) {                
 				indiceFila++;
 				Row fila = (Row) filaIterator.next();
-				Iterator<Cell> columnaIterator = fila.cellIterator();
-				Object[] listaColumna = new Object[30];
+				Iterator columnaIterator = fila.cellIterator();
+				Object[] listaColumna = new Object[1000];
 				int indiceColumna=-1;
 				while (columnaIterator.hasNext()) {                    
 					indiceColumna++;
@@ -309,55 +283,5 @@ public class ModeloConsultaInfracciones extends Thread{
 			System.err.println(e.getMessage());
 		}
 		return datos;
-	}
-
-	public File establecerArchivo(Container c) {
-		// TODO Auto-generated method stub
-		//varialbes de función
-		File directorio= new File("Documentos");//directorio prederterminado para el fileChooser	    
-		JFileChooser seleccionador= new JFileChooser(directorio);//selector de archivos(L&F standard, pero se modifica a la hora de llamarlo
-		FileNameExtensionFilter filtroPDF= new FileNameExtensionFilter("Archivo PDF (*.pdf)", "pdf");//filtro para el filechooser
-		//añade filtros a file chooser
-		seleccionador.addChoosableFileFilter(filtroPDF);
-
-		//se modifica los atributos de interfaz estandard para cuando se llamen los cuadors de selección o dialogo
-		UIManager.put("OptionPane.background", MVC.COLOR_BG);
-		UIManager.put("Panel.background", MVC.COLOR_BG);
-		UIManager.put("Button.background",Color.WHITE);
-		UIManager.put("OptionPane.messageFont", MVC.FUENTE);
-		UIManager.put("OptionPane.messageForeground", MVC.COLOR_HIGHLIGHT);
-		UIManager.put("OptionPane.buttonFont", MVC.FUENTE);
-		UIManager.put("Label.foreground", MVC.COLOR_HIGHLIGHT);		    
-		UIManager.put("TextField.Background", MVC.COLOR_VALID);
-
-		//abre la ventada de seleccion de archivo
-		if(seleccionador.showSaveDialog(c) == JFileChooser.APPROVE_OPTION) {
-			File seleccionado = seleccionador.getSelectedFile();//manejador del archivo seleccionado
-
-			//verifica la extensión
-
-			if(!seleccionado.getName().endsWith(".pdf")){
-				String PATH = seleccionado.getAbsolutePath();
-				File temp = new File(PATH+".pdf");
-				return temp;
-			}
-
-		}else {
-			seleccionador=null;
-		}
-
-		return seleccionador.getSelectedFile();
-
-	}//fin clase restaurar
-
-	public void run() {
-		switch (accion) {
-		case "Exportar":
-			Exportar();
-			break;
-		case "Importar":
-			Importar();
-			break;
-		}	
 	}
 }

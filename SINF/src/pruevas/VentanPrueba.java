@@ -42,6 +42,17 @@ public class VentanPrueba {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		/*System.out.println("((1.0+2.0*3.0/4.0))= "+ (1.0+2.0*3.0/4.0));
+		System.out.println("((1.0+2.0)*3.0/4.0)= "+ ((1.0+2.0)*3.0/4.0));
+		System.out.println("(1.0+(2.0*3.0)/4.0)= "+ (1.0+(2.0*3.0)/4.0));
+		System.out.println("(1.0+2.0*(3.0/4.0))= "+ (1.0+2.0*(3.0/4.0)));
+		System.out.println("((1.0+2.0*3.0)/4.0)= "+ ((1.0+2.0*3.0)/4.0));
+		System.out.println("((1.0+2.0)*3.0)/4.0= "+ (((1.0+2.0)*3.0)/4.0));
+		System.out.println("(1.0+(2.0*3.0))/4.0= "+ ((1.0+(2.0*3.0))/4.0));
+		System.out.println("(1.0+(2.0*3.0/4.0))= "+ (1.0+(2.0*3.0/4.0)));
+		System.out.println("1.0+((2.0*3.0)/4.0)= "+ (1.0+((2.0*3.0)/4.0)));
+		System.out.println("1.0+(2.0*(3.0/4.0))= "+ (1.0+(2.0*(3.0/4.0))));
+		System.out.println("(1.0+2.0)*(3.0/4.0)= "+ ((1.0+2.0)*(3.0/4.0)));*/
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -236,7 +247,7 @@ public class VentanPrueba {
 		frame.getContentPane().add(lblNewLabel, "cell 3 3");
 	}
 	public Component findFocus(Component c) {
-		System.out.println("ID: "+c.hashCode()+" class: "+c.getClass()+" container :"+ (c instanceof Container)+" hasFocus: "+c.hasFocus());
+		//System.out.println("ID: "+c.hashCode()+" class: "+c.getClass()+" container :"+ (c instanceof Container)+" hasFocus: "+c.hasFocus());
 		if(c instanceof Container) {
 			//System.out.println("ID: "+c.hashCode()+" class: "+c.getClass());
 			Component comps[] = ((Container)c).getComponents();

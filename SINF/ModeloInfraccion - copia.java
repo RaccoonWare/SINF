@@ -13,8 +13,6 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.*;
 
-import controlador.MVC;
-
 public class ModeloInfraccion{
 	Workbook wb;
 	private String Estado;
@@ -47,12 +45,11 @@ public class ModeloInfraccion{
 	private Boolean bandera=false;
 	//PATTERN SON EXPRECIONES REGULARES
 	Pattern numeros = Pattern.compile("^[0-9]+$");
-	Pattern placas = Pattern.compile("^[[0-9]|\\-|[A-Za-z]]+\\-[0-9]+\\-[[0-9]|[A-Za-z]]+$");
+	Pattern placas = Pattern.compile("^[[0-9]|\\-|[A-Za-z]]+\\-[0-9]+\\\\-[[0-9]|[A-Za-z]]+$");
 	Pattern numserie = Pattern.compile("^[[A-Za-z]|[0-9]]+$");
 	Pattern articulos = Pattern.compile("^[[A-Za-z]|[0-9]]+");
 	//MATCHER BUSCA COINCIDENCIAS EN LA EXPRECION REGULAR
 	Matcher conicidencia;
-	private File archivo =MVC.INFRACCIONES;
 	private String estatus="AC";
 	//AC = activo AN = anulado
 
@@ -505,132 +502,6 @@ public class ModeloInfraccion{
 			respuesta="Se guardaron los datos con exito";
 		} catch (Exception e) {
 			//EXEPCIONES PARA LOS WORCKBOOK
-		}
-		return respuesta;
-	}
-	
-	public String Actualizar(){
-		String respuesta="Algo a salido mal y no pudimos guardar los datos";
-		nFilas(archivo);
-		int numFila=tabla.getRowCount(), numColumna=tabla.getColumnCount();
-		int j = 0;
-		int i = -1;
-		Row fila=null;
-		if(archivo.getName().endsWith("xls")){
-			wb = new HSSFWorkbook();
-		}else{
-			wb = new XSSFWorkbook();
-		}
-		Sheet hoja = wb.createSheet("Datos");
-		try {
-			for (i = -1; i < numFila; i++) {
-				fila = hoja.createRow(i+1);
-				for (j=0; j < numColumna; j++) {
-					Cell celda = fila.createCell(j);
-					if(i==-1){
-						celda.setCellValue(String.valueOf(tabla.getColumnName(j)));
-						wb.write(new FileOutputStream(archivo));
-					}else{
-						//N° BOLETA solo en la primer buelta
-						celda.setCellValue(String.valueOf(tabla.getValueAt(i, j)));
-						String dato = String.valueOf(tabla.getValueAt(i, j));
-						nb = String.valueOf(tabla.getValueAt(i, 0));
-						if (!dato.equals("") && !dato.equals(null)) {
-							if (Nboleta.equals(nb)) {
-								//El numero de noleta lla se agrego debajo del else
-								
-								//DIA
-								celda = fila.createCell(1);
-								celda.setCellValue(Fecha.substring(0,2));
-								//MES	
-								celda = fila.createCell(2);
-								celda.setCellValue(Fecha.substring(3,5));
-								//AÑO	
-								celda = fila.createCell(3);
-								celda.setCellValue(Fecha.substring(6,10));
-								//HORA	
-								celda = fila.createCell(4);
-								celda.setCellValue(hora);
-								//MUNICIPIO Y ESTADO	
-								celda = fila.createCell(5);
-								celda.setCellValue(Municipio+", "+Estado);
-								//EN LA CALLE	
-								celda = fila.createCell(6);
-								celda.setCellValue(Referencias);
-								//INFRACCIÓN AL	
-								celda = fila.createCell(7);
-								celda.setCellValue(Infraccion);
-								//N° PLACAS	
-								celda = fila.createCell(8);
-								celda.setCellValue(Nplacas);
-								//PLACAS DEL ESTADO DE	
-								celda = fila.createCell(9);
-								celda.setCellValue(PlacasEstado);
-								//MARCA Y SUBMARCA	
-								celda = fila.createCell(10);
-								celda.setCellValue(MarcaSubmarca);
-								//MODELO	
-								celda = fila.createCell(11);
-								celda.setCellValue(Modelo);
-								//N° DE SERIE	
-								celda = fila.createCell(12);
-								celda.setCellValue(Nserie);
-								//N° ECONÓMICO	
-								celda = fila.createCell(13);
-								celda.setCellValue(Neconomico);
-								//RUTA O SITIO	
-								celda = fila.createCell(14);
-								celda.setCellValue(RutaSitio);
-								//COLOR	
-								celda = fila.createCell(15);
-								celda.setCellValue(Color);
-								//NOMBRE DEL CONDUCTOR	
-								celda = fila.createCell(16);
-								celda.setCellValue(NombreConductor);
-								//DOMICILIO DEL CONDUCTOR	
-								celda = fila.createCell(17);
-								celda.setCellValue(DomicilioConductor);
-								//N° LICENCIA DEL CONDUCTOR	
-								celda = fila.createCell(18);
-								celda.setCellValue(NlicenciaConductor);
-								//NOMBRE DEL PROPIETARIO	
-								celda = fila.createCell(19);
-								celda.setCellValue(NombrePropietario);
-								//DOMICILIO DEL PROPIETARIO	
-								celda = fila.createCell(20);
-								celda.setCellValue(DomicilioPropietario);
-								//ARTICULOS VIOLADOS	
-								celda = fila.createCell(21);
-								celda.setCellValue(ArticulosViolados);
-								//RETENCION DE	
-								celda = fila.createCell(22);
-								celda.setCellValue(Retencion);
-								//MARCA Y MODELO DEL DISPOSITIVO DE ALCOHOLÍMETRO	
-								celda = fila.createCell(23);
-								celda.setCellValue(MarcaModelo);
-								//MOTIVO
-								celda = fila.createCell(24);
-								celda.setCellValue(Motivo);
-								//N° DE POLICIA DE SEGURIDAD VIAL
-								celda = fila.createCell(25);
-								celda.setCellValue(Npolicia);
-								//N° DE POLICIA DE SEGURIDAD VIAL
-								celda = fila.createCell(26);
-								celda.setCellValue(estatus);
-								j=27;
-							}
-							wb.write(new FileOutputStream(archivo));
-						}else {
-							celda.setCellValue("");
-							wb.write(new FileOutputStream(archivo));
-						}
-					}	
-				}
-			}
-			respuesta="Se guardaron los datos con exito";
-		} catch (Exception e) {
-			//EXEPCIONES PARA LOS WORCKBOOK
-			System.out.print(e);
 		}
 		return respuesta;
 	}
