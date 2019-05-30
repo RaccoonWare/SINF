@@ -3,7 +3,6 @@ package modelo;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -11,20 +10,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.UIManager;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import controlador.MVC;
 import vista.VistaConfiguracion;
-import vista.VistaPrincipal;
 
 public class ModeloConfiguracion {
 	private VistaConfiguracion vistaConfig;
 	private static String rutaArticulos;
 	private static String rutaInfracciones;
-	private static String rutaImagen;
 	//private JFileChooser selectorRuta;
 	
 	public ModeloConfiguracion(VistaConfiguracion vista) {
@@ -36,7 +30,6 @@ public class ModeloConfiguracion {
 	public void iniciar() {
 		rutaArticulos = getRutaArts();
 		rutaInfracciones = getRutaInfs();
-		rutaImagen= getRutaImg();
 		vistaConfig.txtRutaInfs.setText(rutaInfracciones);
 		vistaConfig.txtRutaArts.setText(rutaArticulos);
 		vistaConfig.txtName.setText(MVC.getConfig().getProperty("usuario"));
@@ -55,7 +48,6 @@ public class ModeloConfiguracion {
 		vistaConfig.txtNewPass.setBackground(MVC.COLOR_VALID);
 		vistaConfig.txtNewConf.setText("");
 		vistaConfig.txtNewConf.setBackground(MVC.COLOR_VALID);
-		vistaConfig.txtRutaImg.setText(rutaImagen);
 	}
 	
 	
@@ -99,17 +91,6 @@ public class ModeloConfiguracion {
 	
 	public static String getRutaInfs() {
 		return (new File(MVC.getConfig().getProperty("ruta_infracciones"))).getAbsolutePath().toString();
-	}
-	
-	public static String getRutaImg() {
-		return  (new File(MVC.getConfig().getProperty("ruta_imagen"))).getAbsolutePath().toString();
-	}
-	
-	public static String setRutaImg(VistaPrincipal vistaPrincipal, String ruta) {
-		vistaPrincipal.icnFondo= ModeloPrincipal.setImagen(vistaPrincipal, ruta);
-		ModeloPrincipal.centraImagen(vistaPrincipal);
-		MVC.getConfig().setProperty("ruta_imagen", MVC.IMAGEN_FONDO);
-		return MVC.IMAGEN_FONDO;
 	}
 	
 	public void setRutaInfs(String nuevaRuta) {
@@ -213,50 +194,6 @@ public class ModeloConfiguracion {
 		}
 	};
 	
-	@SuppressWarnings("static-access")
-	public void selectImagen(VistaPrincipal ventana) {
-		// TODO Auto-generated method stub
-		//variables locales
-		File rutaActual = new File(FilenameUtils.getFullPath(MVC.IMAGEN_FONDO));
-		FileNameExtensionFilter filtroImagenes= new FileNameExtensionFilter("Todos los formatos de imagnes soportados (*.jpg, *.jpeg, *.gif, *.png)", "jpg", "jpeg", "gif" ,"png" );//filtro para el filechooser
-		FileNameExtensionFilter filtroGIF= new FileNameExtensionFilter("Imagenes GIF (*.gif)", "gif");//filtro para el filechooser
-		FileNameExtensionFilter filtroJPG= new FileNameExtensionFilter("Imagenes JPG(*.jpg, *.jpeg)", "jpg", "jpeg" );//filtro para el filechooser
-		FileNameExtensionFilter filtroPNG= new FileNameExtensionFilter("Imagenes PNG (*.png)","png" );//filtro para el filechooser
-		JFileChooser seleccionador= new JFileChooser(rutaActual);//selector de archivos(L&F standard, pero se modifica a la hora de llamarlo
-		//Establece los filtros para formatso de imagne compatibles
-		seleccionador.setDialogTitle("Seleccionar Imagen");
-		seleccionador.setMultiSelectionEnabled(false);//se establece que solo puede seleccionarse un archivo		
-		seleccionador.addChoosableFileFilter(filtroImagenes);
-		seleccionador.addChoosableFileFilter(filtroGIF);
-		seleccionador.addChoosableFileFilter(filtroJPG);
-		seleccionador.addChoosableFileFilter(filtroPNG);
-		seleccionador.setAcceptAllFileFilterUsed(false);//quita la selección de cualquier tipo de archivo
-		//se modifica los atributos de interfaz estandard para cuando se llamen los cuadors de selección o dialogo
-		UIManager.put("OptionPane.background", MVC.COLOR_BG);
-		UIManager.put("Panel.background", MVC.COLOR_BG);
-		UIManager.put("Button.background",Color.WHITE);
-		UIManager.put("OptionPane.messageFont", MVC.FUENTE);
-		UIManager.put("OptionPane.messageForeground", MVC.COLOR_HIGHLIGHT);
-		UIManager.put("OptionPane.buttonFont", MVC.FUENTE);
-		UIManager.put("Label.foreground", MVC.COLOR_HIGHLIGHT);		    
-		UIManager.put("TextField.Background", MVC.COLOR_VALID);
-		
-		Locale local=new Locale("ES_MX");
-		seleccionador.setDefaultLocale(local);
-		if(seleccionador.showOpenDialog(vistaConfig)== JFileChooser.APPROVE_OPTION) {
-			ventana.icnFondo = ModeloPrincipal.setImagen(ventana, seleccionador.getSelectedFile().getAbsolutePath());
-			ventana.lblNewLabel.setIcon(ventana.icnFondo);
-			ModeloPrincipal.centraImagen(ventana);
-		}//guardda los cambios
-		try {
-			MVC.saveConfig();
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(vistaConfig, "Error, no se pudieron guardar  los cambios","Error", JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
-		}
-
-	}
-	
 	public static String getRutaDefault() {
 		return (new File(MVC.getConfig().getProperty("ruta_default"))).getAbsolutePath().toString();
 	}
@@ -322,7 +259,5 @@ public class ModeloConfiguracion {
 			}
 		}else JOptionPane.showMessageDialog(vistaConfig, "Confirmación de contaseña no coincide", "Error de validación", JOptionPane.ERROR_MESSAGE);
 	}
-
-	
 	
 }

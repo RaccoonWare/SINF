@@ -59,6 +59,8 @@ public class VistaInfraccion extends JInternalFrame {
 	public JTextPane txtMotivo;
 	public JButton btnInsertar;
 	public JButton btnLimpiar;
+	public JButton btnAnular;
+	public JButton btnImprimir;
 	public TimeChooser timeChooser;
 	private JLabel lblHora;
 	public JComboBox<?> cbMunicipio;
@@ -81,40 +83,33 @@ public class VistaInfraccion extends JInternalFrame {
 		setClosable(true);
 		setBounds(100, 100, 724, 624);
 		getContentPane().setLayout(new MigLayout("", "[grow]", "[][][][][][][][][][][][][][grow][][][][][grow][][][]"));
-
+		
 
 		JLabel lblNombreCompleto = new JLabel("Estado:");
-		lblNombreCompleto.setForeground(Color.BLACK);
 		lblNombreCompleto.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblNombreCompleto, "flowx,cell 0 1,alignx left");
 
 		JLabel lblEscolaridad = new JLabel("DESCRIPCI\u00D3N DEL VEH\u00CDCULO");
-		lblEscolaridad.setForeground(Color.BLACK);
 		lblEscolaridad.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblEscolaridad, "cell 0 3");
 
 		lblRutaOSitio = new JLabel("Ruta o sitio:");
-		lblRutaOSitio.setForeground(Color.BLACK);
 		lblRutaOSitio.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblRutaOSitio, "flowx,cell 0 7");
 
 		JLabel lblDatosDelPrograma = new JLabel("DATOS PERSONALES");
-		lblDatosDelPrograma.setForeground(Color.BLACK);
 		lblDatosDelPrograma.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblDatosDelPrograma, "cell 0 8,alignx left");
 
 		JLabel lblDependenciaOficial = new JLabel("Modelo:");
-		lblDependenciaOficial.setForeground(Color.BLACK);
 		lblDependenciaOficial.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblDependenciaOficial, "flowx,cell 0 6,alignx center");
 
 		lblActividadesADesarrollar = new JLabel("Nombre del conductor:");
-		lblActividadesADesarrollar.setForeground(Color.BLACK);
 		lblActividadesADesarrollar.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblActividadesADesarrollar, "flowx,cell 0 9");
 
 		JLabel lblCarrera = new JLabel("Marca y submarca:");
-		lblCarrera.setForeground(Color.BLACK);
 		lblCarrera.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblCarrera, "flowx,cell 0 5");
 
@@ -134,18 +129,15 @@ public class VistaInfraccion extends JInternalFrame {
 		txtArticulosViolados.setToolTipText("");
 
 		lblDonde = new JLabel("Domicilio del conductor:");
-		lblDonde.setForeground(Color.BLACK);
 		lblDonde.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblDonde, "flowx,cell 0 10");
 
 		lblNoLicensiaDel = new JLabel("N\u00B0 licensia del conductor:");
-		lblNoLicensiaDel.setForeground(Color.BLACK);
 		lblNoLicensiaDel.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblNoLicensiaDel, "flowx,cell 0 11");
 		getContentPane().add(txtArticulosViolados, "cell 0 13,grow");
 
 		lblElServicio = new JLabel("Marca y modelo del dispositivo de alcohol\u00EDmetro");
-		lblElServicio.setForeground(Color.BLACK);
 		lblElServicio.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblElServicio, "flowx,cell 0 16");
 
@@ -157,7 +149,6 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(txtMotivo, "cell 0 18,grow");
 
 		lblResponsableDelPrograma = new JLabel("No. de polic\u00EDa de suguridad vial:");
-		lblResponsableDelPrograma.setForeground(Color.BLACK);
 		lblResponsableDelPrograma.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblResponsableDelPrograma, "flowx,cell 0 19");
 
@@ -170,7 +161,6 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(btnInsertar, "flowx,cell 0 21,growx,aligny baseline");
 
 		JLabel lblNoDeControl = new JLabel("N\u00B0 de placas:");
-		lblNoDeControl.setForeground(Color.BLACK);
 		lblNoDeControl.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblNoDeControl, "flowx,cell 0 4,alignx left");
 
@@ -184,7 +174,6 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(txtNplacas, "cell 0 4,growx");
 
 		JLabel lblCreditosAprobados = new JLabel("Placas del estado de:");
-		lblCreditosAprobados.setForeground(Color.BLACK);
 		lblCreditosAprobados.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblCreditosAprobados, "cell 0 4");
 
@@ -198,7 +187,6 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(txtPlacasEstado, "cell 0 4,growx");
 		
 		lblNoBoleta = new JLabel("N\u00B0 boleta");
-		lblNoBoleta.setForeground(Color.BLACK);
 		lblNoBoleta.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblNoBoleta, "flowx,cell 0 0");
 		
@@ -224,7 +212,6 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(dcFecha, "cell 0 0,growx");
 
 		JLabel lblEdad = new JLabel("En la calle (referencias):");
-		lblEdad.setForeground(Color.BLACK);
 		lblEdad.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblEdad, "flowx,cell 0 2");
 
@@ -238,7 +225,6 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(txtReferencias, "cell 0 2,growx");
 
 		JLabel lblSexo = new JLabel("Infracci\u00F3n al:");
-		lblSexo.setForeground(Color.BLACK);
 		lblSexo.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblSexo, "cell 0 2,alignx left");
 
@@ -262,7 +248,6 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(txtMarca, "cell 0 5,growx");
 
 		JLabel lblTitularDeLa = new JLabel("N\u00B0 serie:");
-		lblTitularDeLa.setForeground(Color.BLACK);
 		lblTitularDeLa.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblTitularDeLa, "cell 0 6");
 
@@ -276,7 +261,6 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(txtNserie, "cell 0 6,growx");
 
 		lblMotivocircunstanciaDe = new JLabel("Motivo (circunstancia de los echos):");
-		lblMotivocircunstanciaDe.setForeground(Color.BLACK);
 		lblMotivocircunstanciaDe.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblMotivocircunstanciaDe, "flowx,cell 0 17");
 
@@ -289,19 +273,17 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(txtNpolicia, "cell 0 19,growx");
 		
 		lblHora = new JLabel("Hora");
-		lblHora.setForeground(Color.BLACK);
 		lblHora.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblHora, "cell 0 0,alignx right");
 		
 		timeChooser = new TimeChooser();
 		timeChooser.setBorder(null);
 		timeChooser.setText("");
-		timeChooser.setBackground(new Color(187, 202, 204));
-		timeChooser.setForeground(Color.DARK_GRAY);
+		timeChooser.setBackground(new Color(187,202,204));
+		timeChooser.setForeground(new Color(58, 63, 64));
 		getContentPane().add(timeChooser, "cell 0 0,alignx left");
 
 		lblNoEconomico = new JLabel("N\u00B0 econ\u00F3mico:");
-		lblNoEconomico.setForeground(Color.BLACK);
 		lblNoEconomico.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblNoEconomico, "cell 0 6");
 
@@ -323,7 +305,6 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(txtRutaSitio, "cell 0 7,grow");
 
 		lblColor = new JLabel("Color:");
-		lblColor.setForeground(Color.BLACK);
 		lblColor.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblColor, "cell 0 7");
 
@@ -352,12 +333,10 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(txtNlicenciaConductor, "cell 0 11,growx");
 
 		lblArticulosViolados = new JLabel("Art\u00EDculos violados:");
-		lblArticulosViolados.setForeground(Color.BLACK);
 		lblArticulosViolados.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblArticulosViolados, "cell 0 12");
 
 		lblRetencionDe = new JLabel("Retenci\u00F3n de:");
-		lblRetencionDe.setForeground(Color.BLACK);
 		lblRetencionDe.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblRetencionDe, "flowx,cell 0 15");
 
@@ -386,7 +365,6 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(txtDomicilioConductor, "cell 0 10,grow");
 
 		lblNombreDelPropietario = new JLabel("Nombre del propietario:");
-		lblNombreDelPropietario.setForeground(Color.BLACK);
 		lblNombreDelPropietario.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblNombreDelPropietario, "cell 0 9");
 
@@ -399,7 +377,6 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(txtNombrePropietario, "cell 0 9,growx");
 
 		lblDomicilioDelPropietario = new JLabel("Domicilio del propietario:");
-		lblDomicilioDelPropietario.setForeground(Color.BLACK);
 		lblDomicilioDelPropietario.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblDomicilioDelPropietario, "cell 0 10");
 
@@ -418,6 +395,22 @@ public class VistaInfraccion extends JInternalFrame {
 		btnLimpiar.setFont(new Font("Arial", Font.BOLD, 14));
 		btnLimpiar.setBackground(new Color(58, 63, 64));
 		getContentPane().add(btnLimpiar, "cell 0 21,growx");
+
+		btnAnular = new JButton("Anular");
+		btnAnular.setBorder(new LineBorder(SystemColor.textHighlight, 2, true));
+		btnAnular.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnAnular.setForeground(new Color(234, 254, 255));
+		btnAnular.setFont(new Font("Arial", Font.BOLD, 14));
+		btnAnular.setBackground(new Color(58, 63, 64));
+		getContentPane().add(btnAnular, "cell 0 21,growx");
+
+		btnImprimir = new JButton("Imprimir");
+		btnImprimir.setBorder(new LineBorder(SystemColor.textHighlight, 2, true));
+		btnImprimir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnImprimir.setForeground(new Color(234, 254, 255));
+		btnImprimir.setFont(new Font("Arial", Font.BOLD, 14));
+		btnImprimir.setBackground(new Color(58, 63, 64));
+		getContentPane().add(btnImprimir, "cell 0 21,growx");
 		
 		txtEstado = new JTextField();
 		txtEstado.setBorder(null);
@@ -430,7 +423,6 @@ public class VistaInfraccion extends JInternalFrame {
 		getContentPane().add(txtEstado, "cell 0 1,growx");
 		
 		lblMunicipio = new JLabel("Municipio:");
-		lblMunicipio.setForeground(Color.BLACK);
 		lblMunicipio.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(lblMunicipio, "cell 0 1");
 		

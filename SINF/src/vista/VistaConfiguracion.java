@@ -45,15 +45,10 @@ public class VistaConfiguracion extends JInternalFrame {
 	public JButton btnDefault;
 	public JPanel panelDatosUsuario;
 	public JPanel panelDatosUbicacion;
-	public JPanel panelImagen;
-	public JPanel panelRutaImagen;	
-	public JButton btnImagen;	
-	public JTextField txtRutaImg;
-	public JButton btnImg;
 		/**
 	 * Launch the application.
 	 */
-	/*blic static void main(String[] args) {
+	public static void main(String[] args) {
 		/*EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -63,8 +58,8 @@ public class VistaConfiguracion extends JInternalFrame {
 					e.printStackTrace();
 				}
 			}
-		});
-	}*/
+		});*/
+	}
 
 	/**
 	 * Create the frame.
@@ -77,8 +72,8 @@ public class VistaConfiguracion extends JInternalFrame {
 		setVisible(true);
 		setMinimumSize(new Dimension(725, 70));
 		setTitle("Configuraci\u00F3n");
-		setBounds(100, 100, 730, 330);
-		getContentPane().setLayout(new MigLayout("gap rel 0, hidemode 3", "[grow,fill]", "[grow 0,fill][grow 0,fill][grow][]"));
+		setBounds(100, 100, 730, 266);
+		getContentPane().setLayout(new MigLayout("gap rel 0, hidemode 3", "[grow,fill]", "[grow 0,fill][grow 0,fill][]"));
 		getContentPane().setBackground(Color.WHITE);
 		setBorder(new LineBorder(MVC.COLOR_BG, 5, true));
 		this.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
@@ -261,46 +256,7 @@ public class VistaConfiguracion extends JInternalFrame {
 		btnDefault.setFont(MVC.FUENTE);
 		btnDefault.setForeground(MVC.COLOR_BG);
 		btnDefault.setVisible(false);
-		
-		panelImagen = new JPanel();
-		getContentPane().add(panelImagen, "cell 0 2,grow");
-		panelImagen.setLayout(new MigLayout("gap rel 0, insets 0 , hidemode 3", "[left][grow][right]", "[][]"));
-		panelImagen.setBackground(Color.WHITE);
-		
-		JLabel lblImagenDeFondo = new JLabel("Imagen de fondo");
-		lblImagenDeFondo.setFont(MVC.FUENTE);
-		lblImagenDeFondo.setForeground(MVC.COLOR_BG);
-		panelImagen.add(lblImagenDeFondo, "cell 0 0");
-		
-		panelRutaImagen = new JPanel();
-		panelImagen.add(panelRutaImagen, "cell 0 1 3 1,grow");
-		panelRutaImagen.setLayout(new MigLayout("", "[left][grow,fill][right]", "[]"));
-		panelRutaImagen.setBackground(MVC.COLOR_BG);
-		
-		JLabel lblArchivoImagen = new JLabel("Archivo Imagen");
-		lblArchivoImagen.setFont(MVC.FUENTE);
-		lblArchivoImagen.setForeground(MVC.COLOR_HIGHLIGHT);
-		panelRutaImagen.add(lblArchivoImagen, "cell 0 0,alignx left,aligny center");
-		
-		txtRutaImg = new JTextField();
-		panelRutaImagen.add(txtRutaImg, "cell 1 0,growx,aligny top");
-		txtRutaImg.setBackground(MVC.COLOR_VALID);
-		txtRutaImg.setForeground(MVC.COLOR_BG);
-		txtRutaImg.setFont(MVC.FUENTE);
-		txtRutaImg.setColumns(10);
-		
-		btnImg = new JButton("Establecer");
-		btnImg.setFont(MVC.FUENTE);
-		btnImg.setBackground(Color.WHITE);
-		btnImg.setForeground(MVC.COLOR_BG);
-		panelRutaImagen.add(btnImg, "cell 2 0");
-		
-		btnImagen = new JButton("\u25B2");
-		btnImagen.setBackground(Color.WHITE);
-		btnImagen.setForeground(MVC.COLOR_BG);
-		btnImagen.setBorder(null);
-		panelImagen.add(btnImagen, "cell 2 0");
-		getContentPane().add(btnDefault, "cell 0 3");
+		getContentPane().add(btnDefault, "cell 0 2");
 		
 	}
 

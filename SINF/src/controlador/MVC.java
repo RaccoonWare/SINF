@@ -12,11 +12,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipFile;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -32,11 +37,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import exepciones.ErroresInit;
+import groovy.lang.Newify;
 import modelo.ModeloLogin;
 import modelo.ModeloPrincipal;
 //import modelo.exportar;
 //import modelo.importar;
 import vista.VistaLogin;
+import vista.VistaPrincipal;
 
 /**
  * 
@@ -52,7 +59,6 @@ public class MVC {
 	public static File RUTA_INFRACCION;
 	public static File ARTICULO;
 	public static File INFRACCIONES;
-	public static String IMAGEN_FONDO;
 	
 	/* Colores*/
 	/////////////////Constantes de paquete
@@ -93,7 +99,6 @@ public class MVC {
 		    COLOR_HIGHLIGHT	= iniciarColor(MVC.getConfig().getProperty("color_letraClara"),new Color(234,253,255));
 		    COLOR_LETRA	= iniciarColor(MVC.getConfig().getProperty("color_letraClara"),new Color(234,253,255));
 		    FUENTE= new Font("Arial", Font.BOLD, 14);//implementaión del estilo mediante archivo sigue incompleta, por ahora solo la declaro aquí
-		    IMAGEN_FONDO= ModeloPrincipal.getRutaImagen();
 	    }
 
     }
@@ -108,7 +113,6 @@ public class MVC {
 	 * Clase principal
 	 * Inicia el programa, llamando la pantalla de login 
 	 * */
-	@SuppressWarnings("unused")
 	public static void main(String[] args){
 		//new MVC();
 		//trata de inicializar los compoentes
@@ -157,15 +161,14 @@ public class MVC {
 			//variables de función
 			//variables de funci�n
 			FileInputStream configInput = null;
-			if(!(new File(SRC+"datos\\").exists()) &&(new File("SINF.jar").exists()))
+			if(!(new File("datos\\").exists()) &&(new File("SINF.jar").exists()))
 				extractJar();
 			//URL is = ClassLoader.getSystemResource("datos/configuracion.properties");//previamente se accedia el archivo mediante una url, pero debido a la diferencia de formato entre texto url y texto Path esta puede causar errores
-			File is= new File(SRC+"datos\\configuracion.properties");//ahora se accesa a la ruta mediante un File, la ruta por defecto toma en cuenta la carpeta /src/ que es la que se en la que se programa
+			File is= new File(src()+"\\datos\\configuracion.properties");//ahora se accesa a la ruta mediante un File, la ruta por defecto toma en cuenta la carpeta /src/ que es la que se en la que se programa
 			if (!is.exists()){//verifica que exita el archivo
-				is= new File(SRC+"datos\\configuracion.properties");//si no encuentra el archivo trata de leer el archivo basandose en la carpeta raiz, esta ruta existira en la version final portatil									
+				is= new File("dato/configuracion.properties");//si no encuentra el archivo trata de leer el archivo basandose en la carpeta raiz, esta ruta existira en la version final portatil									
 			}
-			/*JOptionPane.showMessageDialog(null, "Archivo configuración ubiación: "+ is.getAbsolutePath());
-			JOptionPane.showMessageDialog(null, "Archivo configuración encontrado: "+ is.exists());*/
+			
 			//configInput = new FileInputStream(is.getFile());//antes ccuando is era url con este metodo se iniciaba el inputStream
 			configInput = new FileInputStream(is);//se crea un inputStream para lectura del archivo
             
@@ -233,11 +236,11 @@ public class MVC {
 		File archivoConfig= null;//ruta del archivo
 		FileOutputStream fo = null;//escritor de achivo
 		try {
-			File rutaArchivo= new File(SRC+"datos\\current\\");			
+			File rutaArchivo= new File(SRC+"datos/current/");			
 			rutaArchivo.mkdirs();
-			rutaArchivo = new File(SRC+"datos\\Backup\\");
+			rutaArchivo = new File(SRC+"datos/Backup/");
 			rutaArchivo.mkdirs();
-			archivoConfig = new File(SRC+"datos\\configuracion.properties");//carga la ruta ruta source depende si se esta trabajando en el prorama o la version release
+			archivoConfig = new File(SRC+"datos/configuracion.properties");//carga la ruta ruta source depende si se esta trabajando en el prorama o la version release
 			fo= new FileOutputStream(archivoConfig);//inicia escritor
 			config.store(fo, "Generaddo desde Programa");//guarda los datos
 		}
@@ -269,168 +272,6 @@ public class MVC {
 		}
 	}//fin saveConfig
 	////////Manejo de archivos
-	////////////////Archivos en blanco
-	
-	/**
-	 * Crea Artchivo de Articulos en Blanco
-	 * @return el archivo creado
-	 * @see InfraccionesBlanco
-	 * @see modelos.modeloPrincipal.importar
-	 * @see modelos.modeloPrincipal.exportar
-	 */
-	@SuppressWarnings("unused")
-	private static File ArticulosBlanco(){
-		//variables locales
-		Workbook wb;//maneador archivo office
-		File archivo= new File(ARTICULO.getAbsolutePath());
-		
-		//inicia el archivo como hoja de trabajo
-		wb = new XSSFWorkbook();//hojas excel psoteriores Office 2010
-		
-		Sheet hoja = wb.createSheet("Pruebita");//crea hoja de trabao
-		//recorre el modelo y va transfiriendo datos
-		try {
-			Row cabecera = hoja.createRow(0);//Crea Fila cabecera
-			
-			//añade los titulos en las celdas
-			Cell celda = cabecera.createCell(0);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("ARTICULOS");
-			celda = cabecera.createCell(1);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("INFRACCIÓN");
-			celda = cabecera.createCell(2);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("SANCIÓN");
-			    
-			wb.write(new FileOutputStream(archivo));//guarda los cambios
-			wb.close();//cierra el documento
-			
-		//Manejo de erores
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			return null;
-		}
-		return archivo;
-	}//fin ArticulosBlanco
-	
-	/**
-	 * Crea Artchivo de Infacciones en Blanco
-	 * @return el archivo creado
-	 * @see InfraccionesBlanco
-	 * @see modelos.modeloPrincipal.importar
-	 * @see modelos.modeloPrincipal.exportar
-	 */
-	@SuppressWarnings("unused")
-	private static File InfraccionesBlanco(){
-		//variables locales
-		Workbook wb;//maneador archivo office
-		File archivo= new File(INFRACCIONES.getAbsolutePath());
-		
-		//inicia el archivo como hoja de trabajo
-		wb = new XSSFWorkbook();//hojas excel psoteriores Office 2010
-		
-		Sheet hoja = wb.createSheet("Pruebita");//crea hoja de trabao
-		//recorre el modelo y va transfiriendo datos
-		try {
-			Row cabecera = hoja.createRow(0);//Crea fila de la cabecera
-			
-			//añade los titulos en las celdas
-			Cell celda = cabecera.createCell(0);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("N° BOLETA");
-			celda = cabecera.createCell(1);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("DÍA");
-			celda = cabecera.createCell(2);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("MES	");
-			celda = cabecera.createCell(3);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("AÑO");
-			celda = cabecera.createCell(4);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING); 
-			celda.setCellValue("HORA");	
-			celda = cabecera.createCell(5);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("MUNICIPIO Y ESTADO");
-			celda = cabecera.createCell(6);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("EN LA CALLE	");
-			celda = cabecera.createCell(7);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("INFRACCIÓN AL");	
-			celda = cabecera.createCell(8);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("N° PLACAS");
-			celda = cabecera.createCell(9);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("PLACAS DEL ESTADO DE");	
-			celda = cabecera.createCell(10);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("MARCA Y SUBMARCA");	
-			celda = cabecera.createCell(11);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("MODELO");	
-			celda = cabecera.createCell(12);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("N° DE SERIE");
-			celda = cabecera.createCell(13);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("N° ECONÓMICO");	
-			celda = cabecera.createCell(14);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("RUTA O SITIO");	
-			celda = cabecera.createCell(15);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("COLOR");	
-			celda = cabecera.createCell(16);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("NOMBRE DEL CONDUCTOR");	
-			celda = cabecera.createCell(17);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("DOMICILIO DEL CONDUCTOR");	
-			celda = cabecera.createCell(18);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("N° LICENCIA DEL CONDUCTOR");	
-			celda = cabecera.createCell(19);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("NOMBRE DEL PROPIETARIO");	
-			celda = cabecera.createCell(20);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("DOMICILIO DEL PROPIETARIO");	
-			celda = cabecera.createCell(21);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("ARTICULOS VIOLADOS");
-			celda = cabecera.createCell(22);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("RETENCION DE");
-			celda = cabecera.createCell(23);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("MARCA Y MODELO DEL DISPOSITIVO DE ALCOHOLÍMETRO");
-			celda = cabecera.createCell(24);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("MOTIVO");
-			celda = cabecera.createCell(25);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("N° DE POLICIA DE SEGURIDAD VIAL");
-			celda = cabecera.createCell(26);//crea celda 
-			celda.setCellType(Cell.CELL_TYPE_STRING);
-			celda.setCellValue("ESTATUS");
-
-			    
-			wb.write(new FileOutputStream(archivo));//guarda los cambios
-			wb.close();//cierra el documento
-			
-		//Manejo de erores
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			return null;
-		}
-		return archivo;
-	}//fin InfraccionesBlanco
-	
-	
 	
 	////////////////Manejo de Archivos de la tabla
 	/**
@@ -446,10 +287,6 @@ public class MVC {
 		String respuesta="No se pudo realizar la importación.";		
 		//sobreEscribe el constructor del Modelo de datos para inhabilidar la edicion directa
 		DefaultTableModel modeloT = new DefaultTableModel() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
 			//variable de instancia
 			public boolean editable= false;//bandera para posible habilitación de edición
 			//la clase DefaultTableModel por defecto pone sus celdas como editables y sin metodo set para cambiar la opción, declarando editable y sobreescribiendo el metodo habilito su posible edición
@@ -464,12 +301,12 @@ public class MVC {
 		try {
 			Workbook wb = WorkbookFactory.create(new FileInputStream(archivo));//abre el archivo
 			Sheet hoja = wb.getSheetAt(0);//obtiene la hoja 0
-			Iterator<Row> filaIterator = hoja.rowIterator();//iterador de renglones
+			Iterator filaIterator = hoja.rowIterator();//iterador de renglones
 			int indiceFila=-1;//indice de fila, como el primer renglon esta reservado para los titulos para conpensar tiene un valor n-1
 			while (filaIterator.hasNext()) {//recorre el archivo         
 			    indiceFila++;
 			    Row fila = (Row) filaIterator.next();
-			    Iterator<Cell> columnaIterator = fila.cellIterator();
+			    Iterator columnaIterator = fila.cellIterator();
 			    Object[] listaColumna = new Object[hoja.getLastRowNum()];
 			    int indiceColumna=-1;
 			    //recorre la hoja
@@ -657,6 +494,7 @@ public class MVC {
 		try {
 			saveConfig();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Error, no se pudieron guardar los cambios", "Error de Escritura", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -668,6 +506,7 @@ public class MVC {
 		try {
 			saveConfig();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Error, no se pudieron guardar los cambios", "Error de Escritura", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -679,6 +518,7 @@ public class MVC {
 		try {
 			saveConfig();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Error, no se pudieron guardar los cambios", "Error de Escritura", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -690,6 +530,7 @@ public class MVC {
 		try {
 			saveConfig();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Error, no se pudieron guardar los cambios", "Error de Escritura", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -712,8 +553,6 @@ public class MVC {
 		config.setProperty("ruta_articulos",SRC+"datos\\current\\\\");
 		config.setProperty("ruta_infracciones",SRC+"datos\\\\current\\\\");
 		config.setProperty("ruta_default",SRC+"datos\\\\current\\\\");
-		config.setProperty("ruta_imagen",SRC+"datos\\\\logoTransito.png");
-		config.setProperty("imagen_default",SRC+"datos\\\\logoTransito.png");
 		config.setProperty("usuario","Transito");
 		config.setProperty("contraseña","SINF");
 		config.setProperty("usuario_Default","Transito");
@@ -768,6 +607,7 @@ public class MVC {
 			}
 			jar.close();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "error de extracción");
 			e.printStackTrace();
 		}
@@ -823,7 +663,7 @@ public class MVC {
 		//variable local
 		File carpeta= new File("src\\\\");
 		//System.out.println("src existe: "+ carpeta.exists());
-		return carpeta.exists()? "src\\\\":"";
+		return carpeta.exists()? "src":"";
 	}
 	
 	/**
@@ -832,7 +672,6 @@ public class MVC {
 	 * @param arreglo
 	 * @return
 	 */
-	@SuppressWarnings("unused")
 	private boolean compara(String cadena, char[]arreglo) {
 		boolean res=false;
 		//char[] cadenaArreglo= cadena.toCharArray();
@@ -890,6 +729,7 @@ public class MVC {
 		/////////implementación Runnable
 		@Override
 		public void run() {
+			// TODO Auto-generated method stub
 			if(isActive()) {
 				System.out.println("Guardando cambios");
 				MVC.exportar(archivo, tabla);

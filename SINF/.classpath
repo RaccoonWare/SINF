@@ -34,9 +34,5 @@
 	<classpathentry kind="lib" path="src/librerias/JtimeChooser.jar"/>
 	<classpathentry kind="lib" path="librerias/org.apache.commons.io.jar"/>
 	<classpathentry kind="lib" path="librerias/poi-4.1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/David/Documents/GitHub/SINF/SINF/src/librerias/orsonpdf-1.8.jar"/>
-	<classpathentry kind="lib" path="C:/Users/David/Documents/GitHub/SINF/SINF/src/librerias/jcommon-1.0.23.jar"/>
-	<classpathentry kind="lib" path="C:/Users/David/Documents/GitHub/SINF/SINF/src/librerias/jfreechart-1.0.19.jar"/>
-	<classpathentry kind="lib" path="C:/Users/David/Documents/GitHub/SINF/SINF/src/librerias/xercesImpl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

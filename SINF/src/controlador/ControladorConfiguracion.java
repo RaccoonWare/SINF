@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -29,16 +28,13 @@ public class ControladorConfiguracion implements ActionListener, FocusListener, 
 	//Variables de Instancia
 	private ModeloConfiguracion modeloConfig;
 	private VistaConfiguracion vistaConfig;
-	private VistaPrincipal ventana;
 	//private 
 	//////////////////Constructores e iniciadores////////////////////
 	
-	public ControladorConfiguracion(VistaConfiguracion vistaConfig, ModeloConfiguracion modeloConfig, VistaPrincipal vistaPrincipal) {	
+	public ControladorConfiguracion(VistaConfiguracion vistaConfig, ModeloConfiguracion modeloConfig) {	
 		
 		this.vistaConfig= vistaConfig;		
 		this.modeloConfig= modeloConfig;		
-		ventana= vistaPrincipal;
-		
 		iniciar();		
 		addListeners();
 		VistaPrincipal.dpEscritorio.add(vistaConfig);
@@ -80,23 +76,13 @@ public class ControladorConfiguracion implements ActionListener, FocusListener, 
 		vistaConfig.txtNewConf.addMouseListener(this);
 		vistaConfig.txtNewConf.addKeyListener(this);
 		vistaConfig.txtNewConf.addFocusListener(this);
-		vistaConfig.txtNewConf.addMouseListener(this);
-		vistaConfig.txtNewConf.addKeyListener(this);
-		vistaConfig.txtNewConf.addFocusListener(this);
-		vistaConfig.txtRutaImg.addMouseListener(this);
-		vistaConfig.txtRutaImg.addKeyListener(this);
-		vistaConfig.txtRutaImg.addFocusListener(this);
 		
 		vistaConfig.btnRutas.addActionListener(this);
 		vistaConfig.btnUsuario.addActionListener(this);
-		vistaConfig.btnImagen.addActionListener(this);
 		vistaConfig.btnInfs.addActionListener(this);
 		vistaConfig.btnArts.addActionListener(this);
 		vistaConfig.btnConfirmar.addActionListener(this);
-		vistaConfig.btnImg.addActionListener(this);
 		vistaConfig.btnDefault.addActionListener(this);
-		
-		
 	}
 	//////////////////////Manejo de Eventos////////////////////
 	
@@ -111,8 +97,6 @@ public class ControladorConfiguracion implements ActionListener, FocusListener, 
 			modeloConfig.switchPanel(vistaConfig.btnRutas,vistaConfig.panelDatosUbicacion);			
 		}else if (a.getSource().equals(vistaConfig.btnUsuario)) {
 			modeloConfig.switchPanel(vistaConfig.btnUsuario,vistaConfig.panelDatosUsuario);
-		}else if (a.getSource().equals(vistaConfig.btnImagen)) {
-			modeloConfig.switchPanel(vistaConfig.btnImagen,vistaConfig.panelRutaImagen);
 		}else if(a.getSource().equals(vistaConfig.btnDefault))
 			modeloConfig.defaultValues();
 		else if(a.getSource().equals(vistaConfig.btnConfirmar)) {
@@ -121,9 +105,6 @@ public class ControladorConfiguracion implements ActionListener, FocusListener, 
 			modeloConfig.selectRutaArticulo();			
 		}else if(a.getSource().equals(vistaConfig.btnInfs)){			
 			modeloConfig.selectRutaInfraccion();			
-		}else if(a.getSource().equals(vistaConfig.btnImg)) {
-			modeloConfig.selectImagen(ventana);
-
 		}
 	}//fin actionPerformed
 	
@@ -174,24 +155,6 @@ public class ControladorConfiguracion implements ActionListener, FocusListener, 
 			if(modeloConfig.validaRuta(vistaConfig.txtRutaInfs.getText())) {
 				k.getComponent().setBackground(Color.WHITE);
 				modeloConfig.setRutaInfraccion(vistaConfig.txtRutaInfs.getText());
-				try {
-					MVC.saveConfig();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}else
-				k.getComponent().setBackground(MVC.COLOR_INVALID);
-		}else if(k.getSource().equals(vistaConfig.txtRutaImg)) {
-			if(modeloConfig.validaRuta(vistaConfig.txtRutaImg.getText())) {
-				k.getComponent().setBackground(Color.WHITE);
-				modeloConfig.setRutaArticulo(vistaConfig.txtRutaImg.getText());
-				try {
-					MVC.saveConfig();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}else
 				k.getComponent().setBackground(MVC.COLOR_INVALID);
 		}else { 

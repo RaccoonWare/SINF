@@ -21,12 +21,6 @@ import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.ListSelectionModel;
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JMenuItem;
-import javax.swing.JMenu;
 public class VistaConsultaInfraccion extends JInternalFrame {
 	/**
 	 * 
@@ -39,13 +33,7 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 	public JButton btnEliminar, btnAnular, btnConsultar, btnBuscar;
 	public JDateChooser dcInicio, dcFin;
 	public JComboBox<?> cbRegistros;
-	private JPopupMenu popupMenu;
-	public JMenuItem imEstBarras;
-	private JMenu mnGenerarEstadistica;
-	public JMenuItem imEstPastel;
-	public JMenuItem imEstLineas;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public VistaConsultaInfraccion() {
 		setBorder(new LineBorder(new Color(58, 63, 64), 5, true));
 		getContentPane().setBackground(Color.WHITE);
@@ -88,10 +76,10 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		txtFolio.setColumns(10);
 		panel.add(txtFolio, "cell 2 0,growx");
 
-		btnBuscar = new JButton("");
+		btnBuscar = new JButton(/*"Buscar"*/);
 		btnBuscar.setBorder(null);
 		btnBuscar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnBuscar.setIcon(new ImageIcon("iconos\\buscar2.png"));
+		btnBuscar.setIcon(new ImageIcon(VistaConsultaInfraccion.class.getResource("/iconos/buscar.png")));
 		btnBuscar.setBackground(new Color(234, 254, 255));
 		panel.add(btnBuscar, "cell 0 1,growx");
 
@@ -148,21 +136,6 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		tabla.setBackground(Color.WHITE);
 		tabla.setFont(new Font("Arial", Font.BOLD, 14));
 		scrollPane.setViewportView(tabla);
-		
-		popupMenu = new JPopupMenu();
-		addPopup(tabla, popupMenu);
-		
-		mnGenerarEstadistica = new JMenu("Generar estadistica");
-		popupMenu.add(mnGenerarEstadistica);
-		
-		imEstBarras = new JMenuItem("Gr\u00E1fico de barras");
-		mnGenerarEstadistica.add(imEstBarras);
-		
-		imEstPastel = new JMenuItem("Gr\u00E1fico de pastel");
-		mnGenerarEstadistica.add(imEstPastel);
-		
-		imEstLineas = new JMenuItem("Gr\u00E1fico de l\u00EDneas");
-		mnGenerarEstadistica.add(imEstLineas);
 
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -193,22 +166,5 @@ public class VistaConsultaInfraccion extends JInternalFrame {
 		btnConsultar.setBackground(new Color(58, 63, 64));
 		btnConsultar.setForeground(new Color(234, 254, 255));
 		getContentPane().add(btnConsultar, "cell 0 2,growx");
-	}
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
 	}
 }

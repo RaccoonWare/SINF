@@ -29,7 +29,6 @@ import vista.*;
 public class ControladorPrincipal implements ActionListener, MouseListener{
 	//variables de instancia
 	private VistaPrincipal vistaPrincipal;
-	public static VistaPrincipal VI;
 	private ModeloPrincipal modeloPrincipal;
 	
 	//////////////Constructores e inicializadores
@@ -41,7 +40,6 @@ public class ControladorPrincipal implements ActionListener, MouseListener{
 	public ControladorPrincipal(VistaPrincipal VistaPrincipal, ModeloPrincipal modeloPrincipal) {
 		this.vistaPrincipal=VistaPrincipal;
 		this.modeloPrincipal= modeloPrincipal;
-		this.vistaPrincipal= VistaPrincipal;
 		agregarListeners();
 	}//fin constructor por defecto
 	
@@ -94,13 +92,13 @@ public class ControladorPrincipal implements ActionListener, MouseListener{
 		//////////////Origen botones ventanas, llama a la ventana correspondeinte
 		/////////Origen boton Formulario de infraciones
 		}else if (arg0.getSource()==vistaPrincipal.btnInfracciones) {
-			modeloPrincipal.iniciarInfracciones();
+			modeloPrincipal.iniciarInfracciones(vistaPrincipal);
 			/////////Origen boton Consulta infracciones
 		}else if (arg0.getSource()==vistaPrincipal.btnConsultar) {
-			modeloPrincipal.iniciarConsultaInfracciones();
+			modeloPrincipal.iniciarConsultaInfracciones(vistaPrincipal);
 			/////////Origen boton Articulos
 		}else if (arg0.getSource()==vistaPrincipal.btnArticulos) {			
-			modeloPrincipal.iniciarConsultaArticulos();			
+			modeloPrincipal.iniciarConsultaArticulos(vistaPrincipal);			
 		///////////////Origen botones respaldo archivos	
 			///////Origen boton restaurar
 		}else if (arg0.getSource()==vistaPrincipal.btnRestaurar) {								   

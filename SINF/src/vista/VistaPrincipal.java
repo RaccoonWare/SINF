@@ -11,11 +11,7 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-
-import controlador.MVC;
-
 import javax.swing.JLabel;
-import java.awt.Toolkit;
 
 public class VistaPrincipal extends JFrame {
 
@@ -30,12 +26,8 @@ public class VistaPrincipal extends JFrame {
 	public JButton btnRestaurar;
 	public JButton btnArticulos;
 	public JButton btnConfiguracin;
-	public static ImageIcon icnFondo;//imagen de fondo
-	public JLabel lblNewLabel;
-	
+
 	public VistaPrincipal() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(VistaPrincipal.class.getResource("/iconos/LogoLogin.png")));
-		setTitle("SINF");
 		setBackground(Color.WHITE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1036, 521);
@@ -58,10 +50,8 @@ public class VistaPrincipal extends JFrame {
 		dpEscritorio.setBackground(Color.WHITE);
 		contentPane.add(dpEscritorio, "cell 1 0 1 7,grow");
 
-		icnFondo=new ImageIcon(MVC.IMAGEN_FONDO);
-				
-		lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(icnFondo);
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(VistaPrincipal.class.getResource("/iconos/logoTransito.png")));
 		lblNewLabel.setBounds(345, 168, 553, 386);
 		dpEscritorio.add(lblNewLabel);
 
