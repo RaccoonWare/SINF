@@ -164,6 +164,7 @@ public class MVC {
 			if (!is.exists()){//verifica que exita el archivo
 				is= new File(SRC+"datos\\configuracion.properties");//si no encuentra el archivo trata de leer el archivo basandose en la carpeta raiz, esta ruta existira en la version final portatil									
 			}
+			System.out.println(is.getAbsolutePath());
 			/*JOptionPane.showMessageDialog(null, "Archivo configuración ubiación: "+ is.getAbsolutePath());
 			JOptionPane.showMessageDialog(null, "Archivo configuración encontrado: "+ is.exists());*/
 			//configInput = new FileInputStream(is.getFile());//antes ccuando is era url con este metodo se iniciaba el inputStream
@@ -712,8 +713,8 @@ public class MVC {
 		config.setProperty("ruta_articulos",SRC+"datos\\current\\\\");
 		config.setProperty("ruta_infracciones",SRC+"datos\\\\current\\\\");
 		config.setProperty("ruta_default",SRC+"datos\\\\current\\\\");
-		config.setProperty("ruta_imagen",SRC+"datos\\\\logoTransito.png");
-		config.setProperty("imagen_default",SRC+"datos\\\\logoTransito.png");
+		config.setProperty("ruta_imagen",SRC+"datos\\\\logo transito.jpeg");
+		config.setProperty("imagen_default",SRC+"datos\\\\logo transito.jpeg");
 		config.setProperty("usuario","Transito");
 		config.setProperty("contraseña","SINF");
 		config.setProperty("usuario_Default","Transito");

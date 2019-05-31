@@ -68,6 +68,7 @@ public class ModeloConfiguracion {
 		MVC.setDefaultConfig();
 		rutaArticulos = getRutaDefault();
 		rutaInfracciones = getRutaDefault();
+		rutaImagen= getRutaDefault();
 		iniciar();
 		try {
 			MVC.saveConfig();
@@ -79,7 +80,7 @@ public class ModeloConfiguracion {
 	}
 	
 	public static  String getRutaArts() {
-		return (new File(MVC.getConfig().getProperty("ruta_articulos"))).getAbsolutePath().toString();
+		return MVC.RUTA_ARTICULO.getAbsolutePath().toString();
 	}
 	
 	public void setRutaArts(String nuevaRuta) {
@@ -98,11 +99,11 @@ public class ModeloConfiguracion {
 	}
 	
 	public static String getRutaInfs() {
-		return (new File(MVC.getConfig().getProperty("ruta_infracciones"))).getAbsolutePath().toString();
+		return MVC.RUTA_INFRACCION.getAbsolutePath().toString();
 	}
 	
 	public static String getRutaImg() {
-		return  (new File(MVC.getConfig().getProperty("ruta_imagen"))).getAbsolutePath().toString();
+		return  new File(MVC.IMAGEN_FONDO).getAbsolutePath().toString();
 	}
 	
 	public static String setRutaImg(VistaPrincipal vistaPrincipal, String ruta) {
@@ -246,13 +247,16 @@ public class ModeloConfiguracion {
 		if(seleccionador.showOpenDialog(vistaConfig)== JFileChooser.APPROVE_OPTION) {
 			ventana.icnFondo = ModeloPrincipal.setImagen(ventana, seleccionador.getSelectedFile().getAbsolutePath());
 			ventana.lblNewLabel.setIcon(ventana.icnFondo);
-			ModeloPrincipal.centraImagen(ventana);
+			ModeloPrincipal.centraImagen(ventana);		
 		}//guardda los cambios
 		try {
 			MVC.saveConfig();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(vistaConfig, "Error, no se pudieron guardar  los cambios","Error", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
+		}
+		finally{
+			iniciar();
 		}
 
 	}
@@ -261,6 +265,9 @@ public class ModeloConfiguracion {
 		return (new File(MVC.getConfig().getProperty("ruta_default"))).getAbsolutePath().toString();
 	}
 	
+	public static String getImagenDefault() {
+		return (new File(MVC.getConfig().getProperty("imagen_default"))).getAbsolutePath().toString();
+	}
 	public void hidePanel(JPanel panel) {
 		vistaConfig.setSize(vistaConfig.getWidth(), vistaConfig.getHeight()-panel.getHeight());
 		panel.setVisible(false);
@@ -303,7 +310,7 @@ public class ModeloConfiguracion {
 					String prevUser = vistaConfig.txtName.getText();
 					String prevPass= new String(((JPasswordField)vistaConfig.txtPass).getPassword());
 					MVC.getConfig().setProperty("usuario", vistaConfig.txtNewName.getText());
-					MVC.getConfig().setProperty("contraseña", new String(((JPasswordField)vistaConfig.txtNewPass).getPassword()));
+					MVC.getConfig().setProperty("contraseña", new String(((JPasswordField)vistaConfig.txtNewPass).getPassword()));					
 					try {
 						MVC.saveConfig();						
 					} catch (IOException e) {

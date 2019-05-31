@@ -13,6 +13,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import controlador.MVC;
+import modelo.ModeloPrincipal;
 
 import javax.swing.JLabel;
 import java.awt.Toolkit;
@@ -59,11 +60,12 @@ public class VistaPrincipal extends JFrame {
 		contentPane.add(dpEscritorio, "cell 1 0 1 7,grow");
 
 		icnFondo=new ImageIcon(MVC.IMAGEN_FONDO);
-				
+						
 		lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(icnFondo);
 		lblNewLabel.setBounds(345, 168, 553, 386);
 		dpEscritorio.add(lblNewLabel);
+		ModeloPrincipal.centraImagen(this);
 
 		btnInfracciones = new JButton("Infracciones");
 		btnInfracciones.setBorder(null);

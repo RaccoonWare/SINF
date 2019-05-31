@@ -82,14 +82,16 @@ public class ModeloPrincipal {
 		
 		
 		//vistaPrincipal.lblNewLabel.setIcon(MVC.);
-		/*JOptionPane.showMessageDialog(vistaPrincipal, "Ruta actual: "+ new File("").getAbsolutePath());
+		/*JOptionPane.showMessageDialog(vistaPrincipal,"src= " +MVC.SRC);
+		JOptionPane.showMessageDialog(vistaPrincipal, "propiedades"+ (new File(MVC.SRC+"datos\\configuracion.properties")).exists());
+		JOptionPane.showMessageDialog(vistaPrincipal, "Ruta actual: "+ new File("").getAbsolutePath());
 		JOptionPane.showMessageDialog(vistaPrincipal, "Ruta Articulos : "+ MVC.RUTA_ARTICULO);
 		JOptionPane.showMessageDialog(vistaPrincipal, "Ruta INFRACCIONES : "+ MVC.RUTA_INFRACCION);
-		JOptionPane.showMessageDialog(vistaPrincipal, "Articulos : "+ MVC.ARTICULO);
-		JOptionPane.showMessageDialog(vistaPrincipal, "INFRACCIONES : "+ MVC.INFRACCIONES);
+		JOptionPane.showMessageDialog(vistaPrincipal, "Articulos : "+ MVC.ARTICULO.getAbsolutePath());
+		JOptionPane.showMessageDialog(vistaPrincipal, "INFRACCIONES : "+ MVC.INFRACCIONES.getAbsolutePath());
 		JOptionPane.showMessageDialog(vistaPrincipal, "Config Articulos : "+ MVC.getConfig().getProperty("ruta_articulos"));
-		JOptionPane.showMessageDialog(vistaPrincipal, "Config INFRACCIONES : "+ MVC.getConfig().getProperty("ruta_infracciones"));*/
-		//JOptionPane.showMessageDialog(vistaPrincipal, "Config Imagen : "+ MVC.getConfig().getProperty("ruta_imagen"));
+		JOptionPane.showMessageDialog(vistaPrincipal, "Config INFRACCIONES : "+ MVC.getConfig().getProperty("ruta_infracciones"));
+		JOptionPane.showMessageDialog(vistaPrincipal, "Config Imagen : "+ MVC.getConfig().getProperty("ruta_imagen"));*/
 	}//fin iniciar
 	
 	/**
